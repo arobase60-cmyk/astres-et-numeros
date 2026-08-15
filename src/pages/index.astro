@@ -35,23 +35,23 @@ import Layout from '../layouts/Layout.astro';
 	</section>
 
 	<!-- Boutons de sélection -->
-	<section class="buttons-container">
-		<a href="/astres-et-numeros/horoscope/" class="btn btn-western">
-			<span class="btn-icon">✨</span>
-			<div class="btn-content">
-				<h2>Horoscope</h2>
-				<p>Consultez les 12 signes du zodiaque occidental</p>
-			</div>
-		</a>
+<section class="buttons-container">
+    <a href={`${import.meta.env.BASE_URL}/horoscope/`} data-astro-reload class="btn btn-western">
+        <span class="btn-icon">✨</span>
+        <div class="btn-content">
+            <h2>Horoscope</h2>
+            <p>Consultez les 12 signes du zodiaque occidental</p>
+        </div>
+    </a>
 
-		<a href="/astres-et-numeros/horoscope-chinois/" class="btn btn-chinese">
-			<span class="btn-icon">🐉</span>
-			<div class="btn-content">
-				<h2>Horoscope Chinois</h2>
-				<p>Explorez la sagesse des 12 signes astros chinois</p>
-			</div>
-		</a>
-	</section>
+    <a href={`${import.meta.env.BASE_URL}/horoscope-chinois/`} data-astro-reload class="btn btn-chinese">
+        <span class="btn-icon">🐉</span>
+        <div class="btn-content">
+            <h2>Horoscope Chinois</h2>
+            <p>Explorez la sagesse des 12 signes astros chinois</p>
+        </div>
+    </a>
+</section>
 </Layout>
 
 <style>
