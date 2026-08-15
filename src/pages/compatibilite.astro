@@ -40,27 +40,35 @@ import { WESTERN_SIGNS } from '../utils/astrology.js';
 </Layout>
 
 <script>
-	import { getCompatibility } from '../utils/astrology.js';
+    import { getCompatibility } from '../utils/astrology.js';
 
-	const select1 = document.getElementById('sign-1') as HTMLSelectElement;
-	const select2 = document.getElementById('sign-2') as HTMLSelectElement;
-	const btn = document.getElementById('calc-compat-btn');
-	const resultBox = document.getElementById('compat-result');
-	const scoreVal = document.getElementById('score-val');
-	const scoreDesc = document.getElementById('score-desc');
+    function initCompatiblity() {
+        const select1 = document.getElementById('sign-1') as HTMLSelectElement;
+        const select2 = document.getElementById('sign-2') as HTMLSelectElement;
+        const btn = document.getElementById('calc-compat-btn');
+        const resultBox = document.getElementById('compat-result');
+        const scoreVal = document.getElementById('score-val');
+        const scoreDesc = document.getElementById('score-desc');
 
-	btn?.addEventListener('click', () => {
-		const s1 = select1.value;
-		const s2 = select2.value;
+        // On vérifie que les éléments existent avant d'attacher le clic
+        btn?.addEventListener('click', () => {
+            if (!select1 || !select2) return;
 
-		const result = getCompatibility(s1, s2);
+            const s1 = select1.value;
+            const s2 = select2.value;
 
-		if (result && scoreVal && scoreDesc) {
-			scoreVal.textContent = result.score.toString();
-			scoreDesc.textContent = result.desc;
-			resultBox?.classList.remove('hidden');
-		}
-	});
+            const result = getCompatibility(s1, s2);
+
+            if (result && scoreVal && scoreDesc) {
+                scoreVal.textContent = result.score.toString();
+                scoreDesc.textContent = result.desc;
+                resultBox?.classList.remove('hidden');
+            }
+        });
+    }
+
+    // S'exécute au premier chargement ET après chaque changement de page Astro
+    document.addEventListener('astro:page-load', initCompatiblity);
 </script>
 
 <style>
