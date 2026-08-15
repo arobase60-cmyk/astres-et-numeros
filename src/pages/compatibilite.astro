@@ -50,13 +50,19 @@ import { WESTERN_SIGNS } from '../utils/astrology.js';
         const scoreVal = document.getElementById('score-val');
         const scoreDesc = document.getElementById('score-desc');
 
-        // On vérifie que les éléments existent avant d'attacher le clic
-        btn?.addEventListener('click', () => {
+        if (!btn) return;
+
+        // Évite le cumul des écouteurs d'événements
+        btn.replaceWith(btn.cloneNode(true));
+        const newBtn = document.getElementById('calc-compat-btn');
+
+        newBtn?.addEventListener('click', (e) => {
+            e.preventDefault();
+            
             if (!select1 || !select2) return;
 
             const s1 = select1.value;
             const s2 = select2.value;
-
             const result = getCompatibility(s1, s2);
 
             if (result && scoreVal && scoreDesc) {
@@ -67,7 +73,8 @@ import { WESTERN_SIGNS } from '../utils/astrology.js';
         });
     }
 
-    // S'exécute au premier chargement ET après chaque changement de page Astro
+    // Lancement immédiat + écouteur de navigation
+    initCompatiblity();
     document.addEventListener('astro:page-load', initCompatiblity);
 </script>
 
