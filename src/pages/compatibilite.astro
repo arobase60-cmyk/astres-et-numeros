@@ -1,0 +1,137 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { WESTERN_SIGNS } from '../utils/astrology.js';
+---
+
+<Layout title="Test de Compatibilité - Jouons avec les astres">
+	<div class="page-header">
+		<h1>💞 Compatibilité Astrologique</h1>
+		<p class="subtitle">Sélectionnez deux signes pour tester leur complicité céleste</p>
+	</div>
+
+	<div class="compat-box">
+		<div class="selectors">
+			<div class="select-group">
+				<label for="sign-1">Premier signe</label>
+				<select id="sign-1">
+					{WESTERN_SIGNS.map(s => <option value={s.name}>{s.symbol} {s.name}</option>)}
+				</select>
+			</div>
+
+			<span class="heart-icon">💖</span>
+
+			<div class="select-group">
+				<label for="sign-2">Second signe</label>
+				<select id="sign-2">
+					{WESTERN_SIGNS.map(s => <option value={s.name}>{s.symbol} {s.name}</option>)}
+				</select>
+			</div>
+		</div>
+
+		<button id="calc-compat-btn" class="btn">Calculer l'affinité</button>
+
+		<div id="compat-result" class="result-card hidden">
+			<div class="score-circle">
+				<span id="score-val">0</span>%
+			</div>
+			<p id="score-desc" class="desc-text"></p>
+		</div>
+	</div>
+</Layout>
+
+<script>
+	import { getCompatibility } from '../utils/astrology.js';
+
+	const select1 = document.getElementById('sign-1') as HTMLSelectElement;
+	const select2 = document.getElementById('sign-2') as HTMLSelectElement;
+	const btn = document.getElementById('calc-compat-btn');
+	const resultBox = document.getElementById('compat-result');
+	const scoreVal = document.getElementById('score-val');
+	const scoreDesc = document.getElementById('score-desc');
+
+	btn?.addEventListener('click', () => {
+		const s1 = select1.value;
+		const s2 = select2.value;
+
+		const result = getCompatibility(s1, s2);
+
+		if (result && scoreVal && scoreDesc) {
+			scoreVal.textContent = result.score.toString();
+			scoreDesc.textContent = result.desc;
+			resultBox?.classList.remove('hidden');
+		}
+	});
+</script>
+
+<style>
+	.page-header { text-align: center; margin-bottom: 2rem; }
+	.page-header h1 { color: #fbbf24; font-size: 2.2rem; }
+	.subtitle { color: #94a3b8; }
+
+	.compat-box {
+		background: #1e293b;
+		padding: 2rem;
+		border-radius: 16px;
+		max-width: 600px;
+		margin: 0 auto;
+		border: 1px solid rgba(255, 255, 255, 0.1);
+		text-align: center;
+	}
+
+	.selectors {
+		display: flex;
+		align-items: center;
+		justify-content: space-around;
+		gap: 1rem;
+		margin-bottom: 1.5rem;
+	}
+
+	.select-group {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+		text-align: left;
+	}
+
+	.select-group label { color: #94a3b8; font-size: 0.85rem; }
+
+	select {
+		background: #0f172a;
+		color: #f8fafc;
+		padding: 0.6rem 1rem;
+		border-radius: 8px;
+		border: 1px solid #334155;
+		font-size: 1rem;
+	}
+
+	.heart-icon { font-size: 1.8rem; margin-top: 1.2rem; }
+
+	.btn {
+		background: #fbbf24;
+		color: #0f172a;
+		border: none;
+		padding: 0.75rem 1.8rem;
+		font-weight: bold;
+		border-radius: 8px;
+		cursor: pointer;
+		transition: background 0.2s;
+	}
+
+	.btn:hover { background: #f59e0b; }
+
+	.result-card {
+		margin-top: 2rem;
+		padding-top: 1.5rem;
+		border-top: 1px solid rgba(255, 255, 255, 0.1);
+	}
+
+	.score-circle {
+		font-size: 2.5rem;
+		font-weight: bold;
+		color: #f43f5e;
+		margin-bottom: 0.5rem;
+	}
+
+	.desc-text { color: #cbd5e1; font-size: 1.05rem; }
+	.hidden { display: none; }
+</style>

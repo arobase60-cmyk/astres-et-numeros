@@ -1,0 +1,259 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { LIFE_PATH_DESCRIPTIONS } from '../utils/astrology.js';
+---
+
+<Layout title="Numérologie - Jouons avec les astres">
+	<div class="page-header">
+		<h1>🔢 Numérologie & Chemin de Vie</h1>
+		<p class="subtitle">Découvrez la fréquence symbolique de votre date de naissance</p>
+	</div>
+
+	<!-- CALCULATEUR DE CHEMIN DE VIE -->
+	<div class="calculator-card">
+		<div class="calc-header">
+			<span class="calc-icon">✨</span>
+			<h2>Calculez votre Chemin de Vie</h2>
+		</div>
+		
+		<div class="calc-body">
+			<label for="birth-date">Entrez votre date de naissance :</label>
+			<div class="input-group">
+				<input type="date" id="birth-date" />
+				<button id="calc-btn">Calculer</button>
+			</div>
+			
+			<div id="calc-result" class="result-box hidden">
+				<div class="result-number" id="res-number"></div>
+				<h3 id="res-title"></h3>
+				<p id="res-desc"></p>
+			</div>
+		</div>
+	</div>
+
+	<!-- GUIDE DES CHEMINS DE VIE -->
+	<section class="guide-section">
+		<h2>Les 9 Chemins de Vie et Maîtres Nombres</h2>
+		<div class="numbers-grid">
+			{Object.entries(LIFE_PATH_DESCRIPTIONS).map(([num, data]) => (
+				<article class="num-card">
+					<div class="num-badge">{num}</div>
+					<div class="num-content">
+						<h3>{data.title}</h3>
+						<p>{data.desc}</p>
+					</div>
+				</article>
+			))}
+		</div>
+	</section>
+</Layout>
+
+<script>
+	import { calculateLifePath, LIFE_PATH_DESCRIPTIONS } from '../utils/astrology.js';
+
+	// On définit le type de clé valide pour TypeScript
+	type LifePathKey = keyof typeof LIFE_PATH_DESCRIPTIONS;
+
+	const dateInput = document.getElementById('birth-date') as HTMLInputElement;
+	const btn = document.getElementById('calc-btn');
+	const resultBox = document.getElementById('calc-result');
+	const resNumber = document.getElementById('res-number');
+	const resTitle = document.getElementById('res-title');
+	const resDesc = document.getElementById('res-desc');
+
+	btn?.addEventListener('click', () => {
+		const val = dateInput.value;
+		if (!val) return;
+
+		const path = calculateLifePath(val);
+
+		// Verification avec le cast de type pour TypeScript
+		if (path && path in LIFE_PATH_DESCRIPTIONS) {
+			const info = LIFE_PATH_DESCRIPTIONS[path as LifePathKey];
+			
+			if (resNumber) resNumber.textContent = path.toString();
+			if (resTitle) resTitle.textContent = info.title;
+			if (resDesc) resDesc.textContent = info.desc;
+			
+			resultBox?.classList.remove('hidden');
+			resultBox?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+		}
+	});
+</script>
+
+<style>
+	.page-header {
+		text-align: center;
+		margin-bottom: 2.5rem;
+	}
+
+	.page-header h1 {
+		font-size: 2.4rem;
+		color: #fbbf24;
+		margin-bottom: 0.4rem;
+	}
+
+	.subtitle {
+		color: #94a3b8;
+		font-size: 1.1rem;
+	}
+
+	/* --- CALCULATEUR --- */
+	.calculator-card {
+		background: linear-gradient(135deg, rgba(30, 41, 59, 0.9) 0%, rgba(15, 23, 42, 0.95) 100%);
+		border: 1px solid rgba(251, 191, 36, 0.35);
+		box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+		border-radius: 16px;
+		max-width: 520px;
+		margin: 0 auto 3rem auto;
+		padding: 1.8rem;
+		text-align: center;
+	}
+
+	.calc-header {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.6rem;
+		margin-bottom: 1.2rem;
+	}
+
+	.calc-header h2 {
+		font-size: 1.2rem;
+		color: #f8fafc;
+	}
+
+	.calc-body label {
+		display: block;
+		font-size: 0.9rem;
+		color: #cbd5e1;
+		margin-bottom: 0.8rem;
+	}
+
+	.input-group {
+		display: flex;
+		gap: 0.6rem;
+		justify-content: center;
+		margin-bottom: 1rem;
+	}
+
+	.input-group input {
+		padding: 0.6rem 1rem;
+		border-radius: 8px;
+		border: 1px solid rgba(255, 255, 255, 0.2);
+		background: #0f172a;
+		color: #fff;
+		font-size: 1rem;
+		color-scheme: dark;
+	}
+
+	.input-group button {
+		padding: 0.6rem 1.4rem;
+		border-radius: 8px;
+		border: none;
+		background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
+		color: #0f172a;
+		font-weight: bold;
+		cursor: pointer;
+		transition: transform 0.2s;
+	}
+
+	.input-group button:hover {
+		transform: translateY(-1px);
+	}
+
+	/* --- ZONE DE RÉSULTAT --- */
+	.result-box {
+		margin-top: 1.5rem;
+		padding: 1.5rem;
+		background: rgba(15, 23, 42, 0.8);
+		border-radius: 12px;
+		border: 1px solid rgba(251, 191, 36, 0.4);
+		animation: fadeIn 0.4s ease;
+	}
+
+	.result-box.hidden {
+		display: none;
+	}
+
+	.result-number {
+		width: 50px;
+		height: 50px;
+		margin: 0 auto 0.8rem auto;
+		border-radius: 50%;
+		background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
+		color: #0f172a;
+		font-size: 1.6rem;
+		font-weight: bold;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.result-box h3 {
+		color: #fbbf24;
+		font-size: 1.2rem;
+		margin-bottom: 0.5rem;
+	}
+
+	.result-box p {
+		color: #cbd5e1;
+		font-size: 0.95rem;
+		line-height: 1.5;
+	}
+
+	/* --- GRILLE DES DESCRIPTION --- */
+	.guide-section h2 {
+		text-align: center;
+		color: #f8fafc;
+		font-size: 1.5rem;
+		margin-bottom: 1.5rem;
+	}
+
+	.numbers-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+		gap: 1.2rem;
+	}
+
+	.num-card {
+		background: rgba(30, 41, 59, 0.7);
+		border: 1px solid rgba(255, 255, 255, 0.08);
+		border-radius: 12px;
+		padding: 1.2rem;
+		display: flex;
+		gap: 1rem;
+		align-items: flex-start;
+	}
+
+	.num-badge {
+		min-width: 40px;
+		height: 40px;
+		border-radius: 10px;
+		background: rgba(129, 140, 248, 0.15);
+		color: #818cf8;
+		border: 1px solid rgba(129, 140, 248, 0.3);
+		font-weight: bold;
+		font-size: 1.2rem;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.num-content h3 {
+		color: #f8fafc;
+		font-size: 1.05rem;
+		margin-bottom: 0.3rem;
+	}
+
+	.num-content p {
+		color: #94a3b8;
+		font-size: 0.88rem;
+		line-height: 1.5;
+	}
+
+	@keyframes fadeIn {
+		from { opacity: 0; transform: translateY(-5px); }
+		to { opacity: 1; transform: translateY(0); }
+	}
+</style>

@@ -1,0 +1,127 @@
+---
+interface Props {
+	title: string;
+}
+
+const { title } = Astro.props;
+import MoonWidget from '../components/MoonWidget.astro';
+---
+
+<!doctype html>
+<html lang="fr">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="description" content="Jouons avec les astres - Votre horoscope quotidien" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<title>{title}</title>
+	</head>
+	<body>
+		<!-- Barre de navigation supérieure -->
+		<header class="navbar">
+			<a href="/" class="brand">✨ </a>
+			<!-- Insertion du widget de la lune -->
+	<MoonWidget />
+			<nav>
+	<a href="/">Accueil</a>
+	<a href="/horoscope">Horoscope</a>
+	<a href="/signes-occidentaux">Particularités des signes du zodiaque</a>
+	<a href="/horoscope-chinois">Horoscope Chinois</a>
+	<a href="/signes-chinois">Particularités des signes chinois</a>
+	<a href="/numerologie">Numérologie</a>
+	<a href="/compatibilite">Compatibilité</a>
+    </nav>	 
+		</header>
+
+		<!-- Emplacement où le contenu de chaque page sera injecté -->
+		<main>
+			<slot />
+		</main>
+
+		<!-- Pied de page -->
+		<footer>
+			<p>© Jouons avec les astres - Tous droits réservés.</p>
+		</footer>
+	</body>
+</html>
+
+<style is:global>
+	/* Variables de couleurs globales */
+	:root {
+		--bg-color: #0f172a;
+		--card-bg: rgba(30, 41, 59, 0.7);
+		--accent-gold: #fbbf24;
+		--accent-purple: #818cf8;
+		--text-light: #f8fafc;
+		--text-muted: #94a3b8;
+	}
+
+	* {
+		box-sizing: border-box;
+		margin: 0;
+		padding: 0;
+	}
+
+	body {
+		font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+		background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+		color: var(--text-light);
+		min-height: 100vh;
+		display: flex;
+		flex-direction: column;
+	}
+
+	/* Navigation */
+	.navbar {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 1.2rem 2rem;
+		background: rgba(15, 23, 42, 0.8);
+		backdrop-filter: blur(10px);
+		border-bottom: 1px solid rgba(251, 191, 36, 0.2);
+		position: sticky;
+		top: 0;
+		z-index: 100;
+	}
+
+	.brand {
+		font-size: 1.3rem;
+		font-weight: bold;
+		color: var(--accent-gold);
+		text-decoration: none;
+	}
+
+	.navbar nav {
+		display: flex;
+		gap: 1.5rem;
+	}
+
+	.navbar nav a {
+		color: var(--text-light);
+		text-decoration: none;
+		transition: color 0.2s;
+	}
+
+	.navbar nav a:hover {
+		color: var(--accent-gold);
+	}
+
+	/* Conteneur principal */
+	main {
+		flex: 1;
+		max-width: 1100px;
+		width: 100%;
+		margin: 0 auto;
+		padding: 2rem 1rem;
+	}
+
+	/* Pied de page */
+	footer {
+		text-align: center;
+		padding: 2rem;
+		background: rgba(15, 23, 42, 0.9);
+		color: var(--text-muted);
+		border-top: 1px solid rgba(255, 255, 255, 0.05);
+	}
+</style>

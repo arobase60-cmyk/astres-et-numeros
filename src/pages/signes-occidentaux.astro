@@ -1,0 +1,151 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { WESTERN_SIGNS } from '../utils/astrology.js';
+---
+
+<Layout title="Portraits des Signes Occidentaux - Jouons avec les astres">
+	<div class="page-header">
+		<h1>✨ Particularités des Signes du Zodiaque</h1>
+		<p class="subtitle">Découvrez la personnalité, l'élément et l'énergie de chaque signe solaire</p>
+	</div>
+
+	<div class="cards-container">
+		{WESTERN_SIGNS.map((sign) => (
+			<article class="sign-profile-card">
+				<div class="card-top">
+					<span class="symbol-large">{sign.symbol}</span>
+					<div class="title-meta">
+						<h2>{sign.name}</h2>
+						<span class="dates">{sign.dates}</span>
+					</div>
+				</div>
+
+				<div class="meta-pills">
+					<span class="pill element">Élément : {sign.element}</span>
+					<span class="pill planet">Planète : {sign.planet}</span>
+				</div>
+
+				<p class="description">{sign.description}</p>
+
+				<div class="traits-section">
+					<span class="traits-title">Traits de caractère :</span>
+					<div class="tags-list">
+						{sign.traits.map((trait) => (
+							<span class="tag">{trait}</span>
+						))}
+					</div>
+				</div>
+			</article>
+		))}
+	</div>
+</Layout>
+
+<style>
+	.page-header {
+		text-align: center;
+		margin-bottom: 2.5rem;
+	}
+
+	.page-header h1 {
+		font-size: 2.4rem;
+		color: #fbbf24;
+		margin-bottom: 0.4rem;
+	}
+
+	.subtitle {
+		color: #94a3b8;
+		font-size: 1.05rem;
+	}
+
+	.cards-container {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+		gap: 1.8rem;
+	}
+
+	.sign-profile-card {
+		background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.9) 100%);
+		border: 1px solid rgba(255, 255, 255, 0.1);
+		border-radius: 16px;
+		padding: 1.5rem;
+		box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+		transition: transform 0.3s ease, border-color 0.3s ease;
+	}
+
+	.sign-profile-card:hover {
+		transform: translateY(-4px);
+		border-color: rgba(251, 191, 36, 0.4);
+	}
+
+	.card-top {
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+		margin-bottom: 1rem;
+	}
+
+	.symbol-large {
+		font-size: 3rem;
+		line-height: 1;
+	}
+
+	.title-meta h2 {
+		font-size: 1.5rem;
+		color: #f8fafc;
+		margin-bottom: 0.2rem;
+	}
+
+	.dates {
+		font-size: 0.85rem;
+		color: #fbbf24;
+		font-weight: 500;
+	}
+
+	.meta-pills {
+		display: flex;
+		gap: 0.6rem;
+		margin-bottom: 1rem;
+	}
+
+	.pill {
+		font-size: 0.78rem;
+		padding: 0.25rem 0.6rem;
+		border-radius: 20px;
+		background: rgba(129, 140, 248, 0.15);
+		color: #818cf8;
+		border: 1px solid rgba(129, 140, 248, 0.3);
+	}
+
+	.description {
+		color: #cbd5e1;
+		font-size: 0.92rem;
+		line-height: 1.6;
+		margin-bottom: 1.2rem;
+	}
+
+	.traits-section {
+		border-top: 1px solid rgba(255, 255, 255, 0.08);
+		padding-top: 0.8rem;
+	}
+
+	.traits-title {
+		display: block;
+		font-size: 0.8rem;
+		color: #94a3b8;
+		margin-bottom: 0.5rem;
+	}
+
+	.tags-list {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.4rem;
+	}
+
+	.tag {
+		background: rgba(255, 255, 255, 0.06);
+		color: #f1f5f9;
+		font-size: 0.8rem;
+		padding: 0.2rem 0.6rem;
+		border-radius: 6px;
+	}
+</style>

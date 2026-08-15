@@ -1,0 +1,192 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { WESTERN_SIGNS, getDailyHoroscope, getDailyNumbers, getTodayFormatted } from '../utils/astrology.js';
+
+const dateFormatted = getTodayFormatted();
+---
+
+<Layout title="Horoscope Occidental - Jouons avec les astres">
+	<div class="page-header">
+		<h1>✨ Horoscope Occidental</h1>
+		<p class="date">Prédictions du {dateFormatted}</p>
+		<p class="subtitle">Cliquez sur votre signe pour découvrir votre tirage du jour</p>
+	</div>
+
+	<div class="signs-grid">
+		{WESTERN_SIGNS.map((sign) => {
+			const prediction = getDailyHoroscope(sign.name);
+			const numbers = getDailyNumbers(sign.name);
+			return (
+				<details class="sign-card">
+					<!-- La partie toujours visible : le bouton/titre du signe -->
+					<summary class="card-header">
+						<span class="symbol">{sign.symbol}</span>
+						<div class="header-info">
+							<h2>{sign.name}</h2>
+							<span class="dates">{sign.dates}</span>
+						</div>
+						<span class="arrow">▼</span>
+					</summary>
+					
+					<!-- Le contenu masqué qui s'affiche uniquement au clic -->
+					<div class="card-content">
+						<p class="prediction">{prediction}</p>
+
+						<div class="numbers-section">
+							<span class="numbers-title">5 Chiffres chance du jour :</span>
+							<div class="balls-container">
+								{numbers.map((num) => (
+									<span class="number-ball">{num}</span>
+								))}
+							</div>
+						</div>
+					</div>
+				</details>
+			);
+		})}
+	</div>
+</Layout>
+
+<style>
+	.page-header {
+		text-align: center;
+		margin-bottom: 2.5rem;
+	}
+
+	.page-header h1 {
+		font-size: 2.4rem;
+		color: #fbbf24;
+		margin-bottom: 0.4rem;
+	}
+
+	.date {
+		color: #94a3b8;
+		font-size: 1.1rem;
+		text-transform: capitalize;
+		margin-bottom: 0.5rem;
+	}
+
+	.subtitle {
+		color: #cbd5e1;
+		font-size: 0.95rem;
+		font-style: italic;
+	}
+
+	.signs-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+		gap: 1.5rem;
+	}
+
+	/* Style du conteneur accordéon <details> */
+	.sign-card {
+		background: rgba(30, 41, 59, 0.7);
+		border-radius: 12px;
+		padding: 1rem 1.5rem;
+		border: 1px solid rgba(255, 255, 255, 0.08);
+		transition: all 0.3s ease;
+		cursor: pointer;
+	}
+
+	.sign-card:hover {
+		border-color: rgba(251, 191, 36, 0.5);
+		background: rgba(30, 41, 59, 0.9);
+	}
+
+	/* Style de l'en-tête cliquable <summary> */
+	.card-header {
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+		list-style: none; /* Masque la flèche par défaut du navigateur */
+		user-select: none;
+	}
+
+	.card-header::-webkit-details-marker {
+		display: none; /* Masque la flèche par défaut sur Safari/Chrome */
+	}
+
+	.symbol {
+		font-size: 2.5rem;
+		color: #818cf8;
+	}
+
+	.header-info {
+		flex: 1;
+	}
+
+	.card-header h2 {
+		font-size: 1.3rem;
+		color: #f8fafc;
+	}
+
+	.dates {
+		font-size: 0.85rem;
+		color: #94a3b8;
+	}
+
+	/* Petite flèche personnalisée qui pivote au clic */
+	.arrow {
+		color: #fbbf24;
+		font-size: 0.8rem;
+		transition: transform 0.3s ease;
+	}
+
+	.sign-card[open] .arrow {
+		transform: rotate(180deg);
+	}
+
+	/* Style du contenu déplié */
+	.card-content {
+		margin-top: 1.2rem;
+		padding-top: 1rem;
+		border-top: 1px solid rgba(255, 255, 255, 0.1);
+		animation: fadeIn 0.3s ease-in-out;
+	}
+
+	@keyframes fadeIn {
+		from { opacity: 0; transform: translateY(-5px); }
+		to { opacity: 1; transform: translateY(0); }
+	}
+
+	.prediction {
+		font-size: 0.95rem;
+		line-height: 1.6;
+		color: #cbd5e1;
+		margin-bottom: 1.2rem;
+	}
+
+	.numbers-section {
+		background: rgba(15, 23, 42, 0.6);
+		padding: 0.8rem;
+		border-radius: 8px;
+	}
+
+	.numbers-title {
+		display: block;
+		font-size: 0.8rem;
+		color: #fbbf24;
+		margin-bottom: 0.5rem;
+		text-align: center;
+	}
+
+	.balls-container {
+		display: flex;
+		justify-content: center;
+		gap: 0.5rem;
+	}
+
+	.number-ball {
+		width: 32px;
+		height: 32px;
+		border-radius: 50%;
+		background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
+		color: #0f172a;
+		font-weight: bold;
+		font-size: 0.9rem;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+	}
+</style>

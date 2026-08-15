@@ -1,0 +1,345 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { CHINESE_SIGNS, getDailyHoroscope, getDailyNumbers, getTodayFormatted } from '../utils/astrology.js';
+
+const dateFormatted = getTodayFormatted();
+---
+
+<Layout title="Horoscope Chinois - Jouons avec les astres">
+	<div class="page-header">
+		<h1>🐉 Horoscope Chinois</h1>
+		<p class="date">Prédictions du {dateFormatted}</p>
+		
+		<!-- Module Visuel pour trouver son signe -->
+		<div class="finder-card">
+			<div class="finder-header">
+				<span class="finder-icon">🔮</span>
+				<h2>Trouvez votre signe astrologique</h2>
+			</div>
+			
+			<div class="finder-body">
+				<div class="input-wrapper">
+					<input 
+						type="number" 
+						id="birth-year" 
+						placeholder="Votre année (ex: 1985)" 
+						min="1900" 
+						max="2026"
+					/>
+					<button id="find-sign-btn">
+						<span>Découvrir</span>
+						<span class="btn-arrow">→</span>
+					</button>
+				</div>
+				<div id="finder-result" class="finder-result"></div>
+			</div>
+		</div>
+
+		<p class="subtitle">Cliquez sur un signe ci-dessous pour révéler son tirage du jour</p>
+	</div>
+
+	<div class="signs-grid">
+		{CHINESE_SIGNS.map((sign) => {
+			const prediction = getDailyHoroscope(sign.name);
+			const numbers = getDailyNumbers(sign.name);
+			return (
+				<details class="sign-card" id={`sign-${sign.name.toLowerCase()}`}>
+					<summary class="card-header">
+						<span class="symbol">{sign.symbol}</span>
+						<div class="header-info">
+							<h2>{sign.name}</h2>
+							<span class="element">Élément : {sign.element}</span>
+						</div>
+						<span class="arrow">▼</span>
+					</summary>
+					
+					<div class="card-content">
+						<p class="prediction">{prediction}</p>
+
+						<div class="numbers-section">
+							<span class="numbers-title">5 Chiffres chance du jour :</span>
+							<div class="balls-container">
+								{numbers.map((num) => (
+									<span class="number-ball">{num}</span>
+								))}
+							</div>
+						</div>
+					</div>
+				</details>
+			);
+		})}
+	</div>
+</Layout>
+
+<script>
+	const chineseSignsOrder = [
+		"Singe", "Coq", "Chien", "Cochon", "Rat", "Bœuf", 
+		"Tigre", "Lapin", "Dragon", "Serpent", "Cheval", "Chèvre"
+	];
+
+	const btn = document.getElementById('find-sign-btn');
+	const input = document.getElementById('birth-year') as HTMLInputElement;
+	const result = document.getElementById('finder-result');
+
+	const searchSign = () => {
+		const year = parseInt(input.value);
+		if (!year || year < 1900 || year > 2026) {
+			if (result) {
+				result.className = 'finder-result error';
+				result.textContent = "Veuillez indiquer une année entre 1900 et 2026.";
+			}
+			return;
+		}
+
+		const signName = chineseSignsOrder[year % 12];
+		
+		if (result) {
+			result.className = 'finder-result success';
+			result.innerHTML = `Vous êtes du signe <span>${signName}</span> ! ✨`;
+		}
+
+		const card = document.getElementById(`sign-${signName.toLowerCase()}`) as HTMLDetailsElement;
+		if (card) {
+			card.open = true;
+			card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+		}
+	};
+
+	btn?.addEventListener('click', searchSign);
+	input?.addEventListener('keypress', (e) => {
+		if (e.key === 'Enter') searchSign();
+	});
+</script>
+
+<style>
+	.page-header {
+		text-align: center;
+		margin-bottom: 2.5rem;
+	}
+
+	.page-header h1 {
+		font-size: 2.4rem;
+		color: #fbbf24;
+		margin-bottom: 0.4rem;
+	}
+
+	.date {
+		color: #94a3b8;
+		font-size: 1.1rem;
+		text-transform: capitalize;
+		margin-bottom: 2rem;
+	}
+
+	/* --- CARTE DE RECHERCHE VISUELLE --- */
+	.finder-card {
+		background: linear-gradient(135deg, rgba(30, 41, 59, 0.9) 0%, rgba(15, 23, 42, 0.95) 100%);
+		border: 1px solid rgba(251, 191, 36, 0.35);
+		box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 0 15px rgba(251, 191, 36, 0.1);
+		border-radius: 16px;
+		max-width: 480px;
+		margin: 0 auto 2rem auto;
+		padding: 1.5rem;
+		backdrop-filter: blur(8px);
+	}
+
+	.finder-header {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.6rem;
+		margin-bottom: 1rem;
+	}
+
+	.finder-icon {
+		font-size: 1.4rem;
+	}
+
+	.finder-header h2 {
+		font-size: 1.1rem;
+		color: #f8fafc;
+		font-weight: 600;
+	}
+
+	.input-wrapper {
+		display: flex;
+		gap: 0.6rem;
+		background: rgba(15, 23, 42, 0.8);
+		padding: 0.35rem;
+		border-radius: 10px;
+		border: 1px solid rgba(255, 255, 255, 0.12);
+	}
+
+	.input-wrapper input {
+		flex: 1;
+		background: transparent;
+		border: none;
+		outline: none;
+		padding: 0.6rem 0.8rem;
+		color: #fff;
+		font-size: 0.95rem;
+	}
+
+	.input-wrapper input::placeholder {
+		color: #64748b;
+	}
+
+	.input-wrapper button {
+		display: flex;
+		align-items: center;
+		gap: 0.4rem;
+		background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
+		border: none;
+		color: #0f172a;
+		font-weight: bold;
+		padding: 0.6rem 1.2rem;
+		border-radius: 8px;
+		cursor: pointer;
+		transition: transform 0.2s ease, box-shadow 0.2s ease;
+	}
+
+	.input-wrapper button:hover {
+		transform: translateY(-1px);
+		box-shadow: 0 4px 12px rgba(251, 191, 36, 0.3);
+	}
+
+	.finder-result {
+		margin-top: 1rem;
+		font-size: 1rem;
+		min-height: 1.5rem;
+		transition: all 0.3s ease;
+	}
+
+	.finder-result.success {
+		color: #e2e8f0;
+	}
+
+	.finder-result.success :global(span) {
+		color: #fbbf24;
+		font-weight: bold;
+		font-size: 1.1rem;
+	}
+
+	.finder-result.error {
+		color: #f87171;
+		font-size: 0.9rem;
+	}
+
+	.subtitle {
+		color: #94a3b8;
+		font-size: 0.95rem;
+		font-style: italic;
+	}
+
+	.signs-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+		gap: 1.5rem;
+	}
+
+	.sign-card {
+		background: rgba(30, 41, 59, 0.7);
+		border-radius: 12px;
+		padding: 1rem 1.5rem;
+		border: 1px solid rgba(255, 255, 255, 0.08);
+		transition: all 0.3s ease;
+		cursor: pointer;
+	}
+
+	.sign-card:hover {
+		border-color: rgba(251, 191, 36, 0.5);
+		background: rgba(30, 41, 59, 0.9);
+	}
+
+	.card-header {
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+		list-style: none;
+		user-select: none;
+	}
+
+	.card-header::-webkit-details-marker {
+		display: none;
+	}
+
+	.symbol {
+		font-size: 2.5rem;
+	}
+
+	.header-info {
+		flex: 1;
+	}
+
+	.card-header h2 {
+		font-size: 1.3rem;
+		color: #f8fafc;
+	}
+
+	.element {
+		font-size: 0.85rem;
+		color: #818cf8;
+	}
+
+	.arrow {
+		color: #fbbf24;
+		font-size: 0.8rem;
+		transition: transform 0.3s ease;
+	}
+
+	.sign-card[open] .arrow {
+		transform: rotate(180deg);
+	}
+
+	.card-content {
+		margin-top: 1.2rem;
+		padding-top: 1rem;
+		border-top: 1px solid rgba(255, 255, 255, 0.1);
+		animation: fadeIn 0.3s ease-in-out;
+	}
+
+	@keyframes fadeIn {
+		from { opacity: 0; transform: translateY(-5px); }
+		to { opacity: 1; transform: translateY(0); }
+	}
+
+	.prediction {
+		font-size: 0.95rem;
+		line-height: 1.6;
+		color: #cbd5e1;
+		margin-bottom: 1.2rem;
+	}
+
+	.numbers-section {
+		background: rgba(15, 23, 42, 0.6);
+		padding: 0.8rem;
+		border-radius: 8px;
+	}
+
+	.numbers-title {
+		display: block;
+		font-size: 0.8rem;
+		color: #fbbf24;
+		margin-bottom: 0.5rem;
+		text-align: center;
+	}
+
+	.balls-container {
+		display: flex;
+		justify-content: center;
+		gap: 0.5rem;
+	}
+
+	.number-ball {
+		width: 32px;
+		height: 32px;
+		border-radius: 50%;
+		background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
+		color: #0f172a;
+		font-weight: bold;
+		font-size: 0.9rem;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+	}
+</style>
