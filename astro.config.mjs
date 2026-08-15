@@ -1,7 +1,7 @@
 import { defineConfig } from 'astro/config';
 
 export default defineConfig({
-  site: 'https://arobase60-cmyk.github.io',
+  site: 'astresnumeros.fr',
   base: '/astres-et-numeros',
   trailingSlash: 'always',
 });
