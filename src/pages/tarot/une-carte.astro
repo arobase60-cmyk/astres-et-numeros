@@ -1,0 +1,986 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { tarotCards } from '../../data/tarot';
+---
+
+<Layout title="Tirage Tarot 1 carte - Astres & Numéros">
+
+	<section class="hero">
+		<p class="eyebrow">TIRAGE 1 CARTE</p>
+
+		<h1>Choisissez votre carte</h1>
+
+		<p>
+			Prenez un instant pour penser à votre question ou à la situation
+			qui vous préoccupe, puis choisissez intuitivement une carte.
+		</p>
+	</section>
+
+
+	<section id="choice-zone">
+
+		<div class="instructions">
+			<span>✨</span>
+			<p>
+				Ne cherchez pas à calculer votre choix.
+				Laissez simplement votre intuition vous guider.
+			</p>
+		</div>
+
+
+		<div class="deck" id="deck">
+
+			{tarotCards.map((card, index) => (
+
+				<button
+					class="card-back"
+					type="button"
+					data-index={index}
+					aria-label={`Choisir la carte ${index + 1}`}
+				>
+					<div class="card-pattern">
+						<div class="moon">☾</div>
+						<div class="star">✦</div>
+						<div class="brand-small">A & N</div>
+					</div>
+				</button>
+
+			))}
+
+		</div>
+
+	</section>
+
+
+	<section class="result hidden" id="result">
+
+		<p class="result-label">VOTRE CARTE</p>
+
+		<div class="selected-card">
+
+			<div class="card-image-container">
+
+				<img
+					id="selected-image"
+					src=""
+					alt=""
+					class="selected-image"
+				/>
+
+			</div>
+
+
+			<div class="interpretation">
+
+				<p class="arcane-number" id="arcane-number"></p>
+
+				<h2 id="selected-name"></h2>
+
+				<div
+					class="keywords"
+					id="selected-keywords"
+				>
+				</div>
+
+				<p
+					class="meaning"
+					id="selected-meaning"
+				>
+				</p>
+
+			</div>
+
+		</div>
+
+
+		<div class="premium">
+
+			<div class="premium-content">
+
+				<p class="premium-label">
+					✨ INTERPRÉTATION PERSONNALISÉE
+				</p>
+
+				<h3>
+					Que signifie cette carte pour votre situation ?
+				</h3>
+
+				<p>
+					Posez votre question et obtenez bientôt une interprétation
+					plus approfondie et personnalisée de votre tirage.
+				</p>
+
+				<button
+					type="button"
+					class="premium-button"
+					disabled
+				>
+					Bientôt disponible
+				</button>
+
+			</div>
+
+		</div>
+
+
+		<div class="actions">
+
+			<button
+				type="button"
+				id="new-reading"
+				class="new-reading"
+			>
+				↻ Faire un nouveau tirage
+			</button>
+
+			<a
+				href="/tarot/"
+				class="back-link"
+			>
+				← Retour aux tirages
+			</a>
+
+		</div>
+
+	</section>
+
+
+	<section class="disclaimer">
+
+		<p>
+			Le tarot proposé sur Astres & Numéros est un outil de réflexion
+			et de divertissement. Les interprétations ne constituent pas
+			des prédictions certaines de l'avenir.
+		</p>
+
+	</section>
+
+
+	<script define:vars={{ tarotCards }}>
+
+		const cards = tarotCards;
+
+		const deck =
+			document.getElementById("deck");
+
+		const choiceZone =
+			document.getElementById("choice-zone");
+
+		const result =
+			document.getElementById("result");
+
+		const selectedImage =
+			document.getElementById("selected-image");
+
+		const selectedName =
+			document.getElementById("selected-name");
+
+		const selectedKeywords =
+			document.getElementById("selected-keywords");
+
+		const selectedMeaning =
+			document.getElementById("selected-meaning");
+
+		const arcaneNumber =
+			document.getElementById("arcane-number");
+
+		const newReading =
+			document.getElementById("new-reading");
+
+
+		/*
+		 * Mélange visuel des cartes.
+		 *
+		 * On ne change pas le contenu des cartes :
+		 * uniquement leur position dans le paquet.
+		 */
+
+		function shuffleDeck() {
+
+			const elements =
+				Array.from(
+					deck.querySelectorAll(".card-back")
+				);
+
+			for (
+				let i = elements.length - 1;
+				i > 0;
+				i--
+			) {
+
+				const j =
+					Math.floor(
+						Math.random() * (i + 1)
+					);
+
+				deck.appendChild(elements[j]);
+
+				elements.splice(j, 1);
+
+			}
+
+		}
+
+
+		shuffleDeck();
+
+
+		/*
+		 * Sélection d'une carte.
+		 */
+
+		document
+			.querySelectorAll(".card-back")
+			.forEach((button) => {
+
+				button.addEventListener(
+					"click",
+					() => {
+
+						const index =
+							Number(
+								button.dataset.index
+							);
+
+						const card =
+							cards[index];
+
+						showCard(card);
+
+					}
+				);
+
+			});
+
+
+		function showCard(card) {
+
+			/*
+			 * Masque le paquet.
+			 */
+
+			choiceZone.classList.add(
+				"fade-out"
+			);
+
+
+			setTimeout(
+				() => {
+
+					choiceZone.style.display =
+						"none";
+
+					/*
+					 * Remplit la carte.
+					 */
+
+					selectedImage.src =
+						card.image;
+
+					selectedImage.alt =
+						card.name;
+
+					selectedName.textContent =
+						card.name;
+
+					arcaneNumber.textContent =
+						card.id === 0
+							? "ARCANE • LE MAT"
+							: `ARCANE ${card.id}`;
+
+					selectedMeaning.textContent =
+						card.shortMeaning;
+
+
+					selectedKeywords.innerHTML =
+						"";
+
+
+					card.keywords.forEach(
+						(keyword) => {
+
+							const span =
+								document.createElement(
+									"span"
+								);
+
+							span.textContent =
+								keyword;
+
+							selectedKeywords.appendChild(
+								span
+							);
+
+						}
+					);
+
+
+					/*
+					 * Affiche le résultat.
+					 */
+
+					result.classList.remove(
+						"hidden"
+					);
+
+
+					requestAnimationFrame(
+						() => {
+
+							result.classList.add(
+								"show"
+							);
+
+						}
+					);
+
+
+					window.scrollTo({
+						top:
+							result.offsetTop - 100,
+
+						behavior:
+							"smooth"
+					});
+
+				},
+				350
+			);
+
+		}
+
+
+		/*
+		 * Nouveau tirage.
+		 */
+
+		newReading.addEventListener(
+			"click",
+			() => {
+
+				result.classList.remove(
+					"show"
+				);
+
+
+				setTimeout(
+					() => {
+
+						result.classList.add(
+							"hidden"
+						);
+
+						choiceZone.style.display =
+							"block";
+
+						choiceZone.classList.remove(
+							"fade-out"
+						);
+
+						shuffleDeck();
+
+
+						window.scrollTo({
+							top:
+								choiceZone.offsetTop - 100,
+
+							behavior:
+								"smooth"
+						});
+
+					},
+					300
+				);
+
+			}
+		);
+
+	</script>
+
+</Layout>
+
+
+<style>
+
+	/* HERO */
+
+	.hero {
+		max-width: 780px;
+		margin: 0 auto 2.5rem;
+		text-align: center;
+	}
+
+
+	.eyebrow {
+		color: #fbbf24;
+		font-size: 0.82rem;
+		font-weight: 700;
+		letter-spacing: 0.16em;
+		margin-bottom: 0.8rem;
+	}
+
+
+	.hero h1 {
+		color: #fbbf24;
+		font-size: clamp(2rem, 5vw, 3rem);
+		margin-bottom: 1rem;
+	}
+
+
+	.hero p {
+		color: #cbd5e1;
+		font-size: 1.1rem;
+		line-height: 1.7;
+	}
+
+
+	/* INSTRUCTIONS */
+
+	.instructions {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		gap: 0.8rem;
+
+		max-width: 650px;
+
+		margin: 0 auto 2rem;
+
+		padding: 1rem 1.3rem;
+
+		background:
+			rgba(129, 140, 248, 0.1);
+
+		border:
+			1px solid
+			rgba(129, 140, 248, 0.25);
+
+		border-radius: 12px;
+
+		color: #cbd5e1;
+
+		line-height: 1.5;
+	}
+
+
+	.instructions span {
+		font-size: 1.5rem;
+	}
+
+
+	/* PAQUET */
+
+	.deck {
+		display: grid;
+
+		grid-template-columns:
+			repeat(11, 1fr);
+
+		gap: 0.7rem;
+
+		max-width: 1000px;
+
+		margin: 0 auto 3rem;
+	}
+
+
+	.card-back {
+		aspect-ratio: 2 / 3.4;
+
+		padding: 5px;
+
+		border-radius: 9px;
+
+		border:
+			1px solid
+			rgba(251, 191, 36, 0.55);
+
+		background:
+			linear-gradient(
+				145deg,
+				#312e81,
+				#111827
+			);
+
+		cursor: pointer;
+
+		box-shadow:
+			0 6px 15px
+			rgba(0, 0, 0, 0.25);
+
+		transition:
+			transform 0.2s ease,
+			box-shadow 0.2s ease,
+			border-color 0.2s ease;
+	}
+
+
+	.card-back:hover {
+		transform:
+			translateY(-10px)
+			scale(1.04);
+
+		border-color: #fbbf24;
+
+		box-shadow:
+			0 14px 25px
+			rgba(0, 0, 0, 0.45);
+	}
+
+
+	.card-pattern {
+		width: 100%;
+		height: 100%;
+
+		border:
+			1px solid
+			rgba(251, 191, 36, 0.45);
+
+		border-radius: 6px;
+
+		display: flex;
+
+		flex-direction: column;
+
+		align-items: center;
+		justify-content: center;
+
+		background:
+			radial-gradient(
+				circle at center,
+				rgba(129,140,248,.35),
+				transparent 60%
+			);
+
+		color: #fbbf24;
+	}
+
+
+	.moon {
+		font-size: 1.6rem;
+		line-height: 1;
+	}
+
+
+	.star {
+		font-size: 0.9rem;
+		margin-top: 0.2rem;
+	}
+
+
+	.brand-small {
+		font-size: 0.45rem;
+		margin-top: 0.5rem;
+		letter-spacing: 0.1em;
+	}
+
+
+	/* TRANSITION */
+
+	#choice-zone {
+		opacity: 1;
+
+		transition:
+			opacity 0.35s ease,
+			transform 0.35s ease;
+	}
+
+
+	#choice-zone.fade-out {
+		opacity: 0;
+		transform: translateY(-10px);
+	}
+
+
+	/* RESULTAT */
+
+	.result {
+		opacity: 0;
+
+		transform:
+			translateY(20px);
+
+		transition:
+			opacity 0.4s ease,
+			transform 0.4s ease;
+	}
+
+
+	.result.hidden {
+		display: none;
+	}
+
+
+	.result.show {
+		opacity: 1;
+		transform: translateY(0);
+	}
+
+
+	.result-label {
+		text-align: center;
+
+		color: #fbbf24;
+
+		font-size: 0.8rem;
+
+		letter-spacing: 0.18em;
+
+		font-weight: 700;
+
+		margin-bottom: 1.4rem;
+	}
+
+
+	.selected-card {
+		display: grid;
+
+		grid-template-columns:
+			minmax(220px, 330px)
+			1fr;
+
+		gap: 3rem;
+
+		align-items: center;
+
+		max-width: 900px;
+
+		margin: 0 auto 3rem;
+
+		padding: 2.2rem;
+
+		background:
+			rgba(30, 41, 59, 0.72);
+
+		border:
+			1px solid
+			rgba(251, 191, 36, 0.28);
+
+		border-radius: 18px;
+
+		box-shadow:
+			0 18px 45px
+			rgba(0, 0, 0, 0.35);
+	}
+
+
+	.card-image-container {
+		display: flex;
+		justify-content: center;
+	}
+
+
+	.selected-image {
+		display: block;
+
+		width: 100%;
+
+		max-height: 520px;
+
+		object-fit: contain;
+
+		border-radius: 10px;
+
+		box-shadow:
+			0 14px 35px
+			rgba(0, 0, 0, 0.5);
+	}
+
+
+	.arcane-number {
+		color: #818cf8;
+
+		font-size: 0.78rem;
+
+		font-weight: 700;
+
+		letter-spacing: 0.14em;
+
+		margin-bottom: 0.5rem;
+	}
+
+
+	.interpretation h2 {
+		color: #fbbf24;
+
+		font-size: 2rem;
+
+		margin-bottom: 1rem;
+	}
+
+
+	.keywords {
+		display: flex;
+
+		flex-wrap: wrap;
+
+		gap: 0.6rem;
+
+		margin-bottom: 1.4rem;
+	}
+
+
+	.keywords span {
+		padding:
+			0.4rem
+			0.75rem;
+
+		background:
+			rgba(129,140,248,.14);
+
+		border:
+			1px solid
+			rgba(129,140,248,.28);
+
+		border-radius: 999px;
+
+		color: #c7d2fe;
+
+		font-size: 0.85rem;
+	}
+
+
+	.meaning {
+		color: #e2e8f0;
+
+		font-size: 1.08rem;
+
+		line-height: 1.75;
+	}
+
+
+	/* PREMIUM */
+
+	.premium {
+		max-width: 900px;
+
+		margin: 0 auto 2rem;
+
+		padding: 2rem;
+
+		background:
+			linear-gradient(
+				135deg,
+				rgba(129,140,248,.15),
+				rgba(251,191,36,.10)
+			);
+
+		border:
+			1px solid
+			rgba(251,191,36,.3);
+
+		border-radius: 16px;
+
+		text-align: center;
+	}
+
+
+	.premium-label {
+		color: #fbbf24;
+
+		font-size: 0.78rem;
+
+		font-weight: 700;
+
+		letter-spacing: 0.13em;
+
+		margin-bottom: 0.7rem;
+	}
+
+
+	.premium h3 {
+		font-size: 1.45rem;
+
+		margin-bottom: 0.8rem;
+
+		color: #f8fafc;
+	}
+
+
+	.premium p {
+		max-width: 650px;
+
+		margin:
+			0 auto
+			1.3rem;
+
+		color: #cbd5e1;
+
+		line-height: 1.6;
+	}
+
+
+	.premium-button {
+		padding:
+			0.85rem
+			1.4rem;
+
+		border: none;
+
+		border-radius: 9px;
+
+		background: #fbbf24;
+
+		color: #111827;
+
+		font-weight: 700;
+
+		opacity: 0.65;
+
+		cursor: not-allowed;
+	}
+
+
+	/* ACTIONS */
+
+	.actions {
+		display: flex;
+
+		justify-content: center;
+
+		align-items: center;
+
+		gap: 1rem;
+
+		flex-wrap: wrap;
+
+		margin-bottom: 3rem;
+	}
+
+
+	.new-reading {
+		padding:
+			0.8rem
+			1.2rem;
+
+		border-radius: 9px;
+
+		border:
+			1px solid
+			rgba(251,191,36,.45);
+
+		background:
+			rgba(251,191,36,.10);
+
+		color: #fbbf24;
+
+		font-weight: 700;
+
+		cursor: pointer;
+	}
+
+
+	.new-reading:hover {
+		background:
+			rgba(251,191,36,.18);
+	}
+
+
+	.back-link {
+		color: #cbd5e1;
+
+		text-decoration: none;
+
+		padding:
+			0.8rem
+			1.2rem;
+	}
+
+
+	.back-link:hover {
+		color: #fbbf24;
+	}
+
+
+	/* DISCLAIMER */
+
+	.disclaimer {
+		max-width: 850px;
+
+		margin: 0 auto;
+
+		padding: 1.2rem;
+
+		border-top:
+			1px solid
+			rgba(255,255,255,.08);
+
+		text-align: center;
+
+		color: #94a3b8;
+
+		font-size: 0.83rem;
+
+		line-height: 1.6;
+	}
+
+
+	/* TABLETTE */
+
+	@media (max-width: 900px) {
+
+		.deck {
+			grid-template-columns:
+				repeat(6, 1fr);
+		}
+
+
+		.selected-card {
+			grid-template-columns:
+				minmax(180px, 280px)
+				1fr;
+
+			gap: 2rem;
+		}
+
+	}
+
+
+	/* MOBILE */
+
+	@media (max-width: 650px) {
+
+		.deck {
+			grid-template-columns:
+				repeat(4, 1fr);
+
+			gap: 0.6rem;
+		}
+
+
+		.selected-card {
+			grid-template-columns: 1fr;
+
+			padding: 1.5rem;
+
+			gap: 1.5rem;
+		}
+
+
+		.selected-image {
+			max-width: 260px;
+		}
+
+
+		.interpretation {
+			text-align: center;
+		}
+
+
+		.keywords {
+			justify-content: center;
+		}
+
+	}
+
+
+	@media (max-width: 400px) {
+
+		.deck {
+			grid-template-columns:
+				repeat(3, 1fr);
+		}
+
+	}
+
+</style>

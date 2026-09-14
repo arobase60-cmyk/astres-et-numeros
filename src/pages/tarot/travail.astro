@@ -1,0 +1,948 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { tarotCards } from '../../data/tarot';
+---
+
+<Layout title="Tarot Travail - Astres & Numéros">
+
+	<section class="hero">
+		<p class="eyebrow">TAROT TRAVAIL</p>
+
+		<h1>Que révèlent les cartes sur votre vie professionnelle ?</h1>
+
+		<p>
+			Pensez à votre travail, à un projet, à une évolution professionnelle
+			ou à une décision importante, puis choisissez trois cartes.
+		</p>
+	</section>
+
+
+	<section class="progress-box">
+
+		<div class="progress-step active" id="step-0">
+			<span>1</span>
+			<p>Situation</p>
+		</div>
+
+		<div class="progress-line"></div>
+
+		<div class="progress-step" id="step-1">
+			<span>2</span>
+			<p>Opportunité</p>
+		</div>
+
+		<div class="progress-line"></div>
+
+		<div class="progress-step" id="step-2">
+			<span>3</span>
+			<p>Conseil</p>
+		</div>
+
+	</section>
+
+
+	<section id="choice-zone">
+
+		<div class="instructions">
+			<p id="instruction-text">
+				Choisissez une carte pour représenter votre situation actuelle.
+			</p>
+		</div>
+
+		<div class="deck" id="deck">
+
+			{tarotCards.map((card, index) => (
+
+				<button
+					class="card-back"
+					type="button"
+					data-index={index}
+					aria-label={`Choisir la carte ${index + 1}`}
+				>
+					<div class="card-pattern">
+						<div class="symbol">✦</div>
+						<div class="symbol-small">◆</div>
+						<div class="brand-small">A & N</div>
+					</div>
+				</button>
+
+			))}
+
+		</div>
+
+	</section>
+
+
+	<section class="result hidden" id="result">
+
+		<p class="result-label">
+			VOTRE TIRAGE TRAVAIL
+		</p>
+
+		<div class="spread">
+
+			<article class="spread-card">
+
+				<p class="position-title">
+					SITUATION
+				</p>
+
+				<img id="situation-image" src="" alt="" />
+
+				<p class="arcane-number" id="situation-number"></p>
+
+				<h2 id="situation-name"></h2>
+
+				<div class="keywords" id="situation-keywords"></div>
+
+				<p class="meaning" id="situation-meaning"></p>
+
+			</article>
+
+
+			<article class="spread-card">
+
+				<p class="position-title">
+					OPPORTUNITÉ
+				</p>
+
+				<img id="opportunity-image" src="" alt="" />
+
+				<p class="arcane-number" id="opportunity-number"></p>
+
+				<h2 id="opportunity-name"></h2>
+
+				<div class="keywords" id="opportunity-keywords"></div>
+
+				<p class="meaning" id="opportunity-meaning"></p>
+
+			</article>
+
+
+			<article class="spread-card">
+
+				<p class="position-title">
+					CONSEIL
+				</p>
+
+				<img id="advice-image" src="" alt="" />
+
+				<p class="arcane-number" id="advice-number"></p>
+
+				<h2 id="advice-name"></h2>
+
+				<div class="keywords" id="advice-keywords"></div>
+
+				<p class="meaning" id="advice-meaning"></p>
+
+			</article>
+
+		</div>
+
+
+		<section class="premium">
+
+			<p class="premium-label">
+				✦ INTERPRÉTATION PROFESSIONNELLE PERSONNALISÉE
+			</p>
+
+			<h2>
+				Que signifient ces trois cartes pour votre avenir professionnel ?
+			</h2>
+
+			<p>
+				Bientôt, vous pourrez poser votre question et obtenir une
+				interprétation personnalisée tenant compte de votre situation,
+				des opportunités possibles et du conseil donné par les cartes.
+			</p>
+
+			<button type="button" class="premium-button" disabled>
+				Bientôt disponible
+			</button>
+
+		</section>
+
+
+		<div class="actions">
+
+			<button
+				type="button"
+				id="new-reading"
+				class="new-reading"
+			>
+				↻ Faire un nouveau tirage
+			</button>
+
+			<a href="/tarot/" class="back-link">
+				← Retour aux tirages
+			</a>
+
+		</div>
+
+	</section>
+
+
+	<section class="disclaimer">
+		<p>
+			Ce tirage est proposé comme outil de réflexion et de divertissement.
+			Il ne constitue pas un conseil professionnel, financier ou juridique.
+		</p>
+	</section>
+
+
+	<script define:vars={{ tarotCards }}>
+
+		const cards = tarotCards;
+
+		const deck =
+			document.getElementById("deck");
+
+		const choiceZone =
+			document.getElementById("choice-zone");
+
+		const result =
+			document.getElementById("result");
+
+		const instructionText =
+			document.getElementById("instruction-text");
+
+		const newReading =
+			document.getElementById("new-reading");
+
+		const selectedCards = [];
+
+		const instructions = [
+			"Choisissez une carte pour représenter votre situation actuelle.",
+			"Choisissez une carte pour représenter une opportunité ou une évolution possible.",
+			"Choisissez une dernière carte pour obtenir un conseil."
+		];
+
+
+		function shuffleDeck() {
+
+			const elements =
+				Array.from(
+					deck.querySelectorAll(".card-back")
+				);
+
+			for (
+				let i = elements.length - 1;
+				i > 0;
+				i--
+			) {
+
+				const j =
+					Math.floor(
+						Math.random() * (i + 1)
+					);
+
+				const temp =
+					elements[i];
+
+				elements[i] =
+					elements[j];
+
+				elements[j] =
+					temp;
+
+			}
+
+			elements.forEach(
+				element => deck.appendChild(element)
+			);
+
+		}
+
+
+		function updateProgress() {
+
+			document
+				.querySelectorAll(".progress-step")
+				.forEach(
+					step => {
+						step.classList.remove(
+							"active",
+							"done"
+						);
+					}
+				);
+
+			for (
+				let i = 0;
+				i < selectedCards.length;
+				i++
+			) {
+
+				document
+					.getElementById(`step-${i}`)
+					.classList.add("done");
+
+			}
+
+			if (selectedCards.length < 3) {
+
+				document
+					.getElementById(
+						`step-${selectedCards.length}`
+					)
+					.classList.add("active");
+
+			}
+
+		}
+
+
+		function createKeywords(container, keywords) {
+
+			container.innerHTML = "";
+
+			keywords.forEach(
+				keyword => {
+
+					const span =
+						document.createElement("span");
+
+					span.textContent =
+						keyword;
+
+					container.appendChild(span);
+
+				}
+			);
+
+		}
+
+
+		function fillCard(prefix, card) {
+
+			const image =
+				document.getElementById(
+					`${prefix}-image`
+				);
+
+			const number =
+				document.getElementById(
+					`${prefix}-number`
+				);
+
+			const name =
+				document.getElementById(
+					`${prefix}-name`
+				);
+
+			const keywords =
+				document.getElementById(
+					`${prefix}-keywords`
+				);
+
+			const meaning =
+				document.getElementById(
+					`${prefix}-meaning`
+				);
+
+			image.src =
+				card.image;
+
+			image.alt =
+				card.name;
+
+			number.textContent =
+				card.id === 0
+					? "ARCANE • LE MAT"
+					: `ARCANE ${card.id}`;
+
+			name.textContent =
+				card.name;
+
+			meaning.textContent =
+	        card.workMeaning;
+
+			createKeywords(
+				keywords,
+				card.keywords
+			);
+
+		}
+
+
+		function showResult() {
+
+			fillCard(
+				"situation",
+				selectedCards[0]
+			);
+
+			fillCard(
+				"opportunity",
+				selectedCards[1]
+			);
+
+			fillCard(
+				"advice",
+				selectedCards[2]
+			);
+
+			choiceZone.classList.add(
+				"fade-out"
+			);
+
+			setTimeout(
+				() => {
+
+					choiceZone.style.display =
+						"none";
+
+					result.classList.remove(
+						"hidden"
+					);
+
+					requestAnimationFrame(
+						() => {
+							result.classList.add(
+								"show"
+							);
+						}
+					);
+
+					window.scrollTo({
+						top:
+							result.offsetTop - 100,
+						behavior:
+							"smooth"
+					});
+
+				},
+				350
+			);
+
+		}
+
+
+		document
+			.querySelectorAll(".card-back")
+			.forEach(
+				button => {
+
+					button.addEventListener(
+						"click",
+						() => {
+
+							if (
+								button.classList.contains(
+									"selected"
+								)
+							) {
+								return;
+							}
+
+							const index =
+								Number(
+									button.dataset.index
+								);
+
+							selectedCards.push(
+								cards[index]
+							);
+
+							button.classList.add(
+								"selected"
+							);
+
+							button.disabled =
+								true;
+
+							updateProgress();
+
+							if (
+								selectedCards.length < 3
+							) {
+
+								instructionText.textContent =
+									instructions[
+										selectedCards.length
+									];
+
+							} else {
+
+								instructionText.textContent =
+									"Votre tirage professionnel est prêt.";
+
+								setTimeout(
+									showResult,
+									500
+								);
+
+							}
+
+						}
+					);
+
+				}
+			);
+
+
+		newReading.addEventListener(
+			"click",
+			() => {
+
+				selectedCards.length = 0;
+
+				document
+					.querySelectorAll(".card-back")
+					.forEach(
+						button => {
+
+							button.classList.remove(
+								"selected"
+							);
+
+							button.disabled =
+								false;
+
+						}
+					);
+
+				result.classList.remove(
+					"show"
+				);
+
+				setTimeout(
+					() => {
+
+						result.classList.add(
+							"hidden"
+						);
+
+						choiceZone.style.display =
+							"block";
+
+						choiceZone.classList.remove(
+							"fade-out"
+						);
+
+						instructionText.textContent =
+							instructions[0];
+
+						updateProgress();
+
+						shuffleDeck();
+
+						window.scrollTo({
+							top:
+								choiceZone.offsetTop - 100,
+							behavior:
+								"smooth"
+						});
+
+					},
+					300
+				);
+
+			}
+		);
+
+
+		shuffleDeck();
+		updateProgress();
+
+	</script>
+
+</Layout>
+
+
+<style>
+
+	.hero {
+		max-width: 800px;
+		margin: 0 auto 2rem;
+		text-align: center;
+	}
+
+	.eyebrow {
+		color: #38bdf8;
+		font-size: .82rem;
+		font-weight: 700;
+		letter-spacing: .16em;
+		margin-bottom: .8rem;
+	}
+
+	.hero h1 {
+		color: #fbbf24;
+		font-size: clamp(2rem, 5vw, 3rem);
+		margin-bottom: 1rem;
+	}
+
+	.hero p {
+		color: #cbd5e1;
+		font-size: 1.08rem;
+		line-height: 1.7;
+	}
+
+	.progress-box {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		max-width: 700px;
+		margin: 0 auto 2rem;
+	}
+
+	.progress-step {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: .4rem;
+		min-width: 90px;
+		color: #94a3b8;
+	}
+
+	.progress-step span {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 38px;
+		height: 38px;
+		border-radius: 50%;
+		border: 1px solid rgba(255,255,255,.18);
+		background: rgba(30,41,59,.8);
+		font-weight: 700;
+	}
+
+	.progress-step.active {
+		color: #38bdf8;
+	}
+
+	.progress-step.active span {
+		border-color: #38bdf8;
+		box-shadow: 0 0 18px rgba(56,189,248,.2);
+	}
+
+	.progress-step.done {
+		color: #bae6fd;
+	}
+
+	.progress-step.done span {
+		background: #0369a1;
+		color: white;
+		border-color: #0369a1;
+	}
+
+	.progress-line {
+		width: 70px;
+		height: 1px;
+		background: rgba(255,255,255,.15);
+		margin: 0 .5rem 1.6rem;
+	}
+
+	.instructions {
+		max-width: 650px;
+		margin: 0 auto 2rem;
+		padding: 1rem 1.3rem;
+		text-align: center;
+		background: rgba(3,105,161,.09);
+		border: 1px solid rgba(56,189,248,.25);
+		border-radius: 12px;
+		color: #e2e8f0;
+	}
+
+	.deck {
+		display: grid;
+		grid-template-columns: repeat(11,1fr);
+		gap: .7rem;
+		max-width: 1000px;
+		margin: 0 auto 3rem;
+	}
+
+	.card-back {
+		aspect-ratio: 2 / 3.4;
+		padding: 5px;
+		border-radius: 9px;
+		border: 1px solid rgba(56,189,248,.55);
+		background:
+			linear-gradient(
+				145deg,
+				#082f49,
+				#1e1b4b
+			);
+		cursor: pointer;
+		box-shadow: 0 6px 15px rgba(0,0,0,.25);
+		transition:
+			transform .2s ease,
+			opacity .2s ease,
+			box-shadow .2s ease;
+	}
+
+	.card-back:hover:not(:disabled) {
+		transform: translateY(-10px) scale(1.04);
+		box-shadow: 0 14px 25px rgba(0,0,0,.45);
+	}
+
+	.card-back.selected {
+		opacity: .2;
+		transform: scale(.92);
+	}
+
+	.card-pattern {
+		width: 100%;
+		height: 100%;
+		border: 1px solid rgba(56,189,248,.5);
+		border-radius: 6px;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		background:
+			radial-gradient(
+				circle at center,
+				rgba(3,105,161,.3),
+				transparent 65%
+			);
+		color: #bae6fd;
+	}
+
+	.symbol {
+		font-size: 1.6rem;
+		color: #fbbf24;
+	}
+
+	.symbol-small {
+		font-size: .9rem;
+	}
+
+	.brand-small {
+		font-size: .45rem;
+		margin-top: .5rem;
+		letter-spacing: .1em;
+	}
+
+	#choice-zone {
+		opacity: 1;
+		transition:
+			opacity .35s ease,
+			transform .35s ease;
+	}
+
+	#choice-zone.fade-out {
+		opacity: 0;
+		transform: translateY(-10px);
+	}
+
+	.result {
+		opacity: 0;
+		transform: translateY(20px);
+		transition:
+			opacity .4s ease,
+			transform .4s ease;
+	}
+
+	.result.hidden {
+		display: none;
+	}
+
+	.result.show {
+		opacity: 1;
+		transform: translateY(0);
+	}
+
+	.result-label {
+		text-align: center;
+		color: #38bdf8;
+		font-size: .82rem;
+		font-weight: 700;
+		letter-spacing: .18em;
+		margin-bottom: 1.5rem;
+	}
+
+	.spread {
+		display: grid;
+		grid-template-columns: repeat(3,1fr);
+		gap: 1.3rem;
+		margin-bottom: 2.5rem;
+	}
+
+	.spread-card {
+		padding: 1.4rem;
+		background: rgba(30,41,59,.72);
+		border: 1px solid rgba(56,189,248,.22);
+		border-radius: 16px;
+		text-align: center;
+		box-shadow: 0 12px 30px rgba(0,0,0,.25);
+	}
+
+	.position-title {
+		color: #38bdf8;
+		font-size: .8rem;
+		font-weight: 700;
+		letter-spacing: .14em;
+		margin-bottom: 1rem;
+	}
+
+	.spread-card img {
+		width: 100%;
+		max-width: 240px;
+		max-height: 390px;
+		object-fit: contain;
+		border-radius: 9px;
+		box-shadow: 0 12px 25px rgba(0,0,0,.4);
+		margin-bottom: 1rem;
+	}
+
+	.arcane-number {
+		color: #818cf8;
+		font-size: .72rem;
+		font-weight: 700;
+		letter-spacing: .12em;
+		margin-bottom: .4rem;
+	}
+
+	.spread-card h2 {
+		color: #fbbf24;
+		font-size: 1.35rem;
+		margin-bottom: .8rem;
+	}
+
+	.keywords {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: .4rem;
+		margin-bottom: 1rem;
+	}
+
+	.keywords span {
+		padding: .35rem .6rem;
+		background: rgba(129,140,248,.14);
+		border: 1px solid rgba(129,140,248,.28);
+		border-radius: 999px;
+		color: #c7d2fe;
+		font-size: .75rem;
+	}
+
+	.meaning {
+		color: #cbd5e1;
+		font-size: .95rem;
+		line-height: 1.65;
+	}
+
+	.premium {
+		max-width: 900px;
+		margin: 0 auto 2rem;
+		padding: 2rem;
+		text-align: center;
+		background:
+			linear-gradient(
+				135deg,
+				rgba(3,105,161,.14),
+				rgba(251,191,36,.08)
+			);
+		border: 1px solid rgba(56,189,248,.28);
+		border-radius: 16px;
+	}
+
+	.premium-label {
+		color: #38bdf8;
+		font-size: .78rem;
+		font-weight: 700;
+		letter-spacing: .13em;
+		margin-bottom: .7rem;
+	}
+
+	.premium h2 {
+		color: #f8fafc;
+		margin-bottom: .8rem;
+	}
+
+	.premium p {
+		max-width: 650px;
+		margin: 0 auto 1.3rem;
+		color: #cbd5e1;
+		line-height: 1.6;
+	}
+
+	.premium-button {
+		padding: .85rem 1.4rem;
+		border: none;
+		border-radius: 9px;
+		background: #fbbf24;
+		color: #111827;
+		font-weight: 700;
+		opacity: .65;
+		cursor: not-allowed;
+	}
+
+	.actions {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		gap: 1rem;
+		flex-wrap: wrap;
+		margin-bottom: 3rem;
+	}
+
+	.new-reading {
+		padding: .8rem 1.2rem;
+		border-radius: 9px;
+		border: 1px solid rgba(56,189,248,.4);
+		background: rgba(3,105,161,.1);
+		color: #bae6fd;
+		font-weight: 700;
+		cursor: pointer;
+	}
+
+	.back-link {
+		color: #cbd5e1;
+		text-decoration: none;
+		padding: .8rem 1.2rem;
+	}
+
+	.disclaimer {
+		max-width: 850px;
+		margin: 0 auto;
+		padding: 1.2rem;
+		border-top: 1px solid rgba(255,255,255,.08);
+		text-align: center;
+		color: #94a3b8;
+		font-size: .83rem;
+		line-height: 1.6;
+	}
+
+	@media (max-width: 900px) {
+
+		.deck {
+			grid-template-columns: repeat(6,1fr);
+		}
+
+		.spread {
+			grid-template-columns: 1fr;
+			max-width: 520px;
+			margin-left: auto;
+			margin-right: auto;
+		}
+
+	}
+
+	@media (max-width: 650px) {
+
+		.deck {
+			grid-template-columns: repeat(4,1fr);
+		}
+
+		.progress-line {
+			width: 25px;
+		}
+
+		.progress-step {
+			min-width: 70px;
+			font-size: .82rem;
+		}
+
+	}
+
+	@media (max-width: 400px) {
+
+		.deck {
+			grid-template-columns: repeat(3,1fr);
+		}
+
+	}
+
+</style>
