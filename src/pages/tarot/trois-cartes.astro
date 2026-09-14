@@ -165,29 +165,47 @@ import { tarotCards } from '../../data/tarot';
 
 		<section class="synthesis">
 
-			<p class="premium-label">
-				✨ INTERPRÉTATION COMPLÈTE
-			</p>
+	<p class="premium-label">
+		✨ INTERPRÉTATION PERSONNALISÉE
+	</p>
 
-			<h2>
-				Que racontent ces trois cartes ensemble ?
-			</h2>
+	<h2>
+		Que racontent ces trois cartes ensemble ?
+	</h2>
 
-			<p>
-				Une interprétation personnalisée pourra bientôt analyser
-				les liens entre le passé, le présent et l’avenir en fonction
-				de votre question.
-			</p>
+	<p>
+		Posez une question sur votre situation.
+		L'interprétation prendra en compte votre question,
+		ainsi que les trois cartes de votre tirage.
+	</p>
 
-			<button
-				type="button"
-				class="premium-button"
-				disabled
-			>
-				Bientôt disponible
-			</button>
+	<textarea
+		id="tarot-question"
+		class="tarot-question"
+		maxlength="500"
+		rows="4"
+		placeholder="Exemple : Que dois-je comprendre de ma situation actuelle ?"
+	></textarea>
 
-		</section>
+	<button
+		type="button"
+		class="premium-button"
+		id="ask-gemini"
+	>
+		✨ Obtenir mon interprétation personnalisée
+	</button>
+
+	<p
+		id="ai-status"
+		class="ai-status"
+	></p>
+
+	<div
+		id="ai-result"
+		class="ai-result hidden"
+	></div>
+
+</section>
 
 		<div class="actions">
 
@@ -236,6 +254,18 @@ import { tarotCards } from '../../data/tarot';
 
 		const newReading =
 			document.getElementById("new-reading");
+
+		const tarotQuestion =
+	        document.getElementById("tarot-question");
+
+        const askGemini =
+	        document.getElementById("ask-gemini");
+
+        const aiStatus =
+	        document.getElementById("ai-status");
+ 
+        const aiResult =
+	        document.getElementById("ai-result");	
 
 		const selectedCards = [];
 
@@ -582,6 +612,128 @@ import { tarotCards } from '../../data/tarot';
 			}
 		);
 
+askGemini.addEventListener(
+	"click",
+	async () => {
+
+		const question =
+			tarotQuestion.value.trim();
+
+		if (!question) {
+
+			aiStatus.textContent =
+				"Veuillez poser une question avant de demander l'interprétation.";
+
+			return;
+		}
+
+		if (selectedCards.length !== 3) {
+
+			aiStatus.textContent =
+				"Veuillez d'abord terminer votre tirage.";
+
+			return;
+		}
+
+		askGemini.disabled = true;
+
+		askGemini.textContent =
+			"Interprétation en cours…";
+
+		aiStatus.textContent =
+			"Les cartes sont en cours d'analyse…";
+
+		aiResult.classList.add("hidden");
+
+		aiResult.textContent = "";
+
+		try {
+
+			const response =
+				await fetch(
+					"/api/tarot",
+					{
+						method: "POST",
+
+						headers: {
+							"Content-Type":
+								"application/json"
+						},
+
+						body: JSON.stringify({
+
+							question,
+
+							type:
+								"Tirage 3 cartes - Passé, Présent, Avenir",
+
+							cards: [
+								{
+									name:
+										selectedCards[0].name,
+									position:
+										"Passé"
+								},
+								{
+									name:
+										selectedCards[1].name,
+									position:
+										"Présent"
+								},
+								{
+									name:
+										selectedCards[2].name,
+									position:
+										"Avenir"
+								}
+							]
+
+						})
+					}
+				);
+
+			const data =
+				await response.json();
+
+			if (!response.ok) {
+
+				throw new Error(
+					data.error ||
+					"L'interprétation est momentanément indisponible."
+				);
+			}
+
+			aiStatus.textContent = "";
+
+			aiResult.textContent =
+				data.interpretation;
+
+			aiResult.classList.remove(
+				"hidden"
+			);
+
+			aiResult.scrollIntoView({
+				behavior: "smooth",
+				block: "start"
+			});
+
+		} catch (error) {
+
+			aiStatus.textContent =
+				error.message ||
+				"Une erreur est survenue.";
+
+		} finally {
+
+			askGemini.disabled = false;
+
+			askGemini.textContent =
+				"✨ Obtenir mon interprétation personnalisée";
+		}
+
+	}
+);
+
 		shuffleDeck();
 		updateProgress();
 
@@ -895,15 +1047,74 @@ import { tarotCards } from '../../data/tarot';
 	}
 
 	.premium-button {
-		padding: .85rem 1.4rem;
-		border: none;
-		border-radius: 9px;
-		background: #fbbf24;
-		color: #111827;
-		font-weight: 700;
-		opacity: .65;
-		cursor: not-allowed;
-	}
+	padding: .9rem 1.5rem;
+	border: none;
+	border-radius: 9px;
+	background: #fbbf24;
+	color: #111827;
+	font-weight: 700;
+	cursor: pointer;
+	transition:
+		transform .2s ease,
+		opacity .2s ease;
+}
+
+.premium-button:hover:not(:disabled) {
+	transform: translateY(-2px);
+}
+
+.premium-button:disabled {
+	opacity: .55;
+	cursor: wait;
+}
+
+.tarot-question {
+	display: block;
+	width: 100%;
+	max-width: 650px;
+	margin: 1.2rem auto;
+	padding: 1rem;
+	box-sizing: border-box;
+	border-radius: 10px;
+	border: 1px solid rgba(251,191,36,.35);
+	background: rgba(15,23,42,.75);
+	color: #f8fafc;
+	font: inherit;
+	line-height: 1.5;
+	resize: vertical;
+}
+
+.tarot-question::placeholder {
+	color: #94a3b8;
+}
+
+.tarot-question:focus {
+	outline: none;
+	border-color: #fbbf24;
+}
+
+.ai-status {
+	margin-top: 1rem !important;
+	color: #fbbf24 !important;
+	font-weight: 600;
+}
+
+.ai-result {
+	max-width: 760px;
+	margin: 1.5rem auto 0;
+	padding: 1.5rem;
+	text-align: left;
+	white-space: pre-wrap;
+	background: rgba(15,23,42,.72);
+	border: 1px solid rgba(129,140,248,.3);
+	border-radius: 12px;
+	color: #e2e8f0;
+	line-height: 1.75;
+}
+
+.ai-result.hidden {
+	display: none;
+}
 
 	.actions {
 		display: flex;
