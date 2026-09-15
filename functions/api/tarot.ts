@@ -190,20 +190,23 @@ Longueur souhaitée : environ 350 à 500 mots.
 
 		if (!response.ok) {
 
-			console.error(
-				"Erreur Gemini :",
-				response.status,
-				await response.text()
-			);
+	const geminiError =
+		await response.text();
 
-			return Response.json(
-				{
-					error:
-						"L'interprétation est momentanément indisponible."
-				},
-				{ status: 502 }
-			);
-		}
+	console.error(
+		"Erreur Gemini :",
+		response.status,
+		geminiError
+	);
+
+	return Response.json(
+		{
+			error:
+				`Gemini ${response.status} : ${geminiError}`
+		},
+		{ status: 502 }
+	);
+}
 
 		const data: any =
 			await response.json();
