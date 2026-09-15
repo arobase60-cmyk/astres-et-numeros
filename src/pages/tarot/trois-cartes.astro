@@ -837,7 +837,7 @@ async function handleStripeReturn() {
 		});
 
 	} catch (error) {
-
+  console.error("ERREUR RETOUR STRIPE :", error);
 		aiStatus.textContent =
 			error.message ||
 			"Une erreur est survenue.";
