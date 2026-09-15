@@ -50,6 +50,59 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 			)
 			.join("\n");
 
+let specificContext = "";
+
+if (type.includes("Amour")) {
+	specificContext = `
+Ce tirage concerne la vie sentimentale.
+
+Interprète les cartes en tenant particulièrement compte :
+- des sentiments et des émotions ;
+- de la dynamique entre les personnes ;
+- de la communication et des éventuels blocages ;
+- de l'évolution possible de la relation.
+
+Ne prétends jamais connaître avec certitude les sentiments ou les intentions d'une autre personne.
+Ne présente jamais l'évolution de la relation comme certaine.
+`;
+}
+
+else if (type.includes("Travail")) {
+	specificContext = `
+Ce tirage concerne la vie professionnelle.
+
+Interprète les cartes en tenant particulièrement compte :
+- de la situation professionnelle actuelle ;
+- des opportunités ou changements possibles ;
+- des difficultés ou points de vigilance ;
+- des actions que l'utilisateur peut envisager.
+
+Ne donne pas de conseil financier, juridique ou professionnel présenté comme une certitude.
+Ne garantis jamais une embauche, une promotion, un gain financier ou une réussite.
+`;
+}
+
+else if (type.includes("1 carte")) {
+	specificContext = `
+Il s'agit d'un tirage à une seule carte.
+
+Concentre l'interprétation sur le message principal de cette carte
+et sur son lien direct avec la question de l'utilisateur.
+Évite de répéter plusieurs fois la signification générale de la carte.
+`;
+}
+
+else {
+	specificContext = `
+Il s'agit d'un tirage général à trois cartes.
+
+Analyse particulièrement la progression entre le passé,
+le présent et l'avenir possible.
+Présente l'avenir comme une tendance ou une piste de réflexion,
+jamais comme une prédiction certaine.
+`;
+}
+
 		const prompt = `
 Tu es un interprète de tarot pour le site Astres & Numéros.
 
@@ -62,6 +115,9 @@ Ne donne pas de conseil médical, juridique ou financier.
 
 Type de tirage :
 ${type}
+
+Contexte spécifique :
+${specificContext}
 
 Question de l'utilisateur :
 ${question}
