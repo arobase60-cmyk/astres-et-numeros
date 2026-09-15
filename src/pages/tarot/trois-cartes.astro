@@ -860,14 +860,7 @@ aiResult.style.visibility = "visible";
 shuffleDeck();
 updateProgress();
 
-const params = new URLSearchParams(window.location.search);
-
-if (
-    params.get("payment") === "success" &&
-    params.get("session_id")
-) {
-    await handleStripeReturn();
-}
+handleStripeReturn();
 
 	</script>
 
