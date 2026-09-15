@@ -142,25 +142,46 @@ import { tarotCards } from '../../data/tarot';
 
 		<section class="premium">
 
-			<p class="premium-label">
-				✦ INTERPRÉTATION PROFESSIONNELLE PERSONNALISÉE
-			</p>
+	<p class="premium-label">
+		✦ INTERPRÉTATION PROFESSIONNELLE PERSONNALISÉE
+	</p>
 
-			<h2>
-				Que signifient ces trois cartes pour votre avenir professionnel ?
-			</h2>
+	<h2>
+		Que signifient ces trois cartes pour votre situation professionnelle ?
+	</h2>
 
-			<p>
-				Bientôt, vous pourrez poser votre question et obtenir une
-				interprétation personnalisée tenant compte de votre situation,
-				des opportunités possibles et du conseil donné par les cartes.
-			</p>
+	<p>
+		Posez votre question sur votre travail, un projet,
+		une évolution professionnelle ou une décision importante.
+	</p>
 
-			<button type="button" class="premium-button" disabled>
-				Bientôt disponible
-			</button>
+	<textarea
+		id="tarot-question"
+		class="tarot-question"
+		maxlength="500"
+		rows="4"
+		placeholder="Exemple : Comment peut évoluer ma situation professionnelle ?"
+	></textarea>
 
-		</section>
+	<button
+		type="button"
+		class="premium-button"
+		id="ask-gemini"
+	>
+		✦ Obtenir mon interprétation personnalisée
+	</button>
+
+	<p
+		id="ai-status"
+		class="ai-status"
+	></p>
+
+	<div
+		id="ai-result"
+		class="ai-result hidden"
+	></div>
+
+</section>
 
 
 		<div class="actions">
@@ -208,6 +229,19 @@ import { tarotCards } from '../../data/tarot';
 
 		const newReading =
 			document.getElementById("new-reading");
+
+const tarotQuestion =
+	document.getElementById("tarot-question");
+
+const askGemini =
+	document.getElementById("ask-gemini");
+
+const aiStatus =
+	document.getElementById("ai-status");
+
+const aiResult =
+	document.getElementById("ai-result");
+
 
 		const selectedCards = [];
 
@@ -480,12 +514,121 @@ import { tarotCards } from '../../data/tarot';
 				}
 			);
 
+askGemini.addEventListener(
+	"click",
+	async () => {
+
+		const question =
+			tarotQuestion.value.trim();
+
+		if (!question) {
+			aiStatus.textContent =
+				"Veuillez poser une question sur votre situation professionnelle.";
+			return;
+		}
+
+		if (selectedCards.length !== 3) {
+			aiStatus.textContent =
+				"Veuillez d'abord terminer votre tirage.";
+			return;
+		}
+
+		askGemini.disabled = true;
+
+		askGemini.textContent =
+			"Interprétation en cours…";
+
+		aiStatus.textContent =
+			"Votre tirage professionnel est en cours d'analyse…";
+
+		aiResult.classList.add("hidden");
+		aiResult.textContent = "";
+
+		try {
+
+			const response =
+				await fetch("/api/tarot", {
+					method: "POST",
+
+					headers: {
+						"Content-Type": "application/json"
+					},
+
+					body: JSON.stringify({
+						question,
+
+						type:
+							"Tarot Travail - Situation, Opportunité, Conseil",
+
+						cards: [
+							{
+								name: selectedCards[0].name,
+								position: "Situation"
+							},
+							{
+								name: selectedCards[1].name,
+								position: "Opportunité"
+							},
+							{
+								name: selectedCards[2].name,
+								position: "Conseil"
+							}
+						]
+					})
+				});
+
+			const data =
+				await response.json();
+
+			if (!response.ok) {
+				throw new Error(
+					data.error ||
+					"L'interprétation est momentanément indisponible."
+				);
+			}
+
+			aiStatus.textContent = "";
+
+			aiResult.textContent =
+				data.interpretation;
+
+			aiResult.classList.remove("hidden");
+
+			aiResult.scrollIntoView({
+				behavior: "smooth",
+				block: "start"
+			});
+
+		} catch (error) {
+
+			aiStatus.textContent =
+				error.message ||
+				"Une erreur est survenue.";
+
+		} finally {
+
+			askGemini.disabled = false;
+
+			askGemini.textContent =
+				"✦ Obtenir mon interprétation personnalisée";
+		}
+	}
+);
+
 
 		newReading.addEventListener(
 			"click",
 			() => {
 
 				selectedCards.length = 0;
+tarotQuestion.value = "";
+
+aiStatus.textContent = "";
+
+aiResult.textContent = "";
+
+aiResult.classList.add("hidden");
+
 
 				document
 					.querySelectorAll(".card-back")
