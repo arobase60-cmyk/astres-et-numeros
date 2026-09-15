@@ -95,30 +95,51 @@ import { tarotCards } from '../../data/tarot';
 
 		<div class="premium">
 
-			<div class="premium-content">
+			<div class="premium">
 
-				<p class="premium-label">
-					✨ INTERPRÉTATION PERSONNALISÉE
-				</p>
+	<div class="premium-content">
 
-				<h3>
-					Que signifie cette carte pour votre situation ?
-				</h3>
+		<p class="premium-label">
+			✨ INTERPRÉTATION PERSONNALISÉE
+		</p>
 
-				<p>
-					Posez votre question et obtenez bientôt une interprétation
-					plus approfondie et personnalisée de votre tirage.
-				</p>
+		<h3>
+			Que signifie cette carte pour votre situation ?
+		</h3>
 
-				<button
-					type="button"
-					class="premium-button"
-					disabled
-				>
-					Bientôt disponible
-				</button>
+		<p>
+			Posez votre question. L'interprétation prendra en compte
+			votre question ainsi que la carte que vous venez de tirer.
+		</p>
 
-			</div>
+		<textarea
+			id="tarot-question"
+			class="tarot-question"
+			maxlength="500"
+			placeholder="Exemple : Que dois-je comprendre de ma situation actuelle ?"
+		></textarea>
+
+		<button
+			type="button"
+			id="premium-button"
+			class="premium-button"
+		>
+			✨ Obtenir mon interprétation personnalisée
+		</button>
+
+		<p
+			id="ai-status"
+			class="ai-status"
+		></p>
+
+		<div
+			id="ai-result"
+			class="ai-result hidden"
+		></div>
+
+	</div>
+
+</div>
 
 		</div>
 
@@ -188,6 +209,24 @@ import { tarotCards } from '../../data/tarot';
 			document.getElementById("new-reading");
 
 
+        const tarotQuestion =
+	        document.getElementById("tarot-question");
+
+        const premiumButton =
+	        document.getElementById("premium-button");
+
+        const aiStatus =
+	        document.getElementById("ai-status");
+
+        const aiResult =
+	        document.getElementById("ai-result");
+
+        let selectedCard = null;
+
+       
+
+
+
 		/*
 		 * Mélange visuel des cartes.
 		 *
@@ -254,6 +293,7 @@ import { tarotCards } from '../../data/tarot';
 
 
 		function showCard(card) {
+			selectedCard = card;
 
 			/*
 			 * Masque le paquet.
@@ -349,7 +389,97 @@ import { tarotCards } from '../../data/tarot';
 
 		}
 
+premiumButton.addEventListener(
+	"click",
+	async () => {
 
+		const question =
+			tarotQuestion.value.trim();
+
+		if (!question) {
+			aiStatus.textContent =
+				"Veuillez poser une question.";
+			return;
+		}
+
+		if (!selectedCard) {
+			aiStatus.textContent =
+				"Veuillez d'abord tirer une carte.";
+			return;
+		}
+
+		premiumButton.disabled = true;
+
+		premiumButton.textContent =
+			"Interprétation en cours…";
+
+		aiStatus.textContent =
+			"Votre carte est en cours d'analyse…";
+
+		aiResult.classList.add("hidden");
+		aiResult.textContent = "";
+
+		try {
+
+			const response =
+				await fetch("/api/tarot", {
+					method: "POST",
+
+					headers: {
+						"Content-Type": "application/json"
+					},
+
+					body: JSON.stringify({
+						question,
+
+						type: "Tirage Tarot 1 carte",
+
+						cards: [
+							{
+								name: selectedCard.name,
+								position: "Votre carte"
+							}
+						]
+					})
+				});
+
+			const data =
+				await response.json();
+
+			if (!response.ok) {
+				throw new Error(
+					data.error ||
+					"L'interprétation est momentanément indisponible."
+				);
+			}
+
+			aiStatus.textContent = "";
+
+			aiResult.textContent =
+				data.interpretation;
+
+			aiResult.classList.remove("hidden");
+
+			aiResult.scrollIntoView({
+				behavior: "smooth",
+				block: "start"
+			});
+
+		} catch (error) {
+
+			aiStatus.textContent =
+				error.message ||
+				"Une erreur est survenue.";
+
+		} finally {
+
+			premiumButton.disabled = false;
+
+			premiumButton.textContent =
+				"✨ Obtenir mon interprétation personnalisée";
+		}
+	}
+);
 		/*
 		 * Nouveau tirage.
 		 */
@@ -357,6 +487,15 @@ import { tarotCards } from '../../data/tarot';
 		newReading.addEventListener(
 			"click",
 			() => {
+				selectedCard = null;
+
+        tarotQuestion.value = "";
+
+         aiStatus.textContent = "";
+
+        aiResult.textContent = "";
+
+        aiResult.classList.add("hidden");
 
 				result.classList.remove(
 					"show"
@@ -829,7 +968,71 @@ import { tarotCards } from '../../data/tarot';
 
 		cursor: not-allowed;
 	}
+.tarot-question {
+	display: block;
+	width: 100%;
+	max-width: 650px;
+	min-height: 110px;
+	margin: 1.2rem auto;
+	padding: 1rem;
+	box-sizing: border-box;
+	border-radius: 10px;
+	border: 1px solid rgba(251,191,36,.35);
+	background: rgba(15,23,42,.75);
+	color: #f8fafc;
+	font: inherit;
+	line-height: 1.5;
+	resize: vertical;
+}
 
+.tarot-question::placeholder {
+	color: #94a3b8;
+}
+
+.tarot-question:focus {
+	outline: none;
+	border-color: #fbbf24;
+}
+
+.premium-button {
+	opacity: 1;
+	cursor: pointer;
+	transition:
+		transform .2s ease,
+		opacity .2s ease;
+}
+
+.premium-button:hover:not(:disabled) {
+	transform: translateY(-2px);
+}
+
+.premium-button:disabled {
+	opacity: .55;
+	cursor: wait;
+}
+
+.ai-status {
+	margin-top: 1rem !important;
+	color: #fbbf24 !important;
+	font-weight: 600;
+}
+
+.ai-result {
+	max-width: 760px;
+	margin: 1.5rem auto 0;
+	padding: 1.5rem;
+	text-align: left;
+	white-space: pre-wrap;
+	background: rgba(15,23,42,.72);
+	border: 1px solid rgba(129,140,248,.3);
+	border-radius: 12px;
+	color: #e2e8f0;
+	line-height: 1.75;
+}
+
+.ai-result.hidden {
+	display: none;
+}
 
 	/* ACTIONS */
 
