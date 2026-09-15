@@ -631,102 +631,76 @@ askGemini.addEventListener(
 			tarotQuestion.value.trim();
 
 		if (!question) {
-
 			aiStatus.textContent =
-				"Veuillez poser une question avant de demander l'interprétation.";
-
+				"Veuillez poser une question avant de continuer.";
 			return;
 		}
 
 		if (selectedCards.length !== 3) {
-
 			aiStatus.textContent =
 				"Veuillez d'abord terminer votre tirage.";
-
 			return;
 		}
 
 		askGemini.disabled = true;
-
 		askGemini.textContent =
-			"Interprétation en cours…";
+			"Redirection vers le paiement…";
 
 		aiStatus.textContent =
-			"Les cartes sont en cours d'analyse…";
+			"Préparation du paiement sécurisé…";
 
-		aiResult.classList.add("hidden");
+		const tarotData = {
+			question,
+			type:
+				"Tirage 3 cartes - Passé, Présent, Avenir",
 
-		aiResult.textContent = "";
+			cards: [
+				{
+					name: selectedCards[0].name,
+					position: "Passé"
+				},
+				{
+					name: selectedCards[1].name,
+					position: "Présent"
+				},
+				{
+					name: selectedCards[2].name,
+					position: "Avenir"
+				}
+			]
+		};
+
+		localStorage.setItem(
+			"pendingTarotReading",
+			JSON.stringify(tarotData)
+		);
 
 		try {
 
 			const response =
 				await fetch(
-					"/api/tarot",
+					"/api/create-checkout",
 					{
 						method: "POST",
-
 						headers: {
 							"Content-Type":
 								"application/json"
-						},
-
-						body: JSON.stringify({
-
-							question,
-
-							type:
-								"Tirage 3 cartes - Passé, Présent, Avenir",
-
-							cards: [
-								{
-									name:
-										selectedCards[0].name,
-									position:
-										"Passé"
-								},
-								{
-									name:
-										selectedCards[1].name,
-									position:
-										"Présent"
-								},
-								{
-									name:
-										selectedCards[2].name,
-									position:
-										"Avenir"
-								}
-							]
-
-						})
+						}
 					}
 				);
 
 			const data =
 				await response.json();
 
-			if (!response.ok) {
-
+			if (!response.ok || !data.url) {
 				throw new Error(
 					data.error ||
-					"L'interprétation est momentanément indisponible."
+					"Impossible de préparer le paiement."
 				);
 			}
 
-			aiStatus.textContent = "";
-
-			aiResult.textContent =
-				data.interpretation;
-
-			aiResult.classList.remove(
-				"hidden"
-			);
-
-			aiResult.scrollIntoView({
-				behavior: "smooth",
-				block: "start"
-			});
+			window.location.href =
+				data.url;
 
 		} catch (error) {
 
@@ -734,16 +708,18 @@ askGemini.addEventListener(
 				error.message ||
 				"Une erreur est survenue.";
 
-		} finally {
-
 			askGemini.disabled = false;
 
 			askGemini.textContent =
-				"✨ Obtenir mon interprétation personnalisée";
+				"🔒 Débloquer mon interprétation";
 		}
-
 	}
 );
+
+
+
+
+
 
 		shuffleDeck();
 		updateProgress();
