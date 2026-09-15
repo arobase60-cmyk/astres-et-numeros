@@ -857,10 +857,17 @@ aiResult.style.visibility = "visible";
 	}
 }
 
-await handleStripeReturn();
-
 shuffleDeck();
 updateProgress();
+
+const params = new URLSearchParams(window.location.search);
+
+if (
+    params.get("payment") === "success" &&
+    params.get("session_id")
+) {
+    await handleStripeReturn();
+}
 
 	</script>
 
