@@ -822,6 +822,10 @@ async function handleStripeReturn() {
 		aiResult.classList.remove(
 			"hidden"
 		);
+const resultSection = document.getElementById("result");
+resultSection.classList.remove("hidden");
+resultSection.classList.add("visible");
+
 
 aiResult.style.display = "block";
 aiResult.style.opacity = "1";
