@@ -77,19 +77,27 @@ Analyse les cartes en tenant compte :
 
 Réponds en français.
 
-Structure la réponse ainsi :
+N'utilise aucun format Markdown.
+N'utilise pas de caractères comme **, *, # ou ###.
+Écris uniquement du texte simple.
 
-### Votre tirage
+Structure la réponse avec exactement ces trois titres :
+
+VOTRE TIRAGE
 
 Une interprétation globale claire et personnalisée.
 
-### Ce que les cartes mettent en lumière
+CE QUE LES CARTES METTENT EN LUMIÈRE
 
-Explique les relations importantes entre les cartes.
+Explique les éléments importants du tirage et leurs relations.
 
-### Conseil du tarot
+CONSEIL DU TAROT
 
 Termine par un conseil concret, prudent et positif.
+
+Sépare chaque partie par une ligne vide.
+Ne commence pas par une formule de bienvenue.
+Va directement à l'interprétation.
 
 Longueur souhaitée : environ 350 à 500 mots.
 `;
