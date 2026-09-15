@@ -2,7 +2,9 @@ interface Env {
 	STRIPE_SECRET_KEY: string;
 }
 
-export const onRequestPost: PagesFunction<Env> = async (context) => {
+export const onRequestPost = async (context: {
+	env: Env;
+}) => {
 
 	try {
 
