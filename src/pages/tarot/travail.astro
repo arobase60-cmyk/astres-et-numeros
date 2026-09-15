@@ -1012,6 +1012,71 @@ aiResult.classList.add("hidden");
 		cursor: not-allowed;
 	}
 
+	.tarot-question {
+	display: block;
+	width: 100%;
+	max-width: 650px;
+	margin: 1.2rem auto;
+	padding: 1rem;
+	box-sizing: border-box;
+	border-radius: 10px;
+	border: 1px solid rgba(56,189,248,.35);
+	background: rgba(15,23,42,.75);
+	color: #f8fafc;
+	font: inherit;
+	line-height: 1.5;
+	resize: vertical;
+}
+
+.tarot-question::placeholder {
+	color: #94a3b8;
+}
+
+.tarot-question:focus {
+	outline: none;
+	border-color: #38bdf8;
+}
+
+.premium-button {
+	opacity: 1;
+	cursor: pointer;
+	transition:
+		transform .2s ease,
+		opacity .2s ease;
+}
+
+.premium-button:hover:not(:disabled) {
+	transform: translateY(-2px);
+}
+
+.premium-button:disabled {
+	opacity: .55;
+	cursor: wait;
+}
+
+.ai-status {
+	margin-top: 1rem !important;
+	color: #38bdf8 !important;
+	font-weight: 600;
+}
+
+.ai-result {
+	max-width: 760px;
+	margin: 1.5rem auto 0;
+	padding: 1.5rem;
+	text-align: left;
+	white-space: pre-wrap;
+	background: rgba(15,23,42,.72);
+	border: 1px solid rgba(56,189,248,.3);
+	border-radius: 12px;
+	color: #e2e8f0;
+	line-height: 1.75;
+}
+
+.ai-result.hidden {
+	display: none;
+}
+
 	.actions {
 		display: flex;
 		justify-content: center;
