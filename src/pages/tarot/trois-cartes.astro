@@ -170,13 +170,24 @@ import { tarotCards } from '../../data/tarot';
 	</p>
 
 	<h2>
-		Que racontent ces trois cartes ensemble ?
+		Approfondissez votre tirage
 	</h2>
 
 	<p>
-		Posez une question sur votre situation.
-		L'interprétation prendra en compte votre question,
-		ainsi que les trois cartes de votre tirage.
+		Vos trois cartes vous donnent déjà les grandes tendances.
+		Posez maintenant votre question pour obtenir une analyse
+		personnalisée de votre tirage.
+	</p>
+
+	<div class="premium-benefits">
+		<p>✓ Analyse de votre question</p>
+		<p>✓ Interaction entre les 3 cartes</p>
+		<p>✓ Tendances mises en lumière</p>
+		<p>✓ Conseil personnalisé</p>
+	</div>
+
+	<p class="premium-price">
+		2,99 €
 	</p>
 
 	<textarea
@@ -184,7 +195,7 @@ import { tarotCards } from '../../data/tarot';
 		class="tarot-question"
 		maxlength="500"
 		rows="4"
-		placeholder="Exemple : Que dois-je comprendre de ma situation actuelle ?"
+		placeholder="Posez votre question ici…"
 	></textarea>
 
 	<button
@@ -192,7 +203,7 @@ import { tarotCards } from '../../data/tarot';
 		class="premium-button"
 		id="ask-gemini"
 	>
-		✨ Obtenir mon interprétation personnalisée
+		🔒 Débloquer mon interprétation
 	</button>
 
 	<p
@@ -1045,6 +1056,31 @@ askGemini.addEventListener(
 		color: #cbd5e1;
 		line-height: 1.6;
 	}
+
+
+.premium-benefits {
+	max-width: 430px;
+	margin: 1.4rem auto;
+	padding: 1.2rem 1.5rem;
+	text-align: left;
+	background: rgba(15,23,42,.45);
+	border-radius: 12px;
+}
+
+.synthesis .premium-benefits p {
+	margin: .55rem 0;
+	color: #e2e8f0;
+	font-size: .95rem;
+}
+
+.premium-price {
+	margin: 1.2rem auto .5rem !important;
+	color: #fbbf24 !important;
+	font-size: 2rem !important;
+	font-weight: 800;
+}
+
+
 
 	.premium-button {
 	padding: .9rem 1.5rem;
