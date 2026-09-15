@@ -718,7 +718,133 @@ askGemini.addEventListener(
 
 
 
+async function handleStripeReturn() {
 
+	const params =
+		new URLSearchParams(
+			window.location.search
+		);
+
+	const payment =
+		params.get("payment");
+
+	const sessionId =
+		params.get("session_id");
+
+	if (payment === "cancel") {
+		aiStatus.textContent =
+			"Paiement annulé. Aucun montant n'a été débité.";
+		return;
+	}
+
+	if (
+		payment !== "success" ||
+		!sessionId
+	) {
+		return;
+	}
+
+	aiStatus.textContent =
+		"Vérification de votre paiement…";
+
+	try {
+
+		const verifyResponse =
+			await fetch(
+				`/api/verify-payment?session_id=${encodeURIComponent(sessionId)}`
+			);
+
+		const verifyData =
+			await verifyResponse.json();
+
+		if (
+			!verifyResponse.ok ||
+			!verifyData.paid
+		) {
+			throw new Error(
+				verifyData.error ||
+				"Le paiement n'a pas pu être confirmé."
+			);
+		}
+
+		const saved =
+			localStorage.getItem(
+				"pendingTarotReading"
+			);
+
+		if (!saved) {
+			throw new Error(
+				"Votre tirage n'a pas été retrouvé."
+			);
+		}
+
+		const tarotData =
+			JSON.parse(saved);
+
+		aiStatus.textContent =
+			"Paiement confirmé. Préparation de votre interprétation…";
+
+		const tarotResponse =
+			await fetch(
+				"/api/tarot",
+				{
+					method: "POST",
+
+					headers: {
+						"Content-Type":
+							"application/json"
+					},
+
+					body:
+						JSON.stringify(
+							tarotData
+						)
+				}
+			);
+
+		const tarotResult =
+			await tarotResponse.json();
+
+		if (!tarotResponse.ok) {
+			throw new Error(
+				tarotResult.error ||
+					"L'interprétation est momentanément indisponible."
+			);
+		}
+
+		aiStatus.textContent = "";
+
+		aiResult.textContent =
+			tarotResult.interpretation;
+
+		aiResult.classList.remove(
+			"hidden"
+		);
+
+		localStorage.removeItem(
+			"pendingTarotReading"
+		);
+
+		window.history.replaceState(
+			{},
+			"",
+			window.location.pathname
+		);
+
+		aiResult.scrollIntoView({
+			behavior: "smooth",
+			block: "start"
+		});
+
+	} catch (error) {
+
+		aiStatus.textContent =
+			error.message ||
+			"Une erreur est survenue.";
+	}
+}
+
+handleStripeReturn();
 
 
 		shuffleDeck();
