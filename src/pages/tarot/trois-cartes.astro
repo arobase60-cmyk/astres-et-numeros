@@ -781,7 +781,7 @@ async function handleStripeReturn() {
 		const tarotData =
 			JSON.parse(saved);
 
-
+const resultSection = document.getElementById("result");
 resultSection.classList.remove("hidden");
 resultSection.classList.add("show");
 
@@ -842,7 +842,7 @@ aiResult.scrollIntoView({
 		aiResult.classList.remove(
 			"hidden"
 		);
-const resultSection = document.getElementById("result");
+
 resultSection.classList.remove("hidden");
 resultSection.classList.add("show");
 
