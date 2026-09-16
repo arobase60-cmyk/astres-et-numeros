@@ -1,6 +1,7 @@
 /// <reference types="@cloudflare/workers-types" />
 interface Env {
 	GEMINI_API_KEY: string;
+	STRIPE_SECRET_KEY: string;
 }
 
 interface TarotRequest {
@@ -10,6 +11,7 @@ interface TarotRequest {
 		name: string;
 		position: string;
 	}[];
+	sessionId: string;
 }
 
 export const onRequestPost: PagesFunction<Env> = async (context) => {
@@ -17,6 +19,95 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 	try {
 
 		const body = await context.request.json() as TarotRequest;
+
+if (!body.sessionId) {
+    return Response.json(
+        { error: "Paiement requis." },
+        { status: 402 }
+    );
+}
+
+const stripeResponse = await fetch(
+    `https://api.stripe.com/v1/checkout/sessions/${encodeURIComponent(body.sessionId)}`,
+    {
+        headers: {
+            Authorization: `Bearer ${context.env.STRIPE_SECRET_KEY}`
+        }
+    }
+);
+
+if (!stripeResponse.ok) {
+    console.error(
+        "Erreur vérification Stripe :",
+        stripeResponse.status
+    );
+
+    return Response.json(
+        { error: "Le paiement n'a pas pu être vérifié." },
+        { status: 402 }
+    );
+}
+
+const stripeSession: any =
+    await stripeResponse.json();
+
+if (stripeSession.payment_status !== "paid") {
+    return Response.json(
+        { error: "Paiement non confirmé." },
+        { status: 402 }
+    );
+}
+
+if (
+    stripeSession.mode !== "payment" ||
+    stripeSession.amount_total !== 299 ||
+    stripeSession.currency !== "eur"
+) {
+    return Response.json(
+        { error: "Le paiement ne correspond pas à cette interprétation." },
+        { status: 402 }
+    );
+}
+
+const lineItemsResponse = await fetch(
+    `https://api.stripe.com/v1/checkout/sessions/${encodeURIComponent(body.sessionId)}/line_items`,
+    {
+        headers: {
+            Authorization: `Bearer ${context.env.STRIPE_SECRET_KEY}`
+        }
+    }
+);
+
+if (!lineItemsResponse.ok) {
+    console.error(
+        "Erreur vérification produit Stripe :",
+        lineItemsResponse.status
+    );
+
+    return Response.json(
+        { error: "Le produit payé n'a pas pu être vérifié." },
+        { status: 402 }
+    );
+}
+
+const lineItems: any =
+    await lineItemsResponse.json();
+
+const expectedPriceId =
+    "price_1UFtCNAm4r57cVHBmoMjw0HV";
+
+const validPrice =
+    lineItems.data?.some(
+        (item: any) =>
+            item.price?.id === expectedPriceId
+    );
+
+if (!validPrice) {
+    return Response.json(
+        { error: "Ce paiement ne correspond pas à cette interprétation." },
+        { status: 402 }
+    );
+}
 
 		const question = body.question?.trim();
 		const type = body.type?.trim();

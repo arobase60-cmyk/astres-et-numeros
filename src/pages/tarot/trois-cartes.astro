@@ -816,9 +816,10 @@ aiResult.scrollIntoView({
 					},
 
 					body:
-						JSON.stringify(
-							tarotData
-						)
+    JSON.stringify({
+        ...tarotData,
+        sessionId
+    })
 				}
 			);
 
