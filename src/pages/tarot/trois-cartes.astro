@@ -781,6 +781,26 @@ async function handleStripeReturn() {
 		const tarotData =
 			JSON.parse(saved);
 
+
+resultSection.classList.remove("hidden");
+resultSection.classList.add("show");
+
+aiResult.classList.remove("hidden");
+aiResult.innerHTML = `
+    <div class="interpretation-loading">
+        <div class="loading-hourglass">⌛</div>
+        <strong>Votre interprétation est en cours de préparation</strong>
+        <span>Nous analysons votre tirage et votre question…</span>
+        <span>Cela peut prendre quelques secondes.</span>
+    </div>
+`;
+
+aiResult.scrollIntoView({
+    behavior: "smooth",
+    block: "center"
+});
+
+
 		aiStatus.textContent =
 			"Paiement confirmé. Préparation de votre interprétation…";
 
@@ -1309,6 +1329,31 @@ handleStripeReturn();
 		font-size: .83rem;
 		line-height: 1.6;
 	}
+
+.interpretation-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.7rem;
+    text-align: center;
+    padding: 1.5rem;
+}
+
+.loading-hourglass {
+    font-size: 2.5rem;
+    animation: hourglass-spin 1.5s ease-in-out infinite;
+}
+
+@keyframes hourglass-spin {
+    0%,
+    100% {
+        transform: rotate(0deg);
+    }
+
+    50% {
+        transform: rotate(180deg);
+    }
+}
 
 	@media (max-width: 900px) {
 
