@@ -750,7 +750,12 @@ async function handleStripeReturn() {
 	) {
 		return;
 	}
-
+document
+    .querySelectorAll(".card-back")
+    .forEach((button) => {
+        button.style.pointerEvents = "none";
+        button.setAttribute("aria-disabled", "true");
+    });
 	aiStatus.textContent =
 		"Vérification de votre paiement…";
 
