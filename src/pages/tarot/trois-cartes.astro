@@ -550,6 +550,12 @@ import { tarotCards } from '../../data/tarot';
 								instructionText.textContent =
 									"Votre tirage est prêt.";
 
+
+									document
+    .querySelectorAll(".card-back")
+    .forEach((cardButton) => {
+        cardButton.disabled = true;
+    });
 								setTimeout(
 									showResult,
 									500
