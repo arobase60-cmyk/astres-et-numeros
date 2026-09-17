@@ -91,7 +91,23 @@ import { tarotCards } from '../../data/tarot';
 			</div>
 
 		</div>
+<div class="three-cards-offer">
+    <p class="offer-title">
+        ✨ Envie d’aller plus loin ?
+    </p>
 
+    <p>
+        Approfondissez votre question avec un tirage personnalisé
+        de 3 cartes : Passé, Présent et Avenir.
+    </p>
+
+    <a
+        href="/tarot/trois-cartes/"
+        class="three-cards-button"
+    >
+        Découvrir le tirage 3 cartes
+    </a>
+</div>
 
 		<div class="premium">
 
@@ -665,7 +681,40 @@ premiumButton.addEventListener(
 			0 14px 25px
 			rgba(0, 0, 0, 0.45);
 	}
+.three-cards-offer {
+    max-width: 650px;
+    margin: 2rem auto;
+    padding: 1.5rem;
+    text-align: center;
+    background: rgba(15, 23, 42, 0.72);
+    border: 1px solid rgba(129, 140, 248, 0.3);
+    border-radius: 14px;
+}
 
+.offer-title {
+    margin: 0 0 0.7rem;
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.three-cards-offer p {
+    line-height: 1.6;
+}
+
+.three-cards-button {
+    display: inline-block;
+    margin-top: 0.8rem;
+    padding: 0.85rem 1.4rem;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 700;
+    background: #6366f1;
+    color: white;
+}
+
+.three-cards-button:hover {
+    opacity: 0.9;
+}
 
 	.card-pattern {
 		width: 100%;
