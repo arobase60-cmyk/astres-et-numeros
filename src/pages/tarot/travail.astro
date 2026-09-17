@@ -168,7 +168,7 @@ import { tarotCards } from '../../data/tarot';
 		class="premium-button"
 		id="ask-gemini"
 	>
-		✦ Obtenir mon interprétation personnalisée
+		✦ ✦ Obtenir mon interprétation personnalisée — 2,99 €
 	</button>
 
 	<p
@@ -536,68 +536,69 @@ askGemini.addEventListener(
 		askGemini.disabled = true;
 
 		askGemini.textContent =
-			"Interprétation en cours…";
+			"Redirection vers le paiement…";
 
 		aiStatus.textContent =
-			"Votre tirage professionnel est en cours d'analyse…";
+			"Préparation du paiement sécurisé…";
 
-		aiResult.classList.add("hidden");
-		aiResult.textContent = "";
+		const tarotData = {
+			question,
+
+			type:
+				"Tarot Travail - Situation, Opportunité, Conseil",
+
+			cards: [
+				{
+					name: selectedCards[0].name,
+					position: "Situation"
+				},
+				{
+					name: selectedCards[1].name,
+					position: "Opportunité"
+				},
+				{
+					name: selectedCards[2].name,
+					position: "Conseil"
+				}
+			]
+		};
+
+		localStorage.setItem(
+			"pendingTarotReading",
+			JSON.stringify(tarotData)
+		);
 
 		try {
 
 			const response =
-				await fetch("/api/tarot", {
-					method: "POST",
+				await fetch(
+					"/api/create-checkout",
+					{
+						method: "POST",
 
-					headers: {
-						"Content-Type": "application/json"
-					},
+						headers: {
+							"Content-Type":
+								"application/json"
+						},
 
-					body: JSON.stringify({
-						question,
-
-						type:
-							"Tarot Travail - Situation, Opportunité, Conseil",
-
-						cards: [
-							{
-								name: selectedCards[0].name,
-								position: "Situation"
-							},
-							{
-								name: selectedCards[1].name,
-								position: "Opportunité"
-							},
-							{
-								name: selectedCards[2].name,
-								position: "Conseil"
-							}
-						]
-					})
-				});
+						body: JSON.stringify({
+							source: "travail"
+						})
+					}
+				);
 
 			const data =
 				await response.json();
 
-			if (!response.ok) {
+			if (!response.ok || !data.url) {
 				throw new Error(
 					data.error ||
-					"L'interprétation est momentanément indisponible."
+					"Impossible de préparer le paiement."
 				);
 			}
 
-			aiStatus.textContent = "";
-
-			aiResult.textContent =
-				data.interpretation;
-
-			aiResult.classList.remove("hidden");
-
-			aiResult.scrollIntoView({
-				behavior: "smooth",
-				block: "start"
-			});
+			window.location.href =
+				data.url;
 
 		} catch (error) {
 
@@ -605,16 +606,184 @@ askGemini.addEventListener(
 				error.message ||
 				"Une erreur est survenue.";
 
-		} finally {
-
 			askGemini.disabled = false;
 
 			askGemini.textContent =
-				"✦ Obtenir mon interprétation personnalisée";
+				"✦ Obtenir mon interprétation personnalisée — 2,99 €";
 		}
 	}
 );
+async function handleStripeReturn() {
 
+	const params =
+		new URLSearchParams(
+			window.location.search
+		);
+
+	const payment =
+		params.get("payment");
+
+	const sessionId =
+		params.get("session_id");
+
+	if (payment === "cancel") {
+		aiStatus.textContent =
+			"Paiement annulé. Aucun montant n'a été débité.";
+		return;
+	}
+
+	if (
+		payment !== "success" ||
+		!sessionId
+	) {
+		return;
+	}
+
+	document
+		.querySelectorAll(".card-back")
+		.forEach((button) => {
+			button.style.pointerEvents = "none";
+			button.setAttribute(
+				"aria-disabled",
+				"true"
+			);
+		});
+
+	aiStatus.textContent =
+		"Vérification de votre paiement…";
+
+	try {
+
+		const verifyResponse =
+			await fetch(
+				`/api/verify-payment?session_id=${encodeURIComponent(sessionId)}`
+			);
+
+		const verifyData =
+			await verifyResponse.json();
+
+		if (
+			!verifyResponse.ok ||
+			!verifyData.paid
+		) {
+			throw new Error(
+				verifyData.error ||
+					"Le paiement n'a pas pu être confirmé."
+			);
+		}
+
+		const saved =
+			localStorage.getItem(
+				"pendingTarotReading"
+			);
+
+		if (!saved) {
+			throw new Error(
+				"Votre tirage n'a pas été retrouvé."
+			);
+		}
+
+		const tarotData =
+			JSON.parse(saved);
+
+		const resultSection =
+			document.getElementById("result");
+
+		resultSection.classList.remove("hidden");
+		resultSection.classList.add("show");
+
+		aiResult.classList.remove("hidden");
+		aiResult.innerHTML = `
+			<div class="interpretation-loading">
+				<div class="loading-hourglass">⌛</div>
+				<strong>Votre interprétation professionnelle est en cours de préparation</strong>
+				<span>Nous analysons votre tirage et votre question…</span>
+				<span>Cela peut prendre quelques secondes.</span>
+			</div>
+		`;
+
+		aiResult.scrollIntoView({
+			behavior: "smooth",
+			block: "center"
+		});
+
+		aiStatus.textContent =
+			"Paiement confirmé. Préparation de votre interprétation…";
+
+		const tarotResponse =
+			await fetch(
+				"/api/tarot",
+				{
+					method: "POST",
+					headers: {
+						"Content-Type":
+							"application/json"
+					},
+					body:
+						JSON.stringify({
+							...tarotData,
+							sessionId
+						})
+				}
+			);
+
+		const tarotResult =
+			await tarotResponse.json();
+
+		if (!tarotResponse.ok) {
+			throw new Error(
+				tarotResult.error ||
+					"L'interprétation est momentanément indisponible."
+			);
+		}
+
+		aiStatus.textContent = "";
+
+		aiResult.textContent =
+			tarotResult.interpretation;
+
+		tarotQuestion.disabled = true;
+		askGemini.disabled = true;
+		askGemini.textContent =
+			"Interprétation obtenue";
+
+		aiResult.classList.remove("hidden");
+
+		resultSection.classList.remove("hidden");
+		resultSection.classList.add("show");
+
+		aiResult.style.display = "block";
+		aiResult.style.opacity = "1";
+		aiResult.style.transform = "none";
+		aiResult.style.visibility = "visible";
+
+		localStorage.removeItem(
+			"pendingTarotReading"
+		);
+
+		window.history.replaceState(
+			{},
+			"",
+			window.location.pathname
+		);
+
+		aiResult.scrollIntoView({
+			behavior: "smooth",
+			block: "start"
+		});
+
+	} catch (error) {
+
+		console.error(
+			"ERREUR RETOUR STRIPE TRAVAIL :",
+			error
+		);
+
+		aiStatus.textContent =
+			error.message ||
+			"Une erreur est survenue.";
+	}
+}
 
 		newReading.addEventListener(
 			"click",
@@ -622,6 +791,13 @@ askGemini.addEventListener(
 
 				selectedCards.length = 0;
 tarotQuestion.value = "";
+tarotQuestion.disabled = false;
+
+askGemini.disabled = false;
+
+askGemini.textContent =
+	"✦ Obtenir mon interprétation personnalisée — 2,99 €";
+
 
 aiStatus.textContent = "";
 
@@ -641,6 +817,12 @@ aiResult.classList.add("hidden");
 
 							button.disabled =
 								false;
+
+button.style.pointerEvents = "";
+
+button.removeAttribute(
+	"aria-disabled"
+);
 
 						}
 					);
@@ -687,6 +869,7 @@ aiResult.classList.add("hidden");
 
 		shuffleDeck();
 		updateProgress();
+		handleStripeReturn();
 
 	</script>
 
@@ -1075,6 +1258,30 @@ aiResult.classList.add("hidden");
 
 .ai-result.hidden {
 	display: none;
+}
+
+.interpretation-loading {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 0.7rem;
+	text-align: center;
+	padding: 1.5rem;
+}
+
+.loading-hourglass {
+	font-size: 2.5rem;
+	animation: hourglass-spin 1.5s ease-in-out infinite;
+}
+
+@keyframes hourglass-spin {
+	0%, 100% {
+		transform: rotate(0deg);
+	}
+
+	50% {
+		transform: rotate(180deg);
+	}
 }
 
 	.actions {
