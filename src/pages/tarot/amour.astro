@@ -168,7 +168,7 @@ import { tarotCards } from '../../data/tarot';
 		  class="premium-button"
 		   id="ask-gemini"
 	      >
-		 ♥ Obtenir mon interprétation personnalisée
+		 ♥ ♥ Obtenir mon interprétation personnalisée — 2,99 €
 	     </button>
 
 	      <p
@@ -837,6 +837,11 @@ askGemini.textContent =
 
 							button.disabled =
 								false;
+button.style.pointerEvents = "";
+
+button.removeAttribute(
+	"aria-disabled"
+);
 
 						}
 					);
