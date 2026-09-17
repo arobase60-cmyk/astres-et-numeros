@@ -587,11 +587,27 @@ import { tarotCards } from '../../data/tarot';
 
 							button.disabled =
 								false;
-button.style.pointerEvents = "";
-button.removeAttribute("aria-disabled");
+                            button.style.pointerEvents = "";
+                            button.removeAttribute("aria-disabled");
 						}
 					);
+aiResult.textContent = "";
+aiResult.classList.add("hidden");
 
+aiStatus.textContent = "";
+
+const resultSection =
+    document.getElementById("result");
+
+resultSection.classList.remove("show");
+resultSection.classList.add("hidden");
+
+localStorage.removeItem("pendingTarotReading");
+
+window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+});
 				result.classList.remove(
 					"show"
 				);
