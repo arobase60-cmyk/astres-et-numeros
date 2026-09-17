@@ -595,6 +595,12 @@ aiResult.textContent = "";
 aiResult.classList.add("hidden");
 
 aiStatus.textContent = "";
+tarotQuestion.disabled = false;
+tarotQuestion.value = "";
+
+askGemini.disabled = false;
+askGemini.textContent = "🔒 Débloquer mon interprétation";
+
 
 const resultSection =
     document.getElementById("result");
@@ -866,7 +872,9 @@ aiResult.scrollIntoView({
 
 		aiResult.textContent =
 			tarotResult.interpretation;
-
+tarotQuestion.disabled = true;
+askGemini.disabled = true;
+askGemini.textContent = "Interprétation obtenue";
 		
 
 		aiResult.classList.remove(
