@@ -4,11 +4,13 @@ interface Env {
 
 export const onRequestPost = async (context: {
 	env: Env;
+	request: Request;
 }) => {
 
 	try {
 
-		const stripeKey = context.env.STRIPE_SECRET_KEY;
+		const stripeKey =
+			context.env.STRIPE_SECRET_KEY;
 
 		if (!stripeKey) {
 			return Response.json(
@@ -17,11 +19,56 @@ export const onRequestPost = async (context: {
 			);
 		}
 
-		const priceId = "price_1UFtCNAm4r57cVHBmoMjw0HV";
+		/*
+		 * Page depuis laquelle le paiement est lancé.
+		 */
 
-		const formData = new URLSearchParams();
+		let source = "trois-cartes";
 
-		formData.append("mode", "payment");
+		try {
+			const body: any =
+				await context.request.json();
+
+			if (
+				body?.source === "amour" ||
+				body?.source === "travail" ||
+				body?.source === "trois-cartes"
+			) {
+				source = body.source;
+			}
+
+		} catch {
+			// Compatibilité avec l'ancien appel sans body.
+		}
+
+		const routes: Record<string, string> = {
+			"trois-cartes":
+				"/tarot/trois-cartes/",
+
+			"amour":
+				"/tarot/amour/",
+
+			"travail":
+				"/tarot/travail/"
+		};
+
+		const returnPath =
+			routes[source] ||
+			routes["trois-cartes"];
+
+		const baseUrl =
+			"https://astres-et-numeros.pages.dev";
+
+		const priceId =
+			"price_1UFtCNAm4r57cVHBmoMjw0HV";
+
+		const formData =
+			new URLSearchParams();
+
+		formData.append(
+			"mode",
+			"payment"
+		);
 
 		formData.append(
 			"line_items[0][price]",
@@ -35,30 +82,35 @@ export const onRequestPost = async (context: {
 
 		formData.append(
 			"success_url",
-			"https://astres-et-numeros.pages.dev/tarot/trois-cartes/?payment=success&session_id={CHECKOUT_SESSION_ID}"
+			`${baseUrl}${returnPath}?payment=success&session_id={CHECKOUT_SESSION_ID}`
 		);
 
 		formData.append(
 			"cancel_url",
-			"https://astres-et-numeros.pages.dev/tarot/trois-cartes/?payment=cancel"
+			`${baseUrl}${returnPath}?payment=cancel`
 		);
 
-		const response = await fetch(
-			"https://api.stripe.com/v1/checkout/sessions",
-			{
-				method: "POST",
+		const response =
+			await fetch(
+				"https://api.stripe.com/v1/checkout/sessions",
+				{
+					method: "POST",
 
-				headers: {
-					"Authorization": `Bearer ${stripeKey}`,
-					"Content-Type":
-						"application/x-www-form-urlencoded"
-				},
+					headers: {
+						"Authorization":
+							`Bearer ${stripeKey}`,
 
-				body: formData.toString()
-			}
-		);
+						"Content-Type":
+							"application/x-www-form-urlencoded"
+					},
 
-		const data: any = await response.json();
+					body:
+						formData.toString()
+				}
+			);
+
+		const data: any =
+			await response.json();
 
 		if (!response.ok) {
 
