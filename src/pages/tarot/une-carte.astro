@@ -175,17 +175,7 @@ import { tarotCards } from '../../data/tarot';
 			document.getElementById("new-reading");
 
 
-        const tarotQuestion =
-	        document.getElementById("tarot-question");
-
-        const premiumButton =
-	        document.getElementById("premium-button");
-
-        const aiStatus =
-	        document.getElementById("ai-status");
-
-        const aiResult =
-	        document.getElementById("ai-result");
+       
 
         let selectedCard = null;
 
@@ -355,97 +345,7 @@ import { tarotCards } from '../../data/tarot';
 
 		}
 
-premiumButton.addEventListener(
-	"click",
-	async () => {
 
-		const question =
-			tarotQuestion.value.trim();
-
-		if (!question) {
-			aiStatus.textContent =
-				"Veuillez poser une question.";
-			return;
-		}
-
-		if (!selectedCard) {
-			aiStatus.textContent =
-				"Veuillez d'abord tirer une carte.";
-			return;
-		}
-
-		premiumButton.disabled = true;
-
-		premiumButton.textContent =
-			"Interprétation en cours…";
-
-		aiStatus.textContent =
-			"Votre carte est en cours d'analyse…";
-
-		aiResult.classList.add("hidden");
-		aiResult.textContent = "";
-
-		try {
-
-			const response =
-				await fetch("/api/tarot", {
-					method: "POST",
-
-					headers: {
-						"Content-Type": "application/json"
-					},
-
-					body: JSON.stringify({
-						question,
-
-						type: "Tirage Tarot 1 carte",
-
-						cards: [
-							{
-								name: selectedCard.name,
-								position: "Votre carte"
-							}
-						]
-					})
-				});
-
-			const data =
-				await response.json();
-
-			if (!response.ok) {
-				throw new Error(
-					data.error ||
-					"L'interprétation est momentanément indisponible."
-				);
-			}
-
-			aiStatus.textContent = "";
-
-			aiResult.textContent =
-				data.interpretation;
-
-			aiResult.classList.remove("hidden");
-
-			aiResult.scrollIntoView({
-				behavior: "smooth",
-				block: "start"
-			});
-
-		} catch (error) {
-
-			aiStatus.textContent =
-				error.message ||
-				"Une erreur est survenue.";
-
-		} finally {
-
-			premiumButton.disabled = false;
-
-			premiumButton.textContent =
-				"✨ Obtenir mon interprétation personnalisée";
-		}
-	}
-);
 		/*
 		 * Nouveau tirage.
 		 */
