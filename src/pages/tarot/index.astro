@@ -1,0 +1,281 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout title="Tarot en ligne - Astres & Numéros">
+
+	<section class="tarot-hero">
+		<p class="eyebrow">TAROT</p>
+
+		<h1>Que veulent vous révéler les cartes ?</h1>
+
+		<p class="intro">
+			Choisissez votre tirage, concentrez-vous sur votre question
+			et laissez les cartes vous offrir une nouvelle perspective.
+		</p>
+	</section>
+
+
+	<section class="tarot-grid">
+
+		<a href="/tarot/une-carte/" class="tarot-card featured">
+			<div class="icon">🔮</div>
+
+			<div class="badge free">
+				GRATUIT
+			</div>
+
+			<h2>1 carte</h2>
+
+			<p>
+				Tirez une carte et découvrez immédiatement
+				le message qu'elle vous transmet.
+			</p>
+
+			<span class="action">
+				Faire un tirage gratuit →
+			</span>
+		</a>
+
+
+		<a href="/tarot/trois-cartes/" class="tarot-card">
+			<div class="icon">✨</div>
+
+			<h2>3 cartes</h2>
+
+			<p>
+				Explorez votre situation à travers
+				le Passé, le Présent et l'Avenir possible.
+			</p>
+
+			<p class="pricing">
+				Tirage gratuit · Interprétation personnalisée 2,99 €
+			</p>
+
+			<span class="action">
+				Découvrir le tirage →
+			</span>
+		</a>
+
+
+		<a href="/tarot/amour/" class="tarot-card">
+			<div class="icon">❤️</div>
+
+			<h2>Tarot Amour</h2>
+
+			<p>
+				Explorez votre situation sentimentale,
+				vos émotions et l'évolution possible de votre relation.
+			</p>
+
+			<p class="pricing">
+				Tirage gratuit · Interprétation personnalisée 2,99 €
+			</p>
+
+			<span class="action">
+				Consulter le Tarot Amour →
+			</span>
+		</a>
+
+
+		<a href="/tarot/travail/" class="tarot-card">
+			<div class="icon">💼</div>
+
+			<h2>Tarot Travail</h2>
+
+			<p>
+				Prenez du recul sur votre situation professionnelle,
+				les opportunités et les décisions à envisager.
+			</p>
+
+			<p class="pricing">
+				Tirage gratuit · Interprétation personnalisée 2,99 €
+			</p>
+
+			<span class="action">
+				Consulter le Tarot Travail →
+			</span>
+		</a>
+
+	</section>
+
+
+	<section class="tarot-info">
+
+		<h2>Comment fonctionne le Tarot ?</h2>
+
+		<p>
+			Prenez quelques instants pour penser à votre question,
+			puis choisissez les cartes qui vous attirent spontanément.
+			Chaque tirage propose une lecture destinée à vous aider
+			à réfléchir à votre situation sous un autre angle.
+		</p>
+
+		<p class="disclaimer">
+			Le Tarot proposé sur Astres & Numéros est un outil
+			de réflexion et de divertissement. Il ne prédit pas
+			l'avenir avec certitude et ne remplace aucun conseil
+			professionnel, médical, juridique ou financier.
+		</p>
+
+	</section>
+
+</Layout>
+
+
+<style>
+
+	.tarot-hero {
+		max-width: 800px;
+		margin: 1rem auto 3rem;
+		text-align: center;
+	}
+
+	.eyebrow {
+		color: #818cf8;
+		font-size: .82rem;
+		font-weight: 700;
+		letter-spacing: .18em;
+		margin-bottom: .8rem;
+	}
+
+	.tarot-hero h1 {
+		color: #fbbf24;
+		font-size: clamp(2rem, 5vw, 3.2rem);
+		margin-bottom: 1rem;
+	}
+
+	.intro {
+		color: #cbd5e1;
+		font-size: 1.08rem;
+		line-height: 1.7;
+	}
+
+	.tarot-grid {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 1.4rem;
+		max-width: 950px;
+		margin: 0 auto 4rem;
+	}
+
+	.tarot-card {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		padding: 2rem;
+		min-height: 300px;
+		border-radius: 18px;
+		text-decoration: none;
+		background:
+			linear-gradient(
+				145deg,
+				rgba(30, 41, 59, .88),
+				rgba(30, 27, 75, .72)
+			);
+		border: 1px solid rgba(129, 140, 248, .25);
+		box-shadow: 0 14px 35px rgba(0, 0, 0, .25);
+		transition:
+			transform .25s ease,
+			border-color .25s ease,
+			box-shadow .25s ease;
+	}
+
+	.tarot-card:hover {
+		transform: translateY(-6px);
+		border-color: rgba(251, 191, 36, .6);
+		box-shadow: 0 20px 40px rgba(0, 0, 0, .35);
+	}
+
+	.tarot-card.featured {
+		border-color: rgba(251, 191, 36, .45);
+	}
+
+	.icon {
+		font-size: 2.3rem;
+		margin-bottom: 1rem;
+	}
+
+	.badge {
+		position: absolute;
+		top: 1.3rem;
+		right: 1.3rem;
+		padding: .35rem .65rem;
+		border-radius: 999px;
+		font-size: .7rem;
+		font-weight: 800;
+		letter-spacing: .08em;
+	}
+
+	.badge.free {
+		background: rgba(34, 197, 94, .15);
+		border: 1px solid rgba(34, 197, 94, .45);
+		color: #86efac;
+	}
+
+	.tarot-card h2 {
+		color: #fbbf24;
+		font-size: 1.5rem;
+		margin-bottom: .8rem;
+	}
+
+	.tarot-card > p:not(.pricing) {
+		color: #cbd5e1;
+		line-height: 1.65;
+		margin-bottom: 1rem;
+	}
+
+	.pricing {
+		color: #a5b4fc;
+		font-size: .88rem;
+		line-height: 1.5;
+		margin-top: auto;
+		margin-bottom: 1rem;
+	}
+
+	.action {
+		color: #f8fafc;
+		font-weight: 700;
+	}
+
+	.tarot-info {
+		max-width: 850px;
+		margin: 0 auto 2rem;
+		padding: 2rem;
+		text-align: center;
+		background: rgba(30, 41, 59, .45);
+		border: 1px solid rgba(255, 255, 255, .08);
+		border-radius: 16px;
+	}
+
+	.tarot-info h2 {
+		color: #fbbf24;
+		margin-bottom: 1rem;
+	}
+
+	.tarot-info p {
+		color: #cbd5e1;
+		line-height: 1.7;
+	}
+
+	.tarot-info .disclaimer {
+		margin-top: 1.4rem;
+		padding-top: 1.4rem;
+		border-top: 1px solid rgba(255, 255, 255, .08);
+		color: #94a3b8;
+		font-size: .85rem;
+	}
+
+	@media (max-width: 700px) {
+
+		.tarot-grid {
+			grid-template-columns: 1fr;
+		}
+
+		.tarot-card {
+			min-height: auto;
+		}
+
+	}
+
+</style>
