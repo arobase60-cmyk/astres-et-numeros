@@ -2,6 +2,7 @@
 interface Env {
 	GEMINI_API_KEY: string;
 	STRIPE_SECRET_KEY: string;
+	TAROT_PAYMENTS: KVNamespace;
 }
 
 interface TarotRequest {
@@ -108,6 +109,24 @@ if (!validPrice) {
         { status: 402 }
     );
 }
+const paymentKey =
+	`stripe:${body.sessionId}`;
+
+const alreadyUsed =
+	await context.env.TAROT_PAYMENTS.get(
+		paymentKey
+	);
+
+if (alreadyUsed) {
+	return Response.json(
+		{
+			error:
+				"Ce paiement a déjà été utilisé pour une interprétation."
+		},
+		{ status: 409 }
+	);
+}
+
 
 		const question = body.question?.trim();
 		const type = body.type?.trim();
@@ -293,7 +312,7 @@ Longueur souhaitée : environ 350 à 500 mots.
 	return Response.json(
 		{
 			error:
-				`Gemini ${response.status} : ${geminiError}`
+				"L'interprétation est momentanément indisponible. Veuillez réessayer."
 		},
 		{ status: 502 }
 	);
@@ -318,6 +337,11 @@ Longueur souhaitée : environ 350 à 500 mots.
 				{ status: 502 }
 			);
 		}
+
+await context.env.TAROT_PAYMENTS.put(
+	paymentKey,
+	"used"
+);
 
 		return Response.json({
 			interpretation
