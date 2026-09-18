@@ -4,50 +4,106 @@ interface Props {
 }
 
 const { title } = Astro.props;
-
 ---
 
 <!doctype html>
 <html lang="fr">
 	<head>
 		<meta charset="UTF-8" />
-		<meta name="description" content="Jouons avec les astres - Votre horoscope quotidien" />
-		<meta name="viewport" content="width=device-width" />
+		<meta
+			name="description"
+			content="Astres & Numéros : tarot, horoscope, compatibilité, numérologie et astrologie chinoise."
+		/>
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
 		<title>{title}</title>
-	<script defer src="https://cloud.umami.is/script.js" data-website-id="b4001312-7392-4d91-8422-6b4739be5400"></script>	
+
+		<script
+			defer
+			src="https://cloud.umami.is/script.js"
+			data-website-id="b4001312-7392-4d91-8422-6b4739be5400"
+		></script>
 	</head>
+
 	<body>
-		<!-- Barre de navigation supérieure -->
+
 		<header class="navbar">
-			<a href="/" class="brand">✨ </a>
-			<!-- Insertion du widget de la lune -->
-	
-			<nav>
-	<a href="/">Accueil</a>
-<a href="/horoscope/">Horoscope</a>
-<a href="/signes-occidentaux/">Particularités des signes du zodiaque</a>
-<a href="/horoscope-chinois/">Horoscope Chinois</a>
-<a href="/signes-chinois/">Particularités des signes chinois</a>
-<a href="/numerologie/">Numérologie</a>
-<a href="/compatibilite/">Compatibilité</a>
-    </nav>	 
+
+			<a href="/" class="brand">
+				<span class="brand-icon">✨</span>
+				<span>Astres & Numéros</span>
+			</a>
+
+			<nav class="main-nav" aria-label="Navigation principale">
+
+				<a href="/">
+					Accueil
+				</a>
+
+				<a href="/tarot/">
+					Tarot
+				</a>
+
+				<a href="/horoscope/">
+					Horoscope
+				</a>
+
+				<a href="/compatibilite/">
+					Compatibilité
+				</a>
+
+				<a href="/numerologie/">
+					Numérologie
+				</a>
+
+				<a href="/horoscope-chinois/">
+					Astrologie chinoise
+				</a>
+
+			</nav>
+
 		</header>
 
-		<!-- Emplacement où le contenu de chaque page sera injecté -->
+
 		<main>
 			<slot />
 		</main>
 
-		<!-- Pied de page -->
+
 		<footer>
-			<p>© Jouons avec les astres - Tous droits réservés.</p>
+
+			<div class="footer-content">
+
+				<p class="footer-brand">
+					✨ Astres & Numéros
+				</p>
+
+				<div class="footer-links">
+					<a href="/signes-occidentaux/">
+						Signes du zodiaque
+					</a>
+
+					<a href="/signes-chinois/">
+						Signes chinois
+					</a>
+				</div>
+
+				<p class="copyright">
+					© {new Date().getFullYear()} Astres & Numéros - Tous droits réservés.
+				</p>
+
+			</div>
+
 		</footer>
+
 	</body>
 </html>
 
+
 <style is:global>
-	/* Variables de couleurs globales */
+
 	:root {
 		--bg-color: #0f172a;
 		--card-bg: rgba(30, 41, 59, 0.7);
@@ -57,72 +113,282 @@ const { title } = Astro.props;
 		--text-muted: #94a3b8;
 	}
 
+
 	* {
 		box-sizing: border-box;
 		margin: 0;
 		padding: 0;
 	}
 
+
+	html {
+		scroll-behavior: smooth;
+	}
+
+
 	body {
-		font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-		background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+		font-family:
+			system-ui,
+			-apple-system,
+			BlinkMacSystemFont,
+			'Segoe UI',
+			Roboto,
+			Oxygen,
+			Ubuntu,
+			Cantarell,
+			sans-serif;
+
+		background:
+			linear-gradient(
+				135deg,
+				#0f172a 0%,
+				#1e1b4b 100%
+			);
+
 		color: var(--text-light);
+
 		min-height: 100vh;
+
 		display: flex;
 		flex-direction: column;
 	}
 
-	/* Navigation */
+
+	/* -------------------------
+	   NAVIGATION
+	------------------------- */
+
 	.navbar {
+
 		display: flex;
+
 		justify-content: space-between;
 		align-items: center;
-		padding: 1.2rem 2rem;
-		background: rgba(15, 23, 42, 0.8);
-		backdrop-filter: blur(10px);
-		border-bottom: 1px solid rgba(251, 191, 36, 0.2);
+
+		padding: 1.1rem 2rem;
+
+		background: rgba(15, 23, 42, 0.88);
+
+		backdrop-filter: blur(12px);
+
+		border-bottom:
+			1px solid rgba(251, 191, 36, 0.2);
+
 		position: sticky;
+
 		top: 0;
-		z-index: 100;
+
+		z-index: 1000;
 	}
+
 
 	.brand {
-		font-size: 1.3rem;
-		font-weight: bold;
-		color: var(--accent-gold);
-		text-decoration: none;
-	}
 
-	.navbar nav {
 		display: flex;
-		gap: 1.5rem;
-	}
 
-	.navbar nav a {
-		color: var(--text-light);
-		text-decoration: none;
-		transition: color 0.2s;
-	}
+		align-items: center;
 
-	.navbar nav a:hover {
+		gap: 0.45rem;
+
+		font-size: 1.15rem;
+
+		font-weight: 700;
+
 		color: var(--accent-gold);
+
+		text-decoration: none;
+
+		white-space: nowrap;
 	}
 
-	/* Conteneur principal */
+
+	.brand-icon {
+		font-size: 1.35rem;
+	}
+
+
+	.main-nav {
+
+		display: flex;
+
+		align-items: center;
+
+		gap: 1.3rem;
+	}
+
+
+	.main-nav a {
+
+		color: var(--text-light);
+
+		text-decoration: none;
+
+		font-size: 0.95rem;
+
+		transition:
+			color 0.2s ease,
+			transform 0.2s ease;
+	}
+
+
+	.main-nav a:hover {
+
+		color: var(--accent-gold);
+
+		transform: translateY(-1px);
+	}
+
+
+	/* -------------------------
+	   CONTENU PRINCIPAL
+	------------------------- */
+
 	main {
+
 		flex: 1;
+
 		max-width: 1100px;
+
 		width: 100%;
+
 		margin: 0 auto;
+
 		padding: 2rem 1rem;
 	}
 
-	/* Pied de page */
+
+	/* -------------------------
+	   FOOTER
+	------------------------- */
+
 	footer {
-		text-align: center;
-		padding: 2rem;
-		background: rgba(15, 23, 42, 0.9);
-		color: var(--text-muted);
-		border-top: 1px solid rgba(255, 255, 255, 0.05);
+
+		margin-top: 2rem;
+
+		background: rgba(15, 23, 42, 0.94);
+
+		border-top:
+			1px solid rgba(255, 255, 255, 0.06);
 	}
+
+
+	.footer-content {
+
+		max-width: 1100px;
+
+		margin: 0 auto;
+
+		padding: 2rem 1rem;
+
+		text-align: center;
+	}
+
+
+	.footer-brand {
+
+		font-weight: 700;
+
+		color: var(--accent-gold);
+
+		margin-bottom: 1rem;
+	}
+
+
+	.footer-links {
+
+		display: flex;
+
+		justify-content: center;
+
+		flex-wrap: wrap;
+
+		gap: 1.2rem;
+
+		margin-bottom: 1.2rem;
+	}
+
+
+	.footer-links a {
+
+		color: #cbd5e1;
+
+		text-decoration: none;
+
+		font-size: 0.9rem;
+	}
+
+
+	.footer-links a:hover {
+		color: var(--accent-gold);
+	}
+
+
+	.copyright {
+
+		color: var(--text-muted);
+
+		font-size: 0.85rem;
+	}
+
+
+	/* -------------------------
+	   TABLETTE
+	------------------------- */
+
+	@media (max-width: 950px) {
+
+		.navbar {
+
+			flex-direction: column;
+
+			gap: 1rem;
+
+			padding: 1rem;
+		}
+
+
+		.main-nav {
+
+			justify-content: center;
+
+			flex-wrap: wrap;
+
+			gap: 0.9rem 1.2rem;
+		}
+
+	}
+
+
+	/* -------------------------
+	   MOBILE
+	------------------------- */
+
+	@media (max-width: 600px) {
+
+		.brand {
+			font-size: 1.05rem;
+		}
+
+
+		.main-nav {
+
+			gap: 0.7rem 1rem;
+		}
+
+
+		.main-nav a {
+
+			font-size: 0.87rem;
+		}
+
+
+		main {
+
+			padding:
+				1.4rem
+				0.85rem;
+		}
+
+	}
+
 </style>
