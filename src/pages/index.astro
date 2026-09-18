@@ -2,78 +2,461 @@
 import Layout from '../layouts/Layout.astro';
 ---
 
-<Layout title="Jouons avec les astres - Accueil">
-    <!-- Bandeau d'accueil -->
+<Layout title="Astres & Numéros - Tarot, Horoscope et Numérologie">
+
+    <!-- Bandeau principal -->
     <section class="hero-banner">
-        <h1>Jouons avec les astres</h1>
-        <p class="tagline">Laissez la voûte céleste éclairer votre journée</p>
+        <p class="eyebrow">ASTRES & NUMÉROS</p>
+
+        <h1>Découvrez ce que les astres et les cartes vous révèlent</h1>
+
+        <p class="tagline">
+            Tarot, horoscope, compatibilité et numérologie pour mieux éclairer votre journée.
+        </p>
+
+        <div class="hero-actions">
+
+    <a href="/tarot/une-carte/" class="btn btn-primary">
+        🔮 Faire un tirage de Tarot gratuit
+    </a>
+
+</div>
+
     </section>
 
-    <!-- Texte d'introduction -->
-    <section class="intro-text">
-        <p>
-            Depuis la nuit des temps, l'humanité contemple la voûte céleste avec un mélange d'émerveillement, de curiosité et de profond respect. 
-            Bien avant l'apparition des télescopes modernes et de la science contemporaine, nos ancêtres scrutaient le ciel nocturne à la recherche de repères précieux pour guider leur existence. 
-            Les Babyloniens, les Égyptiens, les Mayas ou encore les grandes dynasties chinoises observaient la danse mystique des planètes et des étoiles pour rythmer leur quotidien.
-        </p>
-        <p>
-            Pour ces civilisations anciennes, les constellations n'étaient pas de simples points lumineux éparpillés dans le vide, mais de véritables guides spirituels et pratiques. 
-            Elles indiquaient le moment propice pour semer, récolter, entreprendre de grands voyages ou prendre des décisions politiques majeures. 
-            Interpréter la position des astres offrait une clé de compréhension du monde et permettait de chercher des réponses aux mystères de la destinée humaine.
-        </p>
-        <p>
-            À travers les siècles, la tradition astrologique s'est affinée et transmise de génération en génération, traversant les époques et les cultures. 
-            Aujourd'hui encore, malgré les avancées extraordinaires de la technologie, ce réflexe millénaire de se tourner vers les étoiles demeure intact dans nos cœurs. 
-            S'accorder un instant pour lire son horoscope, c'est s'offrir une pause poétique, une étincelle de curiosité et une nouvelle perspective sur nos doutes contemporains.
-        </p>
-        <p>
-            Que vous cherchiez un conseil avisé pour votre journée, une intuition sur vos relations ou simplement vos chiffres porte-bonheur, le ciel continue d'exercer sa magie. 
-            Découvrez ce que les alignements astrologiques occidentaux ou la sagesse des signes chinois vous réservent pour la journée.
-        </p>
+
+    <!-- Rubriques principales -->
+    <section class="services">
+
+        <a href="/tarot/" class="service-card featured">
+            <div class="icon">🔮</div>
+            <h2>Tarot</h2>
+            <p>
+                Tirez les cartes et découvrez le message des arcanes.
+                Commencez par un tirage gratuit.
+            </p>
+            <span class="card-link">Faire un tirage →</span>
+        </a>
+
+
+        <a href="/horoscope" class="service-card">
+            <div class="icon">♊</div>
+            <h2>Horoscope</h2>
+            <p>
+                Consultez votre horoscope et découvrez les tendances
+                de votre journée.
+            </p>
+            <span class="card-link">Voir mon horoscope →</span>
+        </a>
+
+
+        <a href="/numerologie" class="service-card">
+            <div class="icon">🔢</div>
+            <h2>Numérologie</h2>
+            <p>
+                Découvrez votre chemin de vie et la signification
+                des nombres qui vous accompagnent.
+            </p>
+            <span class="card-link">Découvrir mes nombres →</span>
+        </a>
+
     </section>
+
+
+    <!-- Rubriques secondaires -->
+    <section class="secondary-services">
+
+        <a href="/compatibilite" class="small-card">
+            <div class="small-icon">❤️</div>
+
+            <div>
+                <h2>Compatibilité</h2>
+                <p>
+                    Découvrez les affinités entre deux signes astrologiques.
+                </p>
+            </div>
+        </a>
+
+
+        <a href="/horoscope-chinois" class="small-card">
+            <div class="small-icon">🐉</div>
+
+            <div>
+                <h2>Astrologie chinoise</h2>
+                <p>
+                    Découvrez votre signe chinois et ce qu'il révèle de votre personnalité.
+                </p>
+            </div>
+        </a>
+
+    </section>
+
+<!-- Zone publicitaire -->
+
+<section class="ad-zone" aria-label="Publicité">
+    <span>Publicité</span>
+
+    <div class="ad-placeholder">
+        Espace publicitaire
+    </div>
+</section>
+
+
+
+    <!-- Présentation -->
+    <section class="intro-text">
+
+        <h2>Astrologie, tarot et numérologie</h2>
+
+        <p>
+            Depuis des millénaires, l'être humain observe les astres et cherche
+            à comprendre les symboles qui l'entourent. Astrologie, tarot et
+            numérologie proposent différentes façons d'explorer notre
+            personnalité, nos relations et les grandes tendances de notre vie.
+        </p>
+
+        <p>
+            Astres & Numéros vous permet de découvrir gratuitement votre
+            horoscope, votre signe astrologique, votre signe chinois,
+            votre compatibilité ainsi que différents tirages de tarot.
+        </p>
+
+        <p>
+            Ces contenus sont proposés dans un esprit de découverte et de
+            divertissement. Ils peuvent vous inviter à réfléchir à une situation
+            ou à envisager les choses sous un nouvel angle.
+        </p>
+
+    </section>
+
 </Layout>
 
+
 <style>
+
+    /* HERO */
+
     .hero-banner {
         text-align: center;
-        padding: 3rem 1rem;
-        background: linear-gradient(135deg, rgba(129, 140, 248, 0.2) 0%, rgba(251, 191, 36, 0.2) 100%);
+        padding: 4rem 1.5rem;
+        background:
+            radial-gradient(circle at top, rgba(129, 140, 248, 0.25), transparent 55%),
+            linear-gradient(
+                135deg,
+                rgba(129, 140, 248, 0.16),
+                rgba(251, 191, 36, 0.12)
+            );
+
         border: 1px solid rgba(251, 191, 36, 0.3);
-        border-radius: 16px;
-        margin-bottom: 2.5rem;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        border-radius: 18px;
+        margin-bottom: 3rem;
+        box-shadow: 0 12px 35px rgba(0, 0, 0, 0.35);
     }
+
+
+    .eyebrow {
+        color: #fbbf24;
+        font-size: 0.9rem;
+        letter-spacing: 0.18em;
+        font-weight: 700;
+        margin-bottom: 1rem;
+    }
+
 
     .hero-banner h1 {
-        font-size: 2.8rem;
+        max-width: 850px;
+        margin: 0 auto 1rem;
+        font-size: clamp(2.1rem, 5vw, 3.4rem);
+        line-height: 1.15;
         color: #fbbf24;
-        margin-bottom: 0.5rem;
-        text-shadow: 0 2px 10px rgba(251, 191, 36, 0.3);
+        text-shadow: 0 2px 12px rgba(251, 191, 36, 0.22);
     }
+
 
     .tagline {
+        max-width: 720px;
+        margin: 0 auto;
         font-size: 1.2rem;
-        color: #f8fafc;
-        font-style: italic;
+        line-height: 1.6;
+        color: #e2e8f0;
     }
 
-    .intro-text {
-        background: rgba(30, 41, 59, 0.7);
+
+    /* BOUTONS */
+
+    .hero-actions {
+        margin-top: 2rem;
+
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+
+
+    .btn {
+        text-decoration: none;
+        padding: 0.9rem 1.5rem;
+        border-radius: 10px;
+        font-weight: 700;
+        transition:
+            transform 0.2s ease,
+            box-shadow 0.2s ease,
+            background 0.2s ease;
+    }
+
+
+    .btn:hover {
+        transform: translateY(-2px);
+    }
+
+
+    .btn-primary {
+        background: #fbbf24;
+        color: #111827;
+        box-shadow: 0 6px 18px rgba(251, 191, 36, 0.25);
+    }
+
+
+    .btn-primary:hover {
+        background: #f59e0b;
+    }
+
+
+    .btn-secondary {
+        border: 1px solid rgba(255,255,255,0.25);
+        color: #f8fafc;
+        background: rgba(255,255,255,0.06);
+    }
+
+
+    .btn-secondary:hover {
+        background: rgba(255,255,255,0.12);
+    }
+
+
+    /* CARTES PRINCIPALES */
+
+    .services {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.4rem;
+        margin-bottom: 2rem;
+    }
+
+
+    .service-card {
+        display: flex;
+        flex-direction: column;
+
+        text-decoration: none;
         padding: 2rem;
-        border-radius: 12px;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        line-height: 1.75;
+
+        background: rgba(30, 41, 59, 0.72);
+
+        border: 1px solid rgba(255,255,255,0.10);
+        border-radius: 16px;
+
+        transition:
+            transform 0.2s ease,
+            border-color 0.2s ease,
+            box-shadow 0.2s ease;
+    }
+
+
+    .service-card:hover {
+        transform: translateY(-5px);
+
+        border-color: rgba(251, 191, 36, 0.55);
+
+        box-shadow: 0 12px 30px rgba(0,0,0,0.3);
+    }
+
+
+    .service-card.featured {
+        border-color: rgba(251, 191, 36, 0.38);
+    }
+
+
+    .icon {
+        font-size: 2.6rem;
+        margin-bottom: 1rem;
+    }
+
+
+    .service-card h2 {
+        color: #fbbf24;
+        margin: 0 0 0.7rem;
+        font-size: 1.5rem;
+    }
+
+
+    .service-card p {
+        color: #cbd5e1;
+        line-height: 1.6;
+        flex-grow: 1;
+    }
+
+
+    .card-link {
+        color: #fbbf24;
+        margin-top: 1rem;
+        font-weight: 700;
+    }
+
+
+    /* CARTES SECONDAIRES */
+
+    .secondary-services {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.4rem;
         margin-bottom: 3rem;
     }
 
-    .intro-text p {
-        margin-bottom: 1.2rem;
-        color: #cbd5e1;
-        font-size: 1.05rem;
-        text-align: justify;
+
+    .small-card {
+        display: flex;
+        gap: 1.2rem;
+        align-items: center;
+
+        text-decoration: none;
+
+        background: rgba(30, 41, 59, 0.6);
+
+        border: 1px solid rgba(255,255,255,0.10);
+
+        border-radius: 14px;
+
+        padding: 1.5rem;
+
+        transition:
+            transform 0.2s ease,
+            border-color 0.2s ease;
     }
+
+
+    .small-card:hover {
+        transform: translateY(-3px);
+        border-color: rgba(129, 140, 248, 0.6);
+    }
+
+
+    .small-icon {
+        font-size: 2.5rem;
+    }
+
+
+    .small-card h2 {
+        color: #f8fafc;
+        margin: 0 0 0.35rem;
+        font-size: 1.25rem;
+    }
+
+
+    .small-card p {
+        color: #cbd5e1;
+        margin: 0;
+        line-height: 1.5;
+    }
+
+/* PUBLICITÉ */
+
+.ad-zone {
+    max-width: 900px;
+    margin: 1rem auto 3rem;
+    text-align: center;
+}
+
+.ad-zone > span {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #64748b;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.ad-placeholder {
+    min-height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px dashed rgba(148, 163, 184, 0.22);
+    border-radius: 10px;
+    color: #64748b;
+    font-size: 0.8rem;
+}
+    /* INTRODUCTION */
+
+    .intro-text {
+        background: rgba(30, 41, 59, 0.65);
+
+        padding: 2rem;
+
+        border-radius: 14px;
+
+        border: 1px solid rgba(255, 255, 255, 0.1);
+
+        line-height: 1.75;
+
+        margin-bottom: 3rem;
+    }
+
+
+    .intro-text h2 {
+        color: #fbbf24;
+        margin-top: 0;
+        margin-bottom: 1rem;
+    }
+
+
+    .intro-text p {
+        margin-bottom: 1rem;
+        color: #cbd5e1;
+        font-size: 1.03rem;
+    }
+
 
     .intro-text p:last-child {
         margin-bottom: 0;
     }
+
+
+    /* MOBILE */
+
+    @media (max-width: 850px) {
+
+        .services {
+            grid-template-columns: 1fr;
+        }
+
+        .secondary-services {
+            grid-template-columns: 1fr;
+        }
+
+        .hero-banner {
+            padding: 3rem 1rem;
+        }
+
+    }
+
+
+    @media (max-width: 500px) {
+
+        .hero-actions {
+            flex-direction: column;
+        }
+
+        .btn {
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .small-card {
+            align-items: flex-start;
+        }
+
+    }
+
 </style>
