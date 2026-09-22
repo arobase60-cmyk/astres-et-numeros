@@ -35,6 +35,22 @@ import { WESTERN_SIGNS } from '../utils/astrology.js';
 				<span id="score-val">0</span>%
 			</div>
 			<p id="score-desc" class="desc-text"></p>
+			<div id="compat-details" class="compat-details hidden">
+    <div class="compat-section">
+        <h3>❤️ Amour</h3>
+        <p id="compat-amour"></p>
+    </div>
+
+    <div class="compat-section">
+        <h3>💬 Communication</h3>
+        <p id="compat-communication"></p>
+    </div>
+
+    <div class="compat-section">
+        <h3>🏡 Vie quotidienne</h3>
+        <p id="compat-quotidien"></p>
+    </div>
+</div>
 		</div>
 	</div>
 </Layout>
@@ -68,6 +84,20 @@ import { WESTERN_SIGNS } from '../utils/astrology.js';
             if (result && scoreVal && scoreDesc) {
                 scoreVal.textContent = result.score.toString();
                 scoreDesc.textContent = result.desc;
+				
+const details = document.getElementById('compat-details');
+const amour = document.getElementById('compat-amour');
+const communication = document.getElementById('compat-communication');
+const quotidien = document.getElementById('compat-quotidien');
+
+if ('amour' in result && 'communication' in result && 'quotidien' in result) {
+    if (amour) amour.textContent = String(result.amour);
+    if (communication) communication.textContent = String(result.communication);
+    if (quotidien) quotidien.textContent = String(result.quotidien);
+    details?.classList.remove('hidden');
+} else {
+    details?.classList.add('hidden');
+}
                 resultBox?.classList.remove('hidden');
             }
         });
@@ -149,4 +179,39 @@ import { WESTERN_SIGNS } from '../utils/astrology.js';
 
 	.desc-text { color: #cbd5e1; font-size: 1.05rem; }
 	.hidden { display: none; }
+
+
+.compat-details {
+    display: grid;
+    gap: 1rem;
+    margin-top: 1.8rem;
+    text-align: left;
+}
+
+.compat-details.hidden {
+    display: none;
+}
+
+.compat-section {
+    background: #0f172a;
+    border: 1px solid rgba(251, 191, 36, 0.2);
+    border-radius: 12px;
+    padding: 1.2rem;
+}
+
+.compat-section h3 {
+    color: #fbbf24;
+    font-size: 1.15rem;
+    margin: 0 0 0.7rem;
+}
+
+.compat-section p {
+    color: #cbd5e1;
+    font-size: 0.95rem;
+    line-height: 1.7;
+    margin: 0;
+}
+
+
+
 </style>

@@ -360,20 +360,78 @@ const ELEMENT_MAP = {
   "Cancer": "Eau", "Scorpion": "Eau", "Poissons": "Eau"
 };
 
+
 const COMPATIBILITY_DATABASE = {
-  "Feu-Feu": { score: 90, desc: "Une relation passionnée, explosive et remplie d'énergie !" },
-  "Feu-Air": { score: 85, desc: "Une excellente dynamique : l'Air attise le Feu et stimule les idées." },
-  "Feu-Terre": { score: 55, desc: "La Terre canalise le Feu, mais attention à ne pas étouffer l'enthousiasme." },
-  "Feu-Eau": { score: 40, desc: "Une relation intense mais délicate : l'Eau peut éteindre la passion du Feu." },
-  
-  "Terre-Terre": { score: 95, desc: "Une union solide, stable et profondément rassurante pour l'avenir." },
-  "Terre-Eau": { score: 88, desc: "Très belle complémentarité : l'Eau nourrit la Terre pour faire grandir vos projets." },
-  "Terre-Air": { score: 50, desc: "Des approches différentes : la pragmatique Terre face au rêveur de l'Air." },
-  
-  "Air-Air": { score: 85, desc: "Une complicité intellectuelle totale, de grands échanges et de la liberté." },
-  "Air-Eau": { score: 45, desc: "Sensibilité vs Logique : il faudra apprendre à parler le même langage." },
-  
-  "Eau-Eau": { score: 92, desc: "Une fusion émotionnelle et une compréhension intuitive quasi télépathique." }
+  "Feu-Feu": {
+    score: 90,
+    desc: "Une relation passionnée, explosive et remplie d'énergie !",
+    amour: "Deux tempéraments passionnés qui aiment partager des émotions fortes et multiplier les aventures.",
+    communication: "Les échanges sont directs et spontanés. Chacun gagne à laisser l'autre exprimer son point de vue.",
+    quotidien: "Une vie dynamique, riche en projets et en activités. Préserver des moments de calme aide à maintenir l'équilibre."
+  },
+  "Feu-Air": {
+    score: 85,
+    desc: "Une excellente dynamique : l'Air attise le Feu et stimule les idées.",
+    amour: "Une attirance pétillante, nourrie par la spontanéité et le goût de la découverte.",
+    communication: "L'Air apporte des idées et le Feu les transforme en projets. Les discussions sont stimulantes.",
+    quotidien: "Un duo qui aime bouger et improviser. Une organisation minimale permet de concrétiser ses nombreuses envies."
+  },
+  "Feu-Terre": {
+    score: 55,
+    desc: "La Terre canalise le Feu, mais attention à ne pas étouffer l'enthousiasme.",
+    amour: "Le Feu apporte la passion tandis que la Terre recherche la stabilité. Le respect de ces différences nourrit la relation.",
+    communication: "L'un privilégie l'action immédiate, l'autre la réflexion. Écouter leurs rythmes respectifs facilite les échanges.",
+    quotidien: "La Terre structure les projets et le Feu insuffle de l'énergie. Trouver un équilibre entre routine et spontanéité est essentiel."
+  },
+  "Feu-Eau": {
+    score: 40,
+    desc: "Une relation intense mais délicate : l'Eau peut éteindre la passion du Feu.",
+    amour: "Une attirance intense entre passion et sensibilité. Chacun découvre une manière différente d'exprimer ses sentiments.",
+    communication: "Le Feu s'exprime directement, tandis que l'Eau privilégie les émotions. La délicatesse et l'écoute sont importantes.",
+    quotidien: "Alterner activités stimulantes et moments de tranquillité permet de respecter les besoins de chacun."
+  },
+  "Terre-Terre": {
+    score: 95,
+    desc: "Une union solide, stable et profondément rassurante pour l'avenir.",
+    amour: "Une relation fondée sur la fidélité, la confiance et la construction de projets communs.",
+    communication: "Les échanges sont généralement pragmatiques. Exprimer aussi ses émotions aide à entretenir la complicité.",
+    quotidien: "Un couple organisé qui apprécie ses habitudes et sa sécurité. Quelques surprises apportent une touche de fantaisie."
+  },
+  "Terre-Eau": {
+    score: 88,
+    desc: "Très belle complémentarité : l'Eau nourrit la Terre pour faire grandir vos projets.",
+    amour: "La tendresse de l'Eau rencontre la fiabilité de la Terre. Une relation tournée vers l'attachement et la confiance.",
+    communication: "L'Eau exprime ses ressentis et la Terre propose des solutions concrètes. Les deux approches peuvent se compléter.",
+    quotidien: "Un foyer chaleureux, où l'attention aux autres et la stabilité occupent une place importante."
+  },
+  "Terre-Air": {
+    score: 50,
+    desc: "Des approches différentes : la pragmatique Terre face au rêveur de l'Air.",
+    amour: "La Terre recherche la sécurité, tandis que l'Air apprécie la liberté. Leur curiosité mutuelle peut enrichir la relation.",
+    communication: "L'Air aime explorer les possibilités et la Terre préfère les solutions concrètes. Des compromis facilitent les décisions.",
+    quotidien: "Associer organisation et improvisation permet à chacun de conserver son espace tout en partageant des projets."
+  },
+  "Air-Air": {
+    score: 85,
+    desc: "Une complicité intellectuelle totale, de grands échanges et de la liberté.",
+    amour: "Une relation légère et stimulante, où l'amitié, l'humour et la curiosité occupent une place importante.",
+    communication: "Les conversations sont nombreuses et les idées circulent librement. Prendre le temps d'aborder les émotions renforce le lien.",
+    quotidien: "Un duo sociable qui apprécie les découvertes. Quelques habitudes communes aident à donner forme aux projets."
+  },
+  "Air-Eau": {
+    score: 45,
+    desc: "Sensibilité vs Logique : il faudra apprendre à parler le même langage.",
+    amour: "L'Air apporte de la légèreté et l'Eau de la profondeur émotionnelle. Apprendre à apprécier ces différences enrichit la relation.",
+    communication: "L'un analyse les situations, l'autre les ressent. Reformuler et écouter sans juger favorise la compréhension.",
+    quotidien: "Prévoir des moments de partage tout en respectant les besoins de liberté et d'intimité de chacun."
+  },
+  "Eau-Eau": {
+    score: 92,
+    desc: "Une fusion émotionnelle et une compréhension intuitive quasi télépathique.",
+    amour: "Une relation tendre et profonde, marquée par une grande sensibilité aux sentiments de l'autre.",
+    communication: "Les émotions occupent une place centrale. Dire clairement ce que l'on ressent évite les malentendus.",
+    quotidien: "Un duo attaché à son cocon et à ses proches. Conserver des activités personnelles contribue à l'équilibre."
+  }
 };
 
 export function getCompatibility(sign1, sign2) {
