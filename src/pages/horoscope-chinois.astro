@@ -1,14 +1,12 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { CHINESE_SIGNS, getDailyHoroscope, getDailyNumbers, getTodayFormatted } from '../utils/astrology.js';
-
-const dateFormatted = getTodayFormatted();
+import { CHINESE_SIGNS } from '../utils/astrology.js';
 ---
 
 <Layout title="Horoscope Chinois - Jouons avec les astres">
 	<div class="page-header">
 		<h1>🐉 Horoscope Chinois</h1>
-		<p class="date">Prédictions du {dateFormatted}</p>
+		<p class="date" id="horoscope-date">Chargement de la date...</p>
 		
 		<!-- Module Visuel pour trouver son signe -->
 		<div class="finder-card">
@@ -19,13 +17,13 @@ const dateFormatted = getTodayFormatted();
 			
 			<div class="finder-body">
 				<div class="input-wrapper">
-					<input 
-						type="number" 
-						id="birth-year" 
-						placeholder="Votre année (ex: 1985)" 
-						min="1900" 
-						max="2026"
-					/>
+					<input
+    type="date"
+    id="birth-date"
+    aria-label="Votre date de naissance"
+    min="1900-01-01"
+    max="2026-12-31"
+/>
 					<button id="find-sign-btn">
 						<span>Découvrir</span>
 						<span class="btn-arrow">→</span>
@@ -40,8 +38,7 @@ const dateFormatted = getTodayFormatted();
 
 	<div class="signs-grid">
 		{CHINESE_SIGNS.map((sign) => {
-			const prediction = getDailyHoroscope(sign.name);
-			const numbers = getDailyNumbers(sign.name);
+			
 			return (
 				<details class="sign-card" id={`sign-${sign.name.toLowerCase()}`}>
 					<summary class="card-header">
@@ -54,16 +51,16 @@ const dateFormatted = getTodayFormatted();
 					</summary>
 					
 					<div class="card-content">
-						<p class="prediction">{prediction}</p>
+						<div class="prediction" data-sign={sign.name}>
+    Chargement de votre horoscope...
+</div>
 
-						<div class="numbers-section">
-							<span class="numbers-title">5 Chiffres chance du jour :</span>
-							<div class="balls-container">
-								{numbers.map((num) => (
-									<span class="number-ball">{num}</span>
-								))}
-							</div>
-						</div>
+<div class="numbers-section">
+    <span class="numbers-title">5 chiffres chance du jour :</span>
+    <div class="balls-container" data-numbers={sign.name}>
+        Chargement...
+    </div>
+</div>
 					</div>
 				</details>
 			);
@@ -72,26 +69,127 @@ const dateFormatted = getTodayFormatted();
 </Layout>
 
 <script>
+import {
+    getDailyHoroscopeSections,
+    getDailyNumbers
+} from '../utils/astrology.js';
+
+function updateChineseHoroscope() {
+    const today = new Date();
+
+    // Afficher la date du jour
+    const dateElement = document.getElementById('horoscope-date');
+
+    if (dateElement) {
+        dateElement.textContent = `Prédictions du ${today.toLocaleDateString('fr-FR', {
+            weekday: 'long',
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric'
+        })}`;
+    }
+
+    // Afficher les trois rubriques pour chaque signe
+    document.querySelectorAll<HTMLElement>('[data-sign]').forEach((element) => {
+        const sign = element.dataset.sign;
+
+        if (sign) {
+            const predictions = getDailyHoroscopeSections(sign);
+
+            element.innerHTML = `
+                <div class="horoscope-section">
+                    <h3>✨ Général</h3>
+                    <p>${predictions.general}</p>
+                </div>
+
+                <div class="horoscope-section">
+                    <h3>❤️ Amour</h3>
+                    <p>${predictions.amour}</p>
+                </div>
+
+                <div class="horoscope-section">
+                    <h3>💼 Travail et projets</h3>
+                    <p>${predictions.travail}</p>
+                </div>
+            `;
+        }
+    });
+
+    // Afficher les cinq chiffres du jour
+    document.querySelectorAll<HTMLElement>('[data-numbers]').forEach((container) => {
+        const sign = container.dataset.numbers;
+
+        if (sign) {
+            const numbers = getDailyNumbers(sign);
+            container.replaceChildren();
+
+            numbers.forEach((number) => {
+                const ball = document.createElement('span');
+                ball.className = 'number-ball';
+                ball.textContent = String(number);
+                container.appendChild(ball);
+            });
+        }
+    });
+}
+
+updateChineseHoroscope();
+
 	const chineseSignsOrder = [
 		"Singe", "Coq", "Chien", "Cochon", "Rat", "Bœuf", 
 		"Tigre", "Lapin", "Dragon", "Serpent", "Cheval", "Chèvre"
 	];
 
 	const btn = document.getElementById('find-sign-btn');
-	const input = document.getElementById('birth-year') as HTMLInputElement;
+	const input = document.getElementById('birth-date') as HTMLInputElement;
 	const result = document.getElementById('finder-result');
 
 	const searchSign = () => {
-		const year = parseInt(input.value);
-		if (!year || year < 1900 || year > 2026) {
-			if (result) {
-				result.className = 'finder-result error';
-				result.textContent = "Veuillez indiquer une année entre 1900 et 2026.";
-			}
-			return;
-		}
+		const birthDate = input.value;
 
-		const signName = chineseSignsOrder[year % 12];
+if (!birthDate) {
+    if (result) {
+        result.className = 'finder-result error';
+        result.textContent = "Veuillez indiquer votre date de naissance.";
+    }
+    return;
+}
+
+const [year, month, day] = birthDate.split('-').map(Number);
+
+if (year < 1900 || year > 2026) {
+    if (result) {
+        result.className = 'finder-result error';
+        result.textContent = "Veuillez choisir une date entre 1900 et 2026.";
+    }
+    return;
+}
+
+// Le calendrier chinois utilise des années lunaires.
+// Le calcul précis du Nouvel An sera ajouté ensuite.
+
+// Utiliser le calendrier chinois pour déterminer l'année lunaire.
+const chineseCalendar = new Intl.DateTimeFormat('en-u-ca-chinese', {
+    year: 'numeric',
+    timeZone: 'UTC'
+});
+
+const date = new Date(Date.UTC(year, month - 1, day, 12));
+
+const chineseYearPart = chineseCalendar
+    .formatToParts(date)
+    .find((part) => part.type === 'relatedYear');
+
+if (!chineseYearPart) {
+    if (result) {
+        result.className = 'finder-result error';
+        result.textContent = "Impossible de déterminer votre signe chinois.";
+    }
+    return;
+}
+
+const chineseYear = Number(chineseYearPart.value);
+const signName = chineseSignsOrder[chineseYear % 12];
 		
 		if (result) {
 			result.className = 'finder-result success';
@@ -111,7 +209,7 @@ const dateFormatted = getTodayFormatted();
 	});
 </script>
 
-<style>
+<style is:global>
 	.page-header {
 		text-align: center;
 		margin-bottom: 2.5rem;
@@ -342,4 +440,33 @@ const dateFormatted = getTodayFormatted();
 		justify-content: center;
 		box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 	}
+
+	.signs-grid {
+    align-items: start;
+}
+
+.horoscope-section {
+    margin-bottom: 1.2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+}
+
+.horoscope-section:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.horoscope-section h3 {
+    color: #fbbf24;
+    font-size: 1.05rem;
+    margin-bottom: 0.5rem;
+}
+
+.horoscope-section p {
+    color: #cbd5e1;
+    font-size: 0.95rem;
+    line-height: 1.7;
+    margin: 0;
+}
 </style>
