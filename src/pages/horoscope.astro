@@ -1,21 +1,18 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { WESTERN_SIGNS, getDailyHoroscope, getDailyNumbers, getTodayFormatted } from '../utils/astrology.js';
-
-const dateFormatted = getTodayFormatted();
+import { WESTERN_SIGNS } from '../utils/astrology.js';
 ---
 
 <Layout title="Horoscope Occidental - Jouons avec les astres">
 	<div class="page-header">
 		<h1>✨ Horoscope Occidental</h1>
-		<p class="date">Prédictions du {dateFormatted}</p>
-		<p class="subtitle">Cliquez sur votre signe pour découvrir votre tirage du jour</p>
-	</div>
+		<p class="date" id="horoscope-date">Chargement de la date...</p>
+        <p class="subtitle">Cliquez sur votre signe pour découvrir votre horoscope du jour</p>
+	   </div>
 
 	<div class="signs-grid">
 		{WESTERN_SIGNS.map((sign) => {
-			const prediction = getDailyHoroscope(sign.name);
-			const numbers = getDailyNumbers(sign.name);
+			
 			return (
 				<details class="sign-card">
 					<!-- La partie toujours visible : le bouton/titre du signe -->
@@ -30,16 +27,16 @@ const dateFormatted = getTodayFormatted();
 					
 					<!-- Le contenu masqué qui s'affiche uniquement au clic -->
 					<div class="card-content">
-						<p class="prediction">{prediction}</p>
+						<p class="prediction" data-sign={sign.name}>
+    Chargement de votre horoscope...
+</p>
 
-						<div class="numbers-section">
-							<span class="numbers-title">5 Chiffres chance du jour :</span>
-							<div class="balls-container">
-								{numbers.map((num) => (
-									<span class="number-ball">{num}</span>
-								))}
-							</div>
-						</div>
+<div class="numbers-section">
+    <span class="numbers-title">5 chiffres chance du jour :</span>
+    <div class="balls-container" data-numbers={sign.name}>
+        Chargement...
+    </div>
+</div>
 					</div>
 				</details>
 			);
@@ -47,7 +44,7 @@ const dateFormatted = getTodayFormatted();
 	</div>
 </Layout>
 
-<style>
+<style is:global>
 	.page-header {
 		text-align: center;
 		margin-bottom: 2.5rem;
@@ -76,6 +73,7 @@ const dateFormatted = getTodayFormatted();
 		display: grid;
 		grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
 		gap: 1.5rem;
+		align-items: start;
 	}
 
 	/* Style du conteneur accordéon <details> */
@@ -177,16 +175,67 @@ const dateFormatted = getTodayFormatted();
 	}
 
 	.number-ball {
-		width: 32px;
-		height: 32px;
-		border-radius: 50%;
-		background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
-		color: #0f172a;
-		font-weight: bold;
-		font-size: 0.9rem;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-	}
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #fbbf24, #d97706);
+    color: #0f172a;
+    font-weight: bold;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
 </style>
+
+<script>
+    import { getDailyHoroscope, getDailyNumbers } from '../utils/astrology.js';
+
+    function updateHoroscope() {
+        const today = new Date();
+
+        // Afficher la date du jour
+        const dateElement = document.getElementById('horoscope-date');
+
+        if (dateElement) {
+            dateElement.textContent = `Prédictions du ${today.toLocaleDateString('fr-FR', {
+                weekday: 'long',
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+            })}`;
+        }
+
+        // Actualiser les prédictions des 12 signes
+        document.querySelectorAll<HTMLElement>('[data-sign]').forEach((element) => {
+            const sign = element.dataset.sign;
+
+            if (sign) {
+                element.textContent = getDailyHoroscope(sign);
+            }
+        });
+
+        // Actualiser les cinq chiffres de chaque signe
+        document.querySelectorAll<HTMLElement>('[data-numbers]').forEach((container) => {
+            const sign = container.dataset.numbers;
+
+            if (sign) {
+                const numbers = getDailyNumbers(sign);
+
+                container.replaceChildren();
+
+                numbers.forEach((number) => {
+                    const ball = document.createElement('span');
+                    ball.className = 'number-ball';
+                    ball.textContent = String(number);
+                    container.appendChild(ball);
+                });
+            }
+        });
+    }
+
+    updateHoroscope();
+</script>
+
