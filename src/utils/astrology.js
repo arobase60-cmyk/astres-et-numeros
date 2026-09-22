@@ -133,13 +133,108 @@ export const CHINESE_SIGNS = [
 // ==========================================
 // 3. FONCTIONS GÉNÉRATRICES
 // ==========================================
+
 const PREDICTIONS = [
-  "Une belle opportunité se présente aujourd'hui. Soyez à l'écoute des signes autour de vous.",
-  "Journée idéale pour concrétiser un projet personnel. Votre intuition est votre meilleure alliée.",
-  "Prenez le temps d'écouter vos proches. Une discussion enrichissante se profile à l'horizon.",
-  "Votre créativité est au sommet. N'hésitez pas à exprimer vos idées les plus originales.",
-  "Une énergie calme et régénérante vous accompagne. Profitez-en pour recharger vos batteries."
+  "Une belle opportunité se présente aujourd'hui. Soyez attentif aux occasions de faire avancer vos projets.",
+  "Cette journée favorise les nouvelles initiatives. Faites confiance à votre créativité pour trouver des solutions.",
+  "Prenez le temps d'écouter vos proches. Une conversation pourrait vous apporter un éclairage intéressant.",
+  "Votre énergie vous aide à progresser. Concentrez-vous sur une priorité plutôt que de vous disperser.",
+  "Accordez-vous une pause pour retrouver votre équilibre. Vous aborderez ensuite vos activités avec plus de sérénité.",
+  "Une rencontre ou un échange pourrait vous donner une idée nouvelle. Restez ouvert aux propositions.",
+  "Votre persévérance commence à porter ses fruits. Continuez à avancer sans brûler les étapes.",
+  "Une journée propice à l'organisation. Réglez les petites tâches en attente pour libérer votre esprit.",
+  "Votre intuition vous invite à explorer une autre voie. Prenez néanmoins le temps de vérifier les détails.",
+  "Un changement de programme pourrait finalement vous être favorable. Faites preuve de souplesse.",
+  "Les échanges sont à l'honneur aujourd'hui. Exprimez clairement vos idées et écoutez les autres.",
+  "Vous pourriez retrouver la motivation nécessaire pour reprendre un projet laissé de côté.",
+  "Privilégiez les activités qui vous apportent du plaisir. Un peu de légèreté vous fera du bien.",
+  "Une décision mérite réflexion. Rassemblez les informations nécessaires avant de vous engager.",
+  "Votre sens de l'observation vous permettra de remarquer un détail qui avait échappé à votre attention.",
+  "Cette journée encourage la coopération. Un projet commun pourrait avancer grâce à votre contribution.",
+  "Laissez une place à l'imprévu. Une occasion intéressante pourrait se présenter au détour de votre journée.",
+  "Vous avez besoin de calme pour mettre de l'ordre dans vos idées. Évitez de multiplier les engagements.",
+  "Votre enthousiasme pourrait être communicatif. Profitez-en pour partager vos projets avec votre entourage.",
+  "Une journée favorable aux découvertes. Essayez une nouvelle activité ou approfondissez un sujet qui vous passionne.",
+  "Prenez du recul face à une situation compliquée. Une solution simple pourrait apparaître.",
+  "Votre patience sera précieuse aujourd'hui. Certains projets demandent du temps pour se concrétiser.",
+  "Une attention particulière à votre organisation vous permettra de profiter davantage de votre temps libre.",
+  "Vous pourriez recevoir un encouragement inattendu. Profitez de cet élan pour avancer avec confiance.",
+  "La journée se prête aux échanges chaleureux et aux moments de convivialité.",
+  "Votre curiosité vous pousse à sortir de vos habitudes. Une petite nouveauté pourrait égayer votre quotidien.",
+  "Concentrez votre énergie sur ce qui compte vraiment pour vous. Le reste peut attendre.",
+  "Une bonne occasion de faire le point sur vos envies et de définir un nouvel objectif.",
+  "Votre créativité trouve aujourd'hui un terrain d'expression. N'hésitez pas à expérimenter.",
+  "Une journée équilibrée se dessine si vous alternez moments d'activité et instants de détente."
 ];
+
+
+const LOVE_PREDICTIONS = [
+  "Une belle complicité pourrait illuminer votre journée. Prenez le temps de partager vos émotions.",
+  "Les petites attentions feront toute la différence aujourd'hui.",
+  "Une conversation sincère pourrait renforcer vos liens affectifs.",
+  "Laissez davantage de place à la spontanéité dans vos relations.",
+  "Votre charme naturel favorise les échanges et les nouvelles rencontres.",
+  "Une journée propice aux rapprochements et aux moments de tendresse.",
+  "Écoutez votre cœur, sans oublier de respecter vos propres besoins.",
+  "Une surprise agréable pourrait apporter de la légèreté à votre vie sentimentale.",
+  "Prenez le temps de montrer votre affection à ceux qui comptent pour vous.",
+  "La confiance et le dialogue seront vos meilleurs alliés aujourd'hui.",
+  "Une rencontre inattendue pourrait éveiller votre curiosité.",
+  "Privilégiez la douceur pour désamorcer un éventuel malentendu.",
+  "Votre sensibilité vous permettra de mieux comprendre les attentes de votre partenaire.",
+  "Une belle occasion de partager un moment privilégié à deux.",
+  "Ne laissez pas les petites contrariétés gâcher vos moments de bonheur.",
+  "Votre vie sentimentale gagne à sortir de la routine.",
+  "Une attention spontanée pourrait toucher particulièrement une personne proche.",
+  "Prenez du recul avant de réagir à une parole maladroite.",
+  "Une journée favorable aux confidences et aux échanges sincères.",
+  "Laissez les relations évoluer naturellement, sans précipiter les choses.",
+  "Un souvenir heureux pourrait vous donner envie de renouer certains liens.",
+  "Votre bonne humeur sera communicative auprès de votre entourage.",
+  "Une occasion de clarifier vos attentes dans une relation importante.",
+  "Accordez-vous du temps pour cultiver les liens qui vous rendent heureux.",
+  "Une initiative romantique pourrait apporter une touche de magie à votre journée.",
+  "La patience vous aidera à mieux comprendre une situation sentimentale.",
+  "Une journée idéale pour exprimer votre gratitude envers une personne chère.",
+  "Osez montrer votre intérêt si quelqu'un attire votre attention.",
+  "Votre authenticité constitue votre plus bel atout dans vos relations.",
+  "Une atmosphère chaleureuse favorise les rapprochements et les projets à deux."
+];
+
+
+const WORK_PREDICTIONS = [
+  "Votre organisation vous permettra d'avancer sereinement dans vos projets.",
+  "Une nouvelle idée pourrait ouvrir des perspectives intéressantes.",
+  "Votre persévérance sera votre meilleur atout aujourd'hui.",
+  "Prenez le temps de définir vos priorités avant de vous lancer.",
+  "Un échange constructif pourrait débloquer une situation.",
+  "Votre créativité vous aidera à trouver une solution originale.",
+  "Une journée favorable pour reprendre un projet laissé de côté.",
+  "Ne vous précipitez pas : les détails méritent toute votre attention.",
+  "Une occasion d'apprendre quelque chose de nouveau pourrait se présenter.",
+  "Votre esprit d'initiative sera particulièrement utile aujourd'hui.",
+  "Privilégiez la coopération pour faire avancer vos projets.",
+  "Une bonne nouvelle pourrait vous encourager à poursuivre vos efforts.",
+  "Prenez du recul pour mieux évaluer vos prochaines décisions.",
+  "Votre capacité d'adaptation vous aidera face à un imprévu.",
+  "Une tâche longtemps repoussée pourrait enfin être terminée.",
+  "Votre sens pratique vous permettra de gagner du temps.",
+  "Une discussion pourrait vous apporter des conseils précieux.",
+  "C'est une journée propice à la planification de vos futurs projets.",
+  "Votre motivation vous aidera à franchir une nouvelle étape.",
+  "Évitez de vous disperser et concentrez-vous sur l'essentiel.",
+  "Une opportunité intéressante mérite d'être étudiée attentivement.",
+  "Votre patience pourrait porter ses fruits dans un projet important.",
+  "Une approche différente vous aidera à surmonter une difficulté.",
+  "Profitez de cette journée pour mettre de l'ordre dans vos dossiers.",
+  "Votre enthousiasme pourrait donner un nouvel élan à vos activités.",
+  "Un projet personnel pourrait bénéficier d'une attention particulière.",
+  "N'hésitez pas à demander conseil avant une décision importante.",
+  "Une journée favorable pour développer vos compétences.",
+  "Votre rigueur vous permettra de progresser avec confiance.",
+  "Prenez le temps de reconnaître le chemin déjà parcouru."
+];
+
 
 function getStringHash(str) {
   let hash = 0;
@@ -165,6 +260,18 @@ export function getDailyHoroscope(signName) {
   const hash = getStringHash(signName + todayStr);
   return PREDICTIONS[hash % PREDICTIONS.length];
 }
+
+export function getDailyHoroscopeSections(signName) {
+    const todayStr = new Date().toISOString().split('T')[0];
+    const hash = getStringHash(signName + todayStr);
+
+    return {
+        general: PREDICTIONS[hash % PREDICTIONS.length],
+        amour: LOVE_PREDICTIONS[(hash + 7) % LOVE_PREDICTIONS.length],
+        travail: WORK_PREDICTIONS[(hash + 13) % WORK_PREDICTIONS.length]
+    };
+}
+
 
 export function getDailyNumbers(signName) {
   const todayStr = new Date().toISOString().split('T')[0];

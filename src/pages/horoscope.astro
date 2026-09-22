@@ -188,10 +188,38 @@ import { WESTERN_SIGNS } from '../utils/astrology.js';
     justify-content: center;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 }
+/* Présentation des trois rubriques de l'horoscope */
+
+.horoscope-section {
+    margin-bottom: 1.2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+}
+
+.horoscope-section:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.horoscope-section h3 {
+    color: #fbbf24;
+    font-size: 1.05rem;
+    margin-bottom: 0.5rem;
+}
+
+.horoscope-section p {
+    color: #cbd5e1;
+    font-size: 0.95rem;
+    line-height: 1.7;
+    margin: 0;
+}
+
+
 </style>
 
 <script>
-    import { getDailyHoroscope, getDailyNumbers } from '../utils/astrology.js';
+    import { getDailyHoroscopeSections, getDailyNumbers } from '../utils/astrology.js';
 
     function updateHoroscope() {
         const today = new Date();
@@ -210,12 +238,29 @@ import { WESTERN_SIGNS } from '../utils/astrology.js';
 
         // Actualiser les prédictions des 12 signes
         document.querySelectorAll<HTMLElement>('[data-sign]').forEach((element) => {
-            const sign = element.dataset.sign;
+    const sign = element.dataset.sign;
 
-            if (sign) {
-                element.textContent = getDailyHoroscope(sign);
-            }
-        });
+    if (sign) {
+        const predictions = getDailyHoroscopeSections(sign);
+
+        element.innerHTML = `
+            <div class="horoscope-section">
+                <h3>✨ Général</h3>
+                <p>${predictions.general}</p>
+            </div>
+
+            <div class="horoscope-section">
+                <h3>❤️ Amour</h3>
+                <p>${predictions.amour}</p>
+            </div>
+
+            <div class="horoscope-section">
+                <h3>💼 Travail et projets</h3>
+                <p>${predictions.travail}</p>
+            </div>
+        `;
+    }
+});
 
         // Actualiser les cinq chiffres de chaque signe
         document.querySelectorAll<HTMLElement>('[data-numbers]').forEach((container) => {
