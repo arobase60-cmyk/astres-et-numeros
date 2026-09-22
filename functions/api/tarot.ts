@@ -16,7 +16,14 @@ interface TarotRequest {
 }
 
 export const onRequestPost: PagesFunction<Env> = async (context) => {
-
+    // Interprétations payantes temporairement désactivées.
+    // Aucun appel à Stripe ni à Gemini ne sera effectué.
+    return Response.json(
+        {
+            error: "Les interprétations personnalisées seront bientôt disponibles."
+        },
+        { status: 503 }
+    );
 	try {
 
 		const body = await context.request.json() as TarotRequest;

@@ -174,10 +174,11 @@ import { tarotCards } from '../../data/tarot';
 	</h2>
 
 	<p>
-		Vos trois cartes vous donnent déjà les grandes tendances.
-		Posez maintenant votre question pour obtenir une analyse
-		personnalisée de votre tirage.
-	</p>
+    Vos trois cartes vous donnent déjà les grandes tendances.
+    Découvrez gratuitement leur signification et les liens
+    entre elles. Une interprétation personnalisée de votre
+    tirage sera bientôt disponible.
+</p>
 
 	<div class="premium-benefits">
 		<p>✓ Analyse de votre question</p>
@@ -186,25 +187,31 @@ import { tarotCards } from '../../data/tarot';
 		<p>✓ Conseil personnalisé</p>
 	</div>
 
-	<p class="premium-price">
-		2,99 €
-	</p>
+	
 
-	<textarea
-		id="tarot-question"
-		class="tarot-question"
-		maxlength="500"
-		rows="4"
-		placeholder="Posez votre question ici…"
-	></textarea>
+	<div class="coming-soon">
+    <h3>✨ Bientôt disponible</h3>
 
-	<button
-		type="button"
-		class="premium-button"
-		id="ask-gemini"
-	>
-		🔒 Débloquer mon interprétation
-	</button>
+    <p>
+        L'interprétation personnalisée de votre tirage
+        sera prochainement disponible pour 2,99 €.
+    </p>
+
+    <p>
+        Vous souhaitez être informé de son lancement ?
+    </p>
+
+    <a
+        class="premium-button"
+        href="mailto:astresnumeros@gmail.com?subject=Je%20suis%20int%C3%A9ress%C3%A9%20par%20le%20Tarot%20IA"
+    >
+        ✉️ Je suis intéressé
+    </a>
+
+    <p class="coming-soon-note">
+        Aucun paiement demandé pour le moment.
+    </p>
+</div>
 
 	<p
 		id="ai-status"
@@ -266,17 +273,7 @@ import { tarotCards } from '../../data/tarot';
 		const newReading =
 			document.getElementById("new-reading");
 
-		const tarotQuestion =
-	        document.getElementById("tarot-question");
-
-        const askGemini =
-	        document.getElementById("ask-gemini");
-
-        const aiStatus =
-	        document.getElementById("ai-status");
- 
-        const aiResult =
-	        document.getElementById("ai-result");	
+		
 
 		const selectedCards = [];
 
@@ -591,15 +588,7 @@ import { tarotCards } from '../../data/tarot';
                             button.removeAttribute("aria-disabled");
 						}
 					);
-aiResult.textContent = "";
-aiResult.classList.add("hidden");
 
-aiStatus.textContent = "";
-tarotQuestion.disabled = false;
-tarotQuestion.value = "";
-
-askGemini.disabled = false;
-askGemini.textContent = "🔒 Débloquer mon interprétation";
 
 
 const resultSection =
@@ -608,7 +597,7 @@ const resultSection =
 resultSection.classList.remove("show");
 resultSection.classList.add("hidden");
 
-localStorage.removeItem("pendingTarotReading");
+
 
 window.scrollTo({
     top: 0,
@@ -653,272 +642,16 @@ window.scrollTo({
 			}
 		);
 
-askGemini.addEventListener(
-	"click",
-	async () => {
-
-		const question =
-			tarotQuestion.value.trim();
-
-		if (!question) {
-			aiStatus.textContent =
-				"Veuillez poser une question avant de continuer.";
-			return;
-		}
-
-		if (selectedCards.length !== 3) {
-			aiStatus.textContent =
-				"Veuillez d'abord terminer votre tirage.";
-			return;
-		}
-
-		askGemini.disabled = true;
-		askGemini.textContent =
-			"Redirection vers le paiement…";
-
-		aiStatus.textContent =
-			"Préparation du paiement sécurisé…";
-
-		const tarotData = {
-			question,
-			type:
-				"Tirage 3 cartes - Passé, Présent, Avenir",
-
-			cards: [
-				{
-					name: selectedCards[0].name,
-					position: "Passé"
-				},
-				{
-					name: selectedCards[1].name,
-					position: "Présent"
-				},
-				{
-					name: selectedCards[2].name,
-					position: "Avenir"
-				}
-			]
-		};
-
-		localStorage.setItem(
-			"pendingTarotReading",
-			JSON.stringify(tarotData)
-		);
-
-		try {
-
-			const response =
-				await fetch(
-					"/api/create-checkout",
-					{
-						method: "POST",
-						headers: {
-							"Content-Type":
-								"application/json"
-						}
-					}
-				);
-
-			const data =
-				await response.json();
-
-			if (!response.ok || !data.url) {
-				throw new Error(
-					data.error ||
-					"Impossible de préparer le paiement."
-				);
-			}
-
-			window.location.href =
-				data.url;
-
-		} catch (error) {
-
-			aiStatus.textContent =
-				error.message ||
-				"Une erreur est survenue.";
-
-			askGemini.disabled = false;
-
-			askGemini.textContent =
-				"🔒 Débloquer mon interprétation";
-		}
-	}
-);
 
 
 
-async function handleStripeReturn() {
-
-	const params =
-		new URLSearchParams(
-			window.location.search
-		);
-
-	const payment =
-		params.get("payment");
-
-	const sessionId =
-		params.get("session_id");
-
-	if (payment === "cancel") {
-		aiStatus.textContent =
-			"Paiement annulé. Aucun montant n'a été débité.";
-		return;
-	}
-
-	if (
-		payment !== "success" ||
-		!sessionId
-	) {
-		return;
-	}
-document
-    .querySelectorAll(".card-back")
-    .forEach((button) => {
-        button.style.pointerEvents = "none";
-        button.setAttribute("aria-disabled", "true");
-    });
-	aiStatus.textContent =
-		"Vérification de votre paiement…";
-
-	try {
-
-		const verifyResponse =
-			await fetch(
-				`/api/verify-payment?session_id=${encodeURIComponent(sessionId)}`
-			);
-
-		const verifyData =
-			await verifyResponse.json();
-
-		if (
-			!verifyResponse.ok ||
-			!verifyData.paid
-		) {
-			throw new Error(
-				verifyData.error ||
-				"Le paiement n'a pas pu être confirmé."
-			);
-		}
-
-		const saved =
-			localStorage.getItem(
-				"pendingTarotReading"
-			);
-
-		if (!saved) {
-			throw new Error(
-				"Votre tirage n'a pas été retrouvé."
-			);
-		}
-
-		const tarotData =
-			JSON.parse(saved);
-
-const resultSection = document.getElementById("result");
-resultSection.classList.remove("hidden");
-resultSection.classList.add("show");
-
-aiResult.classList.remove("hidden");
-aiResult.innerHTML = `
-    <div class="interpretation-loading">
-        <div class="loading-hourglass">⌛</div>
-        <strong>Votre interprétation est en cours de préparation</strong>
-        <span>Nous analysons votre tirage et votre question…</span>
-        <span>Cela peut prendre quelques secondes.</span>
-    </div>
-`;
-
-aiResult.scrollIntoView({
-    behavior: "smooth",
-    block: "center"
-});
 
 
-		aiStatus.textContent =
-			"Paiement confirmé. Préparation de votre interprétation…";
-
-		const tarotResponse =
-			await fetch(
-				"/api/tarot",
-				{
-					method: "POST",
-
-					headers: {
-						"Content-Type":
-							"application/json"
-					},
-
-					body:
-    JSON.stringify({
-        ...tarotData,
-        sessionId
-    })
-				}
-			);
-
-		const tarotResult =
-			await tarotResponse.json();
-
-		if (!tarotResponse.ok) {
-			throw new Error(
-				tarotResult.error ||
-					"L'interprétation est momentanément indisponible."
-			);
-		}
-
-		aiStatus.textContent = "";
-
-		aiResult.textContent =
-			tarotResult.interpretation;
-tarotQuestion.disabled = true;
-askGemini.disabled = true;
-askGemini.textContent = "Interprétation obtenue";
-		
-
-		aiResult.classList.remove(
-			"hidden"
-		);
-
-resultSection.classList.remove("hidden");
-resultSection.classList.add("show");
-
-
-aiResult.style.display = "block";
-aiResult.style.opacity = "1";
-aiResult.style.transform = "none";
-aiResult.style.visibility = "visible";
-
-
-
-		localStorage.removeItem(
-			"pendingTarotReading"
-		);
-
-		window.history.replaceState(
-			{},
-			"",
-			window.location.pathname
-		);
-
-		aiResult.scrollIntoView({
-			behavior: "smooth",
-			block: "start"
-		});
-
-	} catch (error) {
-  console.error("ERREUR RETOUR STRIPE :", error);
-		aiStatus.textContent =
-			error.message ||
-			"Une erreur est survenue.";
-	}
-}
 
 shuffleDeck();
 updateProgress();
 
-handleStripeReturn();
+
 
 	</script>
 
@@ -1433,4 +1166,9 @@ handleStripeReturn();
 
 	}
 
+.coming-soon .premium-button {
+    display: inline-block;
+    margin: 0.5rem 0 1.5rem;
+    text-decoration: none;
+}
 </style>

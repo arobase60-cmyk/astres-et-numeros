@@ -6,7 +6,14 @@ export const onRequestPost = async (context: {
 	env: Env;
 	request: Request;
 }) => {
-
+    // Paiements temporairement désactivés.
+    // Aucun appel à Stripe ne sera effectué.
+    return Response.json(
+        {
+            error: "Les interprétations personnalisées seront bientôt disponibles."
+        },
+        { status: 503 }
+    );
 	try {
 
 		const stripeKey =
