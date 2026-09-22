@@ -300,6 +300,42 @@ export function calculateLifePath(dateString) {
   return sum;
 }
 
+export function calculatePersonalYear(dateString, currentYear = new Date().getFullYear()) {
+    if (!dateString) return null;
+
+    const [, month, day] = dateString.split('-').map(Number);
+
+    if (!month || !day) return null;
+
+    // Additionner le jour, le mois et l'année en cours.
+    let sum = [...String(day), ...String(month), ...String(currentYear)]
+        .reduce((total, digit) => total + Number(digit), 0);
+
+    // Réduire le résultat à un chiffre de 1 à 9.
+    while (sum > 9) {
+        sum = String(sum)
+            .split('')
+            .reduce((total, digit) => total + Number(digit), 0);
+    }
+
+    return sum;
+}
+
+export const PERSONAL_YEAR_DESCRIPTIONS = {
+    1: "Une année de nouveaux départs. C'est le moment de prendre des initiatives, de lancer des projets et d'explorer de nouvelles possibilités.",
+    2: "Une année consacrée aux relations, à la coopération et à la patience. Privilégiez le dialogue et laissez vos projets mûrir.",
+    3: "Une année d'expression et de créativité. Les rencontres, les loisirs et les activités artistiques occupent une place importante.",
+    4: "Une année de construction et d'organisation. Consolidez vos acquis, structurez vos projets et avancez avec méthode.",
+    5: "Une année de changement et de liberté. Les découvertes, les voyages et les nouvelles expériences sont à l'honneur.",
+    6: "Une année tournée vers la famille, les responsabilités et l'harmonie. Prenez soin de vos relations et de votre environnement.",
+    7: "Une année de réflexion et d'apprentissage. Accordez-vous du temps pour approfondir vos connaissances et faire le point sur vos aspirations.",
+    8: "Une année de réalisation et d'ambition. Concentrez-vous sur vos objectifs et sur la concrétisation de vos projets.",
+    9: "Une année de bilan et d'achèvement. Terminez ce qui doit l'être et préparez-vous à accueillir un nouveau cycle."
+};
+
+
+
+
 export const LIFE_PATH_DESCRIPTIONS = {
   1: { title: "Le Leader / L'Initiateur", desc: "Indépendance, ambition et esprit d'initiative. Vous êtes fait(e) pour ouvrir la voie et concrétiser vos propres projets." },
   2: { title: "Le Médiateur / L'Associé", desc: "Diplomatie, sensibilité et sens de la collaboration. Votre force réside dans votre capacité à créer de l'harmonie." },

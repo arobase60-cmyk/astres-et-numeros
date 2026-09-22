@@ -27,6 +27,11 @@ import { LIFE_PATH_DESCRIPTIONS } from '../utils/astrology.js';
 				<div class="result-number" id="res-number"></div>
 				<h3 id="res-title"></h3>
 				<p id="res-desc"></p>
+				<div class="personal-year">
+    <h3>✨ Votre année personnelle <span id="personal-year-date"></span></h3>
+    <div class="result-number" id="personal-year-number"></div>
+    <p id="personal-year-desc"></p>
+</div>
 			</div>
 		</div>
 	</div>
@@ -49,7 +54,12 @@ import { LIFE_PATH_DESCRIPTIONS } from '../utils/astrology.js';
 </Layout>
 
 <script>
-	import { calculateLifePath, LIFE_PATH_DESCRIPTIONS } from '../utils/astrology.js';
+	import {
+    calculateLifePath,
+    calculatePersonalYear,
+    LIFE_PATH_DESCRIPTIONS,
+	PERSONAL_YEAR_DESCRIPTIONS
+} from '../utils/astrology.js';
 
 	// On définit le type de clé valide pour TypeScript
 	type LifePathKey = keyof typeof LIFE_PATH_DESCRIPTIONS;
@@ -74,7 +84,28 @@ import { LIFE_PATH_DESCRIPTIONS } from '../utils/astrology.js';
 			if (resNumber) resNumber.textContent = path.toString();
 			if (resTitle) resTitle.textContent = info.title;
 			if (resDesc) resDesc.textContent = info.desc;
-			
+			// Calcul de l'année personnelle
+const personalYear = calculatePersonalYear(val);
+const currentYear = new Date().getFullYear();
+
+const personalYearDate = document.getElementById('personal-year-date');
+const personalYearNumber = document.getElementById('personal-year-number');
+const personalYearDesc = document.getElementById('personal-year-desc');
+
+if (personalYearDate) {
+    personalYearDate.textContent = String(currentYear);
+}
+
+if (personalYearNumber && personalYear !== null) {
+    personalYearNumber.textContent = String(personalYear);
+}
+
+if (personalYearDesc && personalYear !== null) {
+    personalYearDesc.textContent =
+        PERSONAL_YEAR_DESCRIPTIONS[
+            personalYear as keyof typeof PERSONAL_YEAR_DESCRIPTIONS
+        ];
+}
 			resultBox?.classList.remove('hidden');
 			resultBox?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 		}
@@ -256,4 +287,30 @@ import { LIFE_PATH_DESCRIPTIONS } from '../utils/astrology.js';
 		from { opacity: 0; transform: translateY(-5px); }
 		to { opacity: 1; transform: translateY(0); }
 	}
+	/* Séparation entre le chemin de vie et l'année personnelle */
+
+.personal-year {
+    margin-top: 1.8rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(251, 191, 36, 0.3);
+}
+
+.personal-year h3 {
+    color: #fbbf24;
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+}
+
+.personal-year .result-number {
+    width: 60px;
+    height: 60px;
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+}
+
+.personal-year p {
+    color: #cbd5e1;
+    font-size: 0.95rem;
+    line-height: 1.7;
+}
 </style>
