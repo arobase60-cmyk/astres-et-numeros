@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { CHINESE_SIGNS } from '../utils/astrology.js';
+import AdBanner from '../components/AdBanner.astro';
 ---
 
 <Layout title="Horoscope Chinois - Jouons avec les astres">
@@ -35,7 +36,7 @@ import { CHINESE_SIGNS } from '../utils/astrology.js';
 
 		<p class="subtitle">Cliquez sur un signe ci-dessous pour révéler son tirage du jour</p>
 	</div>
-
+<AdBanner />
 	<div class="signs-grid">
 		{CHINESE_SIGNS.map((sign) => {
 			
