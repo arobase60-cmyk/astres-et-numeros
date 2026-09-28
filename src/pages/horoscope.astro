@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { WESTERN_SIGNS } from '../utils/astrology.js';
+import AdBanner from '../components/AdBanner.astro';
 ---
 
 <Layout title="Horoscope Occidental - Jouons avec les astres">
@@ -9,7 +10,7 @@ import { WESTERN_SIGNS } from '../utils/astrology.js';
 		<p class="date" id="horoscope-date">Chargement de la date...</p>
         <p class="subtitle">Cliquez sur votre signe pour découvrir votre horoscope du jour</p>
 	   </div>
-
+<AdBanner />
 	<div class="signs-grid">
 		{WESTERN_SIGNS.map((sign) => {
 			
