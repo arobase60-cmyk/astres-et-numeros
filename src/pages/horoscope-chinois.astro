@@ -179,7 +179,7 @@ const date = new Date(Date.UTC(year, month - 1, day, 12));
 
 const chineseYearPart = chineseCalendar
     .formatToParts(date)
-    .find((part) => part.type === 'relatedYear');
+    .find((part) => String(part.type) === 'relatedYear');
 
 if (!chineseYearPart) {
     if (result) {
