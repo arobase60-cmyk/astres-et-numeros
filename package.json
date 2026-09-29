@@ -12,8 +12,12 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@astrojs/cloudflare": "^14.2.6",
     "@astrojs/sitemap": "^3.7.3",
-    "astro": "^7.2.1"
+    "astro": "^7.2.1",
+    "astronomy-engine": "^2.1.19",
+    "luxon": "^3.7.2",
+    "tz-lookup": "^6.1.25"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^5.20260914.1"

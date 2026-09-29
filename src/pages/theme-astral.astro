@@ -1,0 +1,669 @@
+---
+import Layout from '../layouts/Layout.astro';
+import AdBanner from '../components/AdBanner.astro';
+
+---
+
+<Layout title="Thème astral gratuit - Astres & Numéros">
+
+    <section class="astro-hero">
+
+        <p class="eyebrow">THÈME ASTRAL</p>
+
+        <h1>Découvrez votre thème astral</h1>
+
+        <p class="intro">
+            Entrez votre date, votre heure et votre lieu de naissance
+            pour découvrir les principales influences de votre thème astral.
+        </p>
+
+    </section>
+
+    <section class="birth-form">
+
+    <h2>Vos informations de naissance</h2>
+
+    <form id="astro-form">
+
+        <div class="form-group">
+            <label for="birth-date">Date de naissance</label>
+            <input
+                type="date"
+                id="birth-date"
+                name="birth-date"
+                required
+            />
+        </div>
+
+        <div class="form-group">
+            <label for="birth-time">Heure de naissance</label>
+            <input
+                type="time"
+                id="birth-time"
+                name="birth-time"
+                required
+            />
+        </div>
+
+        <div class="form-group">
+            <label for="birth-city">Ville de naissance</label>
+            <input
+                type="text"
+                id="birth-city"
+                name="birth-city"
+                placeholder="Exemple : Marseille"
+                autocomplete="off"
+                required
+            />
+        </div>
+
+        <button type="submit" class="calculate-button">
+            ✨ Calculer mon thème astral
+        </button>
+
+    </form>
+
+</section>
+<section class="astro-result hidden" id="astro-result">
+
+    <p class="result-label">VOTRE THÈME ASTRAL</p>
+
+    <h2>Vos principales influences</h2>
+
+    <div class="result-grid">
+
+        <article class="result-card">
+            <div class="planet-symbol">☀️</div>
+            <p>SIGNE SOLAIRE</p>
+            <h3 id="sun-sign">—</h3>
+            <div class="planet-degree" id="sun-degree">—</div>
+        </article>
+
+        <article class="result-card">
+       <div class="planet-symbol">🌙</div>
+      <p>SIGNE LUNAIRE</p>
+      <h3 id="moon-sign">—</h3>
+      <div class="planet-degree" id="moon-degree">—</div>
+       </article>
+
+       <article class="result-card">
+       <div class="planet-symbol">⬆️</div>
+       <p>ASCENDANT</p>
+        <h3 id="ascendant-sign">—</h3>
+        <div class="planet-degree" id="ascendant-degree">—</div>
+       </article>
+
+       <article class="result-card">
+       <div class="planet-symbol">☿</div>
+      <p>MERCURE</p>
+       <h3 id="mercury-sign">—</h3>
+       <div class="planet-degree" id="mercury-degree">—</div>
+       </article>
+       <article class="result-card">
+      <div class="planet-symbol">♀</div>
+      <p>VÉNUS</p>
+       <h3 id="venus-sign">—</h3>
+     <div class="planet-degree" id="venus-degree">—</div>
+     </article>
+     <article class="result-card">
+     <div class="planet-symbol">♂</div>
+      <p>MARS</p>
+      <h3 id="mars-sign">—</h3>
+      <div class="planet-degree" id="mars-degree">—</div>
+     </article>
+
+     <article class="result-card">
+    <div class="planet-symbol">♃</div>
+    <p>JUPITER</p>
+    <h3 id="jupiter-sign">—</h3>
+    <div class="planet-degree" id="jupiter-degree">—</div>
+      </article>
+
+       <article class="result-card">
+     <div class="planet-symbol">♄</div>
+     <p>SATURNE</p>
+     <h3 id="saturn-sign">—</h3>
+     <div class="planet-degree" id="saturn-degree">—</div>
+     </article>
+</div>
+
+      <div class="aspects-section">
+    <p class="result-label">ASPECTS PRINCIPAUX</p>
+    <h2>Les relations entre vos planètes</h2>
+
+    <div id="aspects-list" class="aspects-list"></div>
+      </div>
+       <div class="interpretation-section">
+     <p class="result-label">PREMIÈRE INTERPRÉTATION</p>
+     <h2>Ce que révèle votre thème</h2>
+
+    <div class="interpretation-card">
+        <h3>☀️ Votre Soleil</h3>
+        <p id="sun-interpretation"></p>
+    </div>
+    <div class="interpretation-card">
+    <h3>🌙 Votre Lune</h3>
+    <p id="moon-interpretation"></p>
+    </div>
+    <div class="interpretation-card">
+    <h3>⬆️ Votre Ascendant</h3>
+    <p id="ascendant-interpretation"></p>
+    </div>
+
+   <div class="full-reading-card">
+    <div class="full-reading-icon">✨</div>
+
+    <h2>Découvrez votre interprétation complète</h2>
+
+    <p>
+        Approfondissez votre thème astral avec une lecture personnalisée
+        de vos planètes et de leurs principaux aspects.
+    </p>
+
+    <button type="button" class="full-reading-button" disabled>
+        🎬 Voir une vidéo pour débloquer la lecture complète
+    </button>
+
+    <small>Cette fonctionnalité sera bientôt disponible.</small>
+   </div>
+
+
+
+</div>
+<AdBanner />
+
+
+    
+
+</section>
+<script>
+    import {
+    getSunSign,
+    getMoonPosition,
+     getTimezone,
+     createBirthDateTime,
+    getAscendant,
+     getMercuryPosition,
+     getVenusPosition,
+     getMarsPosition,
+     getJupiterPosition,
+     getSaturnPosition,
+     getSunPosition,
+     getAspect,
+     getAllAspects,
+     getSunInterpretation,
+     getMoonInterpretation,
+     getAscendantInterpretation
+} from '../utils/birth-chart.js';
+
+    const form = document.getElementById('astro-form');
+    const result = document.getElementById('astro-result');
+    const sunSign = document.getElementById('sun-sign');
+    const sunDegree = document.getElementById('sun-degree');
+    const moonSign = document.getElementById('moon-sign');
+    const moonDegree = document.getElementById('moon-degree');
+    const ascendantSign = document.getElementById('ascendant-sign');
+    const ascendantDegree = document.getElementById('ascendant-degree');
+    const mercurySign = document.getElementById('mercury-sign');
+    const mercuryDegree = document.getElementById('mercury-degree');
+    const venusSign = document.getElementById('venus-sign');
+    const venusDegree = document.getElementById('venus-degree');
+    const marsSign = document.getElementById('mars-sign');
+    const marsDegree = document.getElementById('mars-degree');
+    const jupiterSign = document.getElementById('jupiter-sign');
+    const jupiterDegree = document.getElementById('jupiter-degree');
+    const saturnSign = document.getElementById('saturn-sign');
+    const saturnDegree = document.getElementById('saturn-degree');
+    const aspectsList = document.getElementById('aspects-list');
+    const sunInterpretation = document.getElementById('sun-interpretation');
+    const moonInterpretation = document.getElementById('moon-interpretation');
+    const ascendantInterpretation =
+    document.getElementById('ascendant-interpretation');
+
+    form?.addEventListener('submit', async (event) => {       event.preventDefault();
+
+        const dateInput = document.getElementById('birth-date');
+        const timeInput = document.getElementById('birth-time');
+        const cityInput = document.getElementById('birth-city');
+if (
+    !(dateInput instanceof HTMLInputElement) ||
+    !(timeInput instanceof HTMLInputElement) ||
+    !(cityInput instanceof HTMLInputElement)
+) return;
+const geoResponse = await fetch(
+    `/api/geocode/?city=${encodeURIComponent(cityInput.value)}`
+);
+
+if (!geoResponse.ok) {
+    alert("Ville de naissance introuvable.");
+    return;
+}
+
+const geoData = await geoResponse.json();
+
+if (
+    typeof geoData !== 'object' ||
+    geoData === null ||
+    !('name' in geoData) ||
+    !('latitude' in geoData) ||
+    !('longitude' in geoData)
+) {
+    alert("Réponse invalide pour cette ville.");
+    return;
+}
+
+const name = String(geoData.name);
+const latitude = Number(geoData.latitude);
+const longitude = Number(geoData.longitude);
+const timezone = getTimezone(latitude, longitude);
+
+console.log("Fuseau horaire :", timezone);
+
+
+console.log("Lieu de naissance :", name);
+console.log("Latitude :", latitude);
+console.log("Longitude :", longitude);
+
+
+
+       
+const birthDateTime = createBirthDateTime(
+    dateInput.value,
+    timeInput.value,
+    timezone
+);
+
+if (!birthDateTime) {
+    alert("Impossible de déterminer la date et l'heure de naissance.");
+    return;
+}
+
+const sun = getSunPosition(birthDateTime);
+
+console.log("Soleil précis :", sun);
+const sign = sun?.sign;
+
+
+const moon = getMoonPosition(birthDateTime);
+const ascendant = getAscendant(
+    birthDateTime,
+    latitude,
+    longitude
+);
+
+if (ascendant && ascendantSign) {
+    ascendantSign.textContent = ascendant.sign;
+}
+if (ascendant && ascendantDegree) {
+    ascendantDegree.textContent = `${ascendant.degree.toFixed(1)}°`;
+}
+if (ascendant && ascendantInterpretation) {
+    ascendantInterpretation.textContent =
+        getAscendantInterpretation(ascendant.sign);
+}
+console.log("Ascendant :", ascendant);
+if (moon && moonSign) {
+    moonSign.textContent = moon.sign;
+}
+if (moon && moonDegree) {
+    moonDegree.textContent = `${moon.degree.toFixed(1)}°`;
+}
+if (moon && moonInterpretation) {
+    moonInterpretation.textContent =
+        getMoonInterpretation(moon.sign);
+}
+        if (!sign) return;
+
+        if (sunSign) {
+            sunSign.textContent = sign;
+        }
+if (sun && sunDegree) {
+    sunDegree.textContent = `${sun.degree.toFixed(1)}°`;
+}
+if (sun && sunInterpretation) {
+    sunInterpretation.textContent =
+        getSunInterpretation(sun.sign);
+}
+        result?.classList.remove('hidden');
+
+        result?.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+        });
+         const mercury = getMercuryPosition(birthDateTime);
+         console.log("Mercure :", mercury);
+if (mercury && mercurySign) {
+    mercurySign.textContent = mercury.sign;
+}
+if (mercury && mercuryDegree) {
+    mercuryDegree.textContent = `${mercury.degree.toFixed(1)}°`;
+}
+if (sun && mercury) {
+    const sunMercuryAspect = getAspect(
+        sun.longitude,
+        mercury.longitude
+    );
+
+    console.log("Aspect Soleil / Mercure :", sunMercuryAspect);
+}
+
+
+const venus = getVenusPosition(birthDateTime);
+
+console.log("Vénus :", venus);
+if (venus && venusSign) {
+    venusSign.textContent = venus.sign;
+}
+if (venus && venusDegree) {
+    venusDegree.textContent = `${venus.degree.toFixed(1)}°`;
+}
+const mars = getMarsPosition(birthDateTime);
+
+console.log("Mars :", mars);
+if (mars && marsSign) {
+    marsSign.textContent = mars.sign;
+}
+if (mars && marsDegree) {
+    marsDegree.textContent = `${mars.degree.toFixed(1)}°`;
+}
+const jupiter = getJupiterPosition(birthDateTime);
+
+console.log("Jupiter :", jupiter);
+if (jupiter && jupiterSign) {
+    jupiterSign.textContent = jupiter.sign;
+}
+if (jupiter && jupiterDegree) {
+    jupiterDegree.textContent = `${jupiter.degree.toFixed(1)}°`;
+}
+const saturn = getSaturnPosition(birthDateTime);
+
+console.log("Saturne :", saturn);
+if (saturn && saturnSign) {
+    saturnSign.textContent = saturn.sign;
+}
+if (saturn && saturnDegree) {
+    saturnDegree.textContent = `${saturn.degree.toFixed(1)}°`;
+}
+if (!sun || !moon || !mercury || !venus || !mars || !jupiter || !saturn) {
+    return;
+}
+const aspects = getAllAspects([
+    { name: "Soleil", longitude: sun.longitude },
+    { name: "Lune", longitude: moon.longitude },
+    { name: "Mercure", longitude: mercury.longitude },
+    { name: "Vénus", longitude: venus.longitude },
+    { name: "Mars", longitude: mars.longitude },
+    { name: "Jupiter", longitude: jupiter.longitude },
+    { name: "Saturne", longitude: saturn.longitude }
+]);
+console.log("Aspects du thème :", aspects);
+if (aspectsList) {
+    aspectsList.innerHTML = "";
+
+    for (const aspect of aspects) {
+        const item = document.createElement("div");
+        item.className = "aspect-item";
+
+        item.textContent =
+    `${aspect.body1} — ${aspect.name} — ${aspect.body2} · orbe ${aspect.orb.toFixed(1)}°`;
+        aspectsList.appendChild(item);
+    }
+}
+
+
+
+
+    });
+   
+
+
+</script>
+</Layout>
+<style>
+    .astro-hero {
+        max-width: 800px;
+        margin: 1rem auto 3rem;
+        text-align: center;
+    }
+
+    .eyebrow {
+        color: #818cf8;
+        font-size: .82rem;
+        font-weight: 700;
+        letter-spacing: .18em;
+        margin-bottom: .8rem;
+    }
+
+    .astro-hero h1 {
+        color: #fbbf24;
+        font-size: clamp(2rem, 5vw, 3.2rem);
+        margin-bottom: 1rem;
+    }
+
+    .intro {
+        color: #cbd5e1;
+        font-size: 1.08rem;
+        line-height: 1.7;
+    }
+
+    .birth-form {
+        max-width: 650px;
+        margin: 0 auto 3rem;
+        padding: 2rem;
+        background: rgba(30, 41, 59, .65);
+        border: 1px solid rgba(129, 140, 248, .25);
+        border-radius: 18px;
+        box-shadow: 0 14px 35px rgba(0, 0, 0, .25);
+    }
+
+    .birth-form h2 {
+        color: #fbbf24;
+        text-align: center;
+        margin-bottom: 1.8rem;
+    }
+
+    #astro-form {
+        display: grid;
+        gap: 1.3rem;
+    }
+
+    .form-group {
+        display: grid;
+        gap: .5rem;
+    }
+
+    .form-group label {
+        color: #e2e8f0;
+        font-weight: 600;
+    }
+
+    .form-group input {
+        width: 100%;
+        box-sizing: border-box;
+        padding: .9rem 1rem;
+        border-radius: 10px;
+        border: 1px solid rgba(129, 140, 248, .35);
+        background: rgba(15, 23, 42, .8);
+        color: #f8fafc;
+        font: inherit;
+    }
+
+    .form-group input:focus {
+        outline: none;
+        border-color: #818cf8;
+    }
+
+    .calculate-button {
+        margin-top: .5rem;
+        padding: 1rem 1.3rem;
+        border: none;
+        border-radius: 10px;
+        background: #fbbf24;
+        color: #111827;
+        font: inherit;
+        font-weight: 800;
+        cursor: pointer;
+    }
+
+    .calculate-button:hover {
+        transform: translateY(-2px);
+    }
+
+    @media (max-width: 700px) {
+        .birth-form {
+            padding: 1.4rem;
+        }
+    }
+    .hidden {
+    display: none;
+}
+
+.astro-result {
+    max-width: 800px;
+    margin: 3rem auto;
+    text-align: center;
+}
+
+.result-label {
+    color: #818cf8;
+    font-size: .8rem;
+    font-weight: 700;
+    letter-spacing: .15em;
+}
+
+.astro-result h2 {
+    color: #fbbf24;
+    margin-bottom: 1.5rem;
+}
+
+.result-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+}
+
+.result-card {
+    padding: 1.5rem;
+    background: rgba(30, 41, 59, .65);
+    border: 1px solid rgba(129, 140, 248, .25);
+    border-radius: 16px;
+}
+
+.planet-symbol {
+    font-size: 2rem;
+    margin-bottom: .7rem;
+}
+
+.result-card p {
+    color: #94a3b8;
+    font-size: .75rem;
+    font-weight: 700;
+    letter-spacing: .1em;
+}
+
+.result-card h3 {
+    color: #f8fafc;
+    font-size: 1.5rem;
+    margin: .5rem 0 0;
+}
+.aspects-section {
+    max-width: 850px;
+    margin: 3rem auto 0;
+    text-align: center;
+}
+
+.aspects-section h2 {
+    color: #fbbf24;
+    margin-bottom: 1.5rem;
+}
+
+.aspects-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .8rem;
+}
+
+.aspect-item {
+    padding: 1rem 1.2rem;
+    background: rgba(30, 41, 59, .65);
+    border: 1px solid rgba(129, 140, 248, .25);
+    border-radius: 12px;
+    color: #f8fafc;
+}
+
+@media (max-width: 700px) {
+    .aspects-list {
+        grid-template-columns: 1fr;
+    }
+}
+
+.interpretation-card {
+    max-width: 850px;
+    margin: 1.2rem auto;
+    padding: 1.2rem 1.5rem;
+    background: rgba(30, 41, 59, .45);
+    border: 1px solid rgba(129, 140, 248, .20);
+    border-radius: 14px;
+}
+
+.interpretation-card h3 {
+    margin: 0 0 .6rem;
+    color: #f8fafc;
+}
+
+.interpretation-card p {
+    margin: 0;
+    color: #e2e8f0;
+    line-height: 1.6;
+}
+
+.full-reading-card {
+    max-width: 850px;
+    margin: 3rem auto 1rem;
+    padding: 2rem;
+    text-align: center;
+    background: rgba(30, 41, 59, .7);
+    border: 1px solid rgba(251, 191, 36, .35);
+    border-radius: 18px;
+}
+
+.full-reading-icon {
+    font-size: 2.2rem;
+    margin-bottom: .5rem;
+}
+
+.full-reading-card h2 {
+    color: #fbbf24;
+    margin: 0 0 1rem;
+}
+
+.full-reading-card p {
+    max-width: 650px;
+    margin: 0 auto 1.5rem;
+    color: #cbd5e1;
+    line-height: 1.6;
+}
+
+.full-reading-button {
+    display: block;
+    margin: 0 auto .8rem;
+    padding: 1rem 1.4rem;
+    border: 0;
+    border-radius: 10px;
+    background: #fbbf24;
+    color: #111827;
+    font: inherit;
+    font-weight: 800;
+}
+
+.full-reading-button:disabled {
+    opacity: .55;
+    cursor: not-allowed;
+}
+
+.full-reading-card small {
+    color: #94a3b8;
+}
+
+
+</style>
