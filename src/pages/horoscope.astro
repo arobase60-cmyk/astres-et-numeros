@@ -4,7 +4,10 @@ import { WESTERN_SIGNS } from '../utils/astrology.js';
 import AdBanner from '../components/AdBanner.astro';
 ---
 
-<Layout title="Horoscope Occidental - Jouons avec les astres">
+<Layout
+	title="Horoscope du jour gratuit – Les 12 signes | Astres & Numéros"
+	description="Consultez gratuitement votre horoscope du jour selon votre signe astrologique : Bélier, Taureau, Gémeaux, Cancer, Lion, Vierge, Balance, Scorpion, Sagittaire, Capricorne, Verseau et Poissons."
+>
 	<div class="page-header">
 		<h1>✨ Horoscope Occidental</h1>
 		<p class="date" id="horoscope-date">Chargement de la date...</p>
@@ -43,6 +46,15 @@ import AdBanner from '../components/AdBanner.astro';
 			);
 		})}
 	</div>
+<section class="seo-links">
+    <h2>Explorez votre profil astrologique</h2>
+    <p>
+        Votre signe solaire n’est qu’une partie de votre profil.
+        Découvrez votre <a href="/theme-astral/">thème astral</a>
+        ou testez votre <a href="/compatibilite/">compatibilité astrologique</a>.
+    </p>
+</section>
+
 </Layout>
 
 <style is:global>

@@ -3,7 +3,10 @@ import Layout from '../layouts/Layout.astro';
 import AdBanner from '../components/AdBanner.astro';
 ---
 
-<Layout title="Astres & Numéros - Tarot, Horoscope et Numérologie">
+<Layout
+	title="Astres & Numéros – Tarot, Horoscope, Astrologie et Numérologie"
+	description="Découvrez gratuitement le tarot, l’horoscope, la compatibilité, la numérologie, le thème astral, l’astrologie chinoise et l’interprétation des rêves."
+>
 
     <!-- Bandeau principal -->
     <section class="hero-banner">
@@ -40,7 +43,7 @@ import AdBanner from '../components/AdBanner.astro';
         </a>
 
 
-        <a href="/horoscope" class="service-card">
+        <a href="/horoscope/" class="service-card">
             <div class="icon">♊</div>
             <h2>Horoscope</h2>
             <p>
@@ -51,7 +54,7 @@ import AdBanner from '../components/AdBanner.astro';
         </a>
 
 
-        <a href="/numerologie" class="service-card">
+        <a href="/numerologie/" class="service-card">
             <div class="icon">🔢</div>
             <h2>Numérologie</h2>
             <p>
@@ -79,7 +82,7 @@ import AdBanner from '../components/AdBanner.astro';
     <!-- Rubriques secondaires -->
     <section class="secondary-services">
 
-        <a href="/compatibilite" class="small-card">
+        <a href="/compatibilite/" class="small-card">
             <div class="small-icon">❤️</div>
 
             <div>
@@ -91,7 +94,7 @@ import AdBanner from '../components/AdBanner.astro';
         </a>
 
 
-        <a href="/horoscope-chinois" class="small-card">
+        <a href="/horoscope-chinois/" class="small-card">
             <div class="small-icon">🐉</div>
 
             <div>
@@ -101,6 +104,19 @@ import AdBanner from '../components/AdBanner.astro';
                 </p>
             </div>
         </a>
+<a href="/reves/" class="small-card">
+    <div class="small-icon">🌙</div>
+
+    <div>
+        <h2>Interprétation des rêves</h2>
+        <p>
+            Découvrez la signification des symboles, émotions et situations
+            qui apparaissent dans vos rêves.
+        </p>
+    </div>
+</a>
+
+
 
     </section>
 

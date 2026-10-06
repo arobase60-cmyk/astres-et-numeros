@@ -4,7 +4,10 @@ import { WESTERN_SIGNS } from '../utils/astrology.js';
 import AdBanner from '../components/AdBanner.astro';
 ---
 
-<Layout title="Test de Compatibilité - Jouons avec les astres">
+<Layout
+	title="Compatibilité astrologique - Test entre 2 signes | Astres & Numéros"
+	description="Testez gratuitement la compatibilité astrologique entre deux signes du zodiaque et découvrez leur complicité en amour, leurs affinités et leurs différences."
+>
 	<div class="page-header">
 		<h1>💞 Compatibilité Astrologique</h1>
 		<p class="subtitle">Sélectionnez deux signes pour tester leur complicité céleste</p>
@@ -54,12 +57,158 @@ import AdBanner from '../components/AdBanner.astro';
 </div>
 		</div>
 	</div>
-<AdBanner />
+<section id="ideal-partner" class="ideal-partner">
+    <div class="ideal-icon">💘</div>
 
+    <h2>Découvrez votre partenaire idéal</h2>
+
+    <p>
+        Quel profil amoureux serait le plus compatible avec vous ?
+        Découvrez-le grâce à l'astrologie occidentale,
+        l'astrologie chinoise et la numérologie.
+    </p>
+
+
+<div id="ideal-unlock" class="ideal-unlock hidden">
+    <div class="unlock-icon">🎬</div>
+
+    <h3>Votre partenaire idéal est prêt !</h3>
+
+    <p>
+        Regardez une courte vidéo pour découvrir votre profil
+        amoureux idéal.
+    </p>
+
+    <button type="button" id="watch-ad-btn" class="btn unlock-btn">
+        ▶️ Regarder la vidéo et découvrir mon résultat
+    </button>
+</div>
+
+
+
+    <div class="ideal-preview hidden" id="ideal-preview">
+        <p>
+    ⭐ Signe astrologique idéal :
+    <strong id="ideal-western-sign">?</strong>
+</p>
+        <p>
+    🐉 Signe chinois idéal :
+    <strong id="ideal-chinese-sign">?</strong>
+</p>
+<p>
+    🎂 Années de naissance compatibles :
+    <strong id="ideal-birth-years">?</strong>
+</p>
+
+
+       <p>
+    🔢 Nombre idéal :
+    <strong id="ideal-number">?</strong>
+</p>
+        <p>
+    💖 Prénoms compatibles :
+    <strong id="ideal-firstnames">?</strong>
+</p>
+    </div>
+
+    <button id="ideal-start-btn" class="ideal-btn">
+        💘 Découvrir mon partenaire idéal
+    </button>
+
+	<div id="ideal-form" class="ideal-form hidden">
+    <h3>Parlez-nous de vous</h3>
+
+    
+    <input
+        id="ideal-firstname"
+        type="text"
+        placeholder="Exemple : Sophie"
+        autocomplete="given-name"
+    />
+
+    <label for="ideal-birthdate">Votre date de naissance</label>
+    <input
+        id="ideal-birthdate"
+        type="date"
+    />
+<div class="ideal-gender">
+    <p>Je recherche :</p>
+
+    <div class="gender-buttons">
+        <label>
+            <input
+                type="radio"
+                name="ideal-gender"
+                value="femme"
+                checked
+            />
+            <span>👩 Une femme</span>
+        </label>
+
+        <label>
+            <input
+                type="radio"
+                name="ideal-gender"
+                value="homme"
+            />
+            <span>👨 Un homme</span>
+        </label>
+    </div>
+</div>
+<div class="ideal-age">
+    <p>Tranche d'âge recherchée :</p>
+
+    <div class="age-fields">
+        <label>
+            De
+            <input
+                id="ideal-age-min"
+                type="number"
+                min="18"
+                max="100"
+                value="55"
+            />
+            ans
+        </label>
+
+        <label>
+            à
+            <input
+                id="ideal-age-max"
+                type="number"
+                min="18"
+                max="100"
+                value="75"
+            />
+            ans
+        </label>
+    </div>
+</div>
+
+    <button id="ideal-calc-btn" class="ideal-btn" type="button">
+        Calculer mon partenaire idéal 💖
+    </button>
+</div>
+</section>
+
+<AdBanner />
+<section class="seo-links">
+    <h2>Allez plus loin dans votre compatibilité</h2>
+    <p>
+        La compatibilité entre deux signes donne un premier aperçu.
+        Pour mieux comprendre votre profil astrologique, découvrez aussi
+        votre <a href="/theme-astral/">thème astral</a>.
+    </p>
+</section>
 </Layout>
 
 <script>
-    import { getCompatibility } from '../utils/astrology.js';
+    import { getCompatibility, WESTERN_SIGNS } from '../utils/astrology.js';
+import {
+    FEMALE_FIRSTNAMES,
+    MALE_FIRSTNAMES
+} from '../utils/firstnames.js';
+
 
     function initCompatiblity() {
         const select1 = document.getElementById('sign-1') as HTMLSelectElement;
@@ -109,6 +258,457 @@ if ('amour' in result && 'communication' in result && 'quotidien' in result) {
     // Lancement immédiat + écouteur de navigation
     initCompatiblity();
     document.addEventListener('astro:page-load', initCompatiblity);
+
+function getWesternSignFromDate(dateString: string) {
+    const [, month, day] = dateString.split('-').map(Number);
+
+    const signs = [
+        { name: 'Capricorne', from: 1222 },
+        { name: 'Verseau', from: 120 },
+        { name: 'Poissons', from: 219 },
+        { name: 'Bélier', from: 321 },
+        { name: 'Taureau', from: 420 },
+        { name: 'Gémeaux', from: 521 },
+        { name: 'Cancer', from: 621 },
+        { name: 'Lion', from: 723 },
+        { name: 'Vierge', from: 823 },
+        { name: 'Balance', from: 923 },
+        { name: 'Scorpion', from: 1023 },
+        { name: 'Sagittaire', from: 1122 }
+    ];
+
+    const value = month * 100 + day;
+
+    for (let i = signs.length - 1; i >= 0; i--) {
+        if (value >= signs[i].from) {
+            return signs[i].name;
+        }
+    }
+
+    return 'Capricorne';
+}
+
+function getIdealWesternSign(userSign: string) {
+    let bestSign = '';
+    let bestScore = -1;
+
+    for (const sign of WESTERN_SIGNS) {
+        const result = getCompatibility(userSign, sign.name);
+
+        if (result && result.score > bestScore) {
+            bestScore = result.score;
+            bestSign = sign.name;
+        }
+    }
+
+    return {
+        sign: bestSign,
+        score: bestScore
+    };
+}
+function getChineseSign(year: number) {
+    const animals = [
+        'Rat',
+        'Buffle',
+        'Tigre',
+        'Lapin',
+        'Dragon',
+        'Serpent',
+        'Cheval',
+        'Chèvre',
+        'Singe',
+        'Coq',
+        'Chien',
+        'Cochon'
+    ];
+
+    return animals[(year - 4) % 12];
+}
+
+function getChineseSignFromDate(dateString: string): string {
+    const chineseNewYearDates: Record<number, string> = {
+        1940: '1940-02-08',
+        1941: '1941-01-27',
+        1942: '1942-02-15',
+        1943: '1943-02-05',
+        1944: '1944-01-25',
+        1945: '1945-02-13',
+        1946: '1946-02-02',
+        1947: '1947-01-22',
+        1948: '1948-02-10',
+        1949: '1949-01-29',
+        1950: '1950-02-17',
+        1951: '1951-02-06',
+        1952: '1952-01-27',
+        1953: '1953-02-14',
+        1954: '1954-02-03',
+        1955: '1955-01-24',
+        1956: '1956-02-12',
+        1957: '1957-01-31',
+        1958: '1958-02-18',
+        1959: '1959-02-08',
+        1960: '1960-01-28',
+        1961: '1961-02-15',
+        1962: '1962-02-05',
+        1963: '1963-01-25',
+        1964: '1964-02-13',
+        1965: '1965-02-02',
+        1966: '1966-01-21',
+        1967: '1967-02-09',
+        1968: '1968-01-30',
+        1969: '1969-02-17',
+        1970: '1970-02-06',
+        1971: '1971-01-27',
+        1972: '1972-02-15',
+        1973: '1973-02-03',
+        1974: '1974-01-23',
+        1975: '1975-02-11',
+        1976: '1976-01-31',
+        1977: '1977-02-18',
+        1978: '1978-02-07',
+        1979: '1979-01-28',
+        1980: '1980-02-16',
+        1981: '1981-02-05',
+        1982: '1982-01-25',
+        1983: '1983-02-13',
+        1984: '1984-02-02',
+        1985: '1985-02-20',
+        1986: '1986-02-09',
+        1987: '1987-01-29',
+        1988: '1988-02-17',
+        1989: '1989-02-06',
+        1990: '1990-01-27',
+        1991: '1991-02-15',
+        1992: '1992-02-04',
+        1993: '1993-01-23',
+        1994: '1994-02-10',
+        1995: '1995-01-31',
+        1996: '1996-02-19',
+        1997: '1997-02-07',
+        1998: '1998-01-28',
+        1999: '1999-02-16',
+        2000: '2000-02-05',
+        2001: '2001-01-24',
+        2002: '2002-02-12',
+        2003: '2003-02-01',
+        2004: '2004-01-22',
+        2005: '2005-02-09',
+        2006: '2006-01-29',
+        2007: '2007-02-18',
+        2008: '2008-02-07',
+        2009: '2009-01-26',
+        2010: '2010-02-14',
+        2011: '2011-02-03',
+        2012: '2012-01-23',
+        2013: '2013-02-10',
+        2014: '2014-01-31',
+        2015: '2015-02-19',
+        2016: '2016-02-08',
+        2017: '2017-01-28',
+        2018: '2018-02-16',
+        2019: '2019-02-05',
+        2020: '2020-01-25',
+        2021: '2021-02-12',
+        2022: '2022-02-01',
+        2023: '2023-01-22',
+        2024: '2024-02-10',
+        2025: '2025-01-29',
+        2026: '2026-02-17'
+    };
+
+    const year = Number(dateString.substring(0, 4));
+    const newYear = chineseNewYearDates[year];
+
+    // Sécurité pour une année absente de notre tableau
+    if (!newYear) {
+        return getChineseSign(year);
+    }
+
+    const chineseYear =
+        dateString < newYear ? year - 1 : year;
+
+    return getChineseSign(chineseYear);
+}
+
+
+
+
+function getIdealChineseSigns(userSign: string) {
+    const compatibility: Record<string, string[]> = {
+        Rat: ['Dragon', 'Singe'],
+        Buffle: ['Serpent', 'Coq'],
+        Tigre: ['Cheval', 'Chien'],
+        Lapin: ['Chèvre', 'Cochon'],
+        Dragon: ['Rat', 'Singe'],
+        Serpent: ['Buffle', 'Coq'],
+        Cheval: ['Tigre', 'Chien'],
+        Chèvre: ['Lapin', 'Cochon'],
+        Singe: ['Rat', 'Dragon'],
+        Coq: ['Buffle', 'Serpent'],
+        Chien: ['Tigre', 'Cheval'],
+        Cochon: ['Lapin', 'Chèvre']
+    };
+
+    return compatibility[userSign] ?? [];
+}
+function getCompatibleBirthYears(
+    ageMin: number,
+    ageMax: number,
+    idealChineseSigns: string[]
+): number[] {
+    const currentYear = new Date().getFullYear();
+
+    const youngestBirthYear = currentYear - ageMin;
+    const oldestBirthYear = currentYear - ageMax;
+
+    const years: number[] = [];
+
+    for (
+        let year = oldestBirthYear;
+        year <= youngestBirthYear;
+        year++
+    ) {
+        const sign = getChineseSign(year);
+
+        if (idealChineseSigns.includes(sign)) {
+            years.push(year);
+        }
+    }
+
+    return years;
+}
+
+
+function initIdealPartner() {
+    const startBtn = document.getElementById('ideal-start-btn');
+    const form = document.getElementById('ideal-form');
+const calcBtn = document.getElementById('ideal-calc-btn');
+const birthdate = document.getElementById('ideal-birthdate') as HTMLInputElement;
+const westernResult = document.getElementById('ideal-western-sign');
+const chineseResult = document.getElementById('ideal-chinese-sign');
+const birthYearsResult =
+    document.getElementById('ideal-birth-years');
+const numberResult = document.getElementById('ideal-number');
+const firstnamesResult = document.getElementById('ideal-firstnames');
+const firstNameInput =
+    document.getElementById('ideal-firstname') as HTMLInputElement;
+const ageMinInput =
+    document.getElementById('ideal-age-min') as HTMLInputElement;
+
+const ageMaxInput =
+    document.getElementById('ideal-age-max') as HTMLInputElement;
+const idealPreview = document.getElementById('ideal-preview');
+const idealUnlock = document.getElementById('ideal-unlock');
+const watchAdBtn = document.getElementById('watch-ad-btn');
+
+
+    if (!startBtn || !form) return;
+
+    startBtn.addEventListener('click', () => {
+        form.classList.remove('hidden');
+        startBtn.classList.add('hidden');
+
+    });
+
+	calcBtn?.addEventListener('click', () => {
+    if (!birthdate?.value) {
+        alert('Veuillez indiquer votre date de naissance.');
+        return;
+    }
+if (!firstNameInput?.value.trim()) {
+    alert('Veuillez indiquer votre prénom.');
+    return;
+}
+
+    const userSign = getWesternSignFromDate(birthdate.value);
+    const ideal = getIdealWesternSign(userSign);
+
+    if (westernResult) {
+        westernResult.textContent =
+            `${ideal.sign} (${ideal.score} % de compatibilité)`;
+    }
+const birthYear = Number(birthdate.value.split('-')[0]);
+
+const userChineseSign = getChineseSignFromDate(birthdate.value);
+const idealChineseSigns = getIdealChineseSigns(userChineseSign);
+const ageMin = Number(ageMinInput?.value);
+const ageMax = Number(ageMaxInput?.value);
+
+if (
+    !ageMin ||
+    !ageMax ||
+    ageMin < 18 ||
+    ageMax < ageMin
+) {
+    alert("Veuillez indiquer une tranche d'âge valide.");
+    return;
+}
+
+const compatibleBirthYears =
+    getCompatibleBirthYears(
+        ageMin,
+        ageMax,
+        idealChineseSigns
+    );
+if (chineseResult) {
+    chineseResult.textContent =
+        `${idealChineseSigns.join(' ou ')} (vous êtes ${userChineseSign})`;
+}
+
+if (birthYearsResult) {
+    birthYearsResult.textContent =
+        compatibleBirthYears.join(', ');
+}
+
+
+
+const lifePath = getLifePath(birthdate.value);
+
+const personalNumerology = getPersonalNumerology(
+    firstNameInput.value.trim(),
+    lifePath
+);
+
+const idealNumbers = getIdealNumbers(lifePath);
+
+if (numberResult) {
+    numberResult.textContent =
+        `${idealNumbers.join(' ou ')} ` +
+        `(votre chemin de vie est ${lifePath})`;
+}
+
+const selectedGender =
+    document.querySelector<HTMLInputElement>(
+        'input[name="ideal-gender"]:checked'
+    )?.value ?? 'femme';
+
+const compatibleNames =
+    getCompatibleFirstNames(selectedGender, idealNumbers);
+
+if (firstnamesResult) {
+    firstnamesResult.textContent =
+        compatibleNames.length > 0
+            ? compatibleNames.join(', ')
+            : 'Aucun prénom trouvé';
+}
+// Le calcul est terminé mais le résultat reste caché
+idealPreview?.classList.add('hidden');
+
+// On affiche la proposition de vidéo
+idealUnlock?.classList.remove('hidden');
+
+idealUnlock?.scrollIntoView({
+    behavior: 'smooth',
+    block: 'center'
+});
+});
+watchAdBtn?.addEventListener('click', () => {
+    if (!watchAdBtn) return;
+
+    watchAdBtn.textContent = '⏳ Vidéo en cours...';
+    watchAdBtn.setAttribute('disabled', 'true');
+
+    setTimeout(() => {
+        idealUnlock?.classList.add('hidden');
+        idealPreview?.classList.remove('hidden');
+
+        idealPreview?.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center'
+        });
+
+        watchAdBtn.textContent = '▶️ Regarder la vidéo et découvrir mon résultat';
+        watchAdBtn.removeAttribute('disabled');
+    }, 3000);
+});
+function reduceNumber(n: number): number {
+    while (n > 9 && n !== 11 && n !== 22 && n !== 33) {
+        n = String(n)
+            .split('')
+            .reduce((sum, digit) => sum + Number(digit), 0);
+    }
+
+    return n;
+}
+
+function getLifePath(dateString: string) {
+    const digits = dateString.replace(/\D/g, '');
+    const total = digits
+        .split('')
+        .reduce((sum, digit) => sum + Number(digit), 0);
+
+    return reduceNumber(total);
+}
+
+function getIdealNumbers(lifePath: number): number[] {
+    const compatibility: Record<number, number[]> = {
+        1: [3, 5],
+        2: [6, 8],
+        3: [1, 5],
+        4: [6, 8],
+        5: [1, 3],
+        6: [2, 4],
+        7: [7, 9],
+        8: [2, 4],
+        9: [7, 9],
+        11: [2, 6],
+        22: [4, 8],
+        33: [6, 9]
+    };
+
+    return compatibility[lifePath] ?? [lifePath];
+}
+
+function getFirstNameNumber(firstName: string): number {
+    const normalized = firstName
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toUpperCase()
+        .replace(/[^A-Z]/g, '');
+
+    let total = 0;
+
+    for (const letter of normalized) {
+        const position = letter.charCodeAt(0) - 64;
+        total += ((position - 1) % 9) + 1;
+    }
+
+    return reduceNumber(total);
+}
+function getPersonalNumerology(firstName: string, lifePath: number) {
+    const firstNameNumber = getFirstNameNumber(firstName);
+
+    const combinedNumber = reduceNumber(
+        firstNameNumber + lifePath
+    );
+
+    return {
+        firstNameNumber,
+        combinedNumber
+    };
+}
+
+
+function getCompatibleFirstNames(
+    gender: string,
+    idealNumbers: number[]
+): string[] {
+    const names =
+        gender === 'homme'
+            ? MALE_FIRSTNAMES
+            : FEMALE_FIRSTNAMES;
+
+    return names
+        .filter(name => idealNumbers.includes(getFirstNameNumber(name)))
+        .slice(0, 8);
+}
+
+
+}
+
+initIdealPartner();
+document.addEventListener('astro:page-load', initIdealPartner);
+
 </script>
 
 <style>
@@ -214,7 +814,181 @@ if ('amour' in result && 'communication' in result && 'quotidien' in result) {
     line-height: 1.7;
     margin: 0;
 }
+.ideal-partner {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 2rem;
+    text-align: center;
+    background: #1e293b;
+    border: 1px solid rgba(244, 63, 94, 0.35);
+    border-radius: 16px;
+}
 
+.ideal-icon {
+    font-size: 3rem;
+}
+
+.ideal-partner h2 {
+    color: #fbbf24;
+    margin: 0.5rem 0 1rem;
+}
+
+.ideal-partner > p {
+    color: #cbd5e1;
+    line-height: 1.6;
+}
+
+.ideal-preview {
+    margin: 1.5rem 0;
+    padding: 1rem;
+    text-align: left;
+    background: #0f172a;
+    border-radius: 12px;
+}
+
+.ideal-preview p {
+    margin: 0.7rem 0;
+    color: #e2e8f0;
+}
+
+.ideal-preview strong {
+    color: #fbbf24;
+}
+
+.ideal-btn {
+    background: #f43f5e;
+    color: white;
+    border: none;
+    padding: 0.9rem 1.5rem;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.ideal-btn:hover {
+    background: #e11d48;
+}
+
+.ideal-form {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: left;
+}
+
+.ideal-form.hidden {
+    display: none;
+}
+
+.ideal-form h3 {
+    color: #fbbf24;
+    text-align: center;
+    margin-top: 0;
+}
+
+.ideal-form label {
+    display: block;
+    color: #cbd5e1;
+    margin: 1rem 0 0.4rem;
+}
+
+.ideal-form input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.75rem;
+    background: #0f172a;
+    color: #f8fafc;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    font-size: 1rem;
+}
+
+.ideal-form .ideal-btn {
+    display: block;
+    margin: 1.5rem auto 0;
+}
+.ideal-gender {
+    margin-top: 1.2rem;
+}
+
+.ideal-gender > p {
+    color: #cbd5e1;
+    margin-bottom: 0.6rem;
+}
+
+.gender-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.8rem;
+}
+
+.gender-buttons label {
+    margin: 0;
+    cursor: pointer;
+}
+
+.gender-buttons input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.gender-buttons span {
+    display: block;
+    padding: 0.8rem;
+    text-align: center;
+    background: #0f172a;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    color: #e2e8f0;
+    transition: 0.2s;
+}
+
+.gender-buttons input:checked + span {
+    border-color: #f43f5e;
+    background: rgba(244, 63, 94, 0.15);
+    color: #fff;
+}
+.ideal-age {
+    margin-top: 1.2rem;
+}
+
+.ideal-age > p {
+    color: #cbd5e1;
+    margin-bottom: 0.6rem;
+}
+
+.age-fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.8rem;
+}
+
+.age-fields label {
+    margin: 0;
+    color: #cbd5e1;
+}
+
+.age-fields input {
+    width: 70px;
+    margin: 0 0.35rem;
+    text-align: center;
+}
+<div id="ideal-unlock" class="ideal-unlock hidden">
+    <div class="unlock-icon">🎬</div>
+
+    <h3>Votre partenaire idéal est prêt !</h3>
+
+    <p>
+        Regardez une courte vidéo pour découvrir votre profil
+        amoureux idéal.
+    </p>
+
+    <button type="button" id="watch-ad-btn" class="btn unlock-btn">
+        ▶️ Regarder la vidéo et découvrir mon résultat
+    </button>
+</div>
 
 
 </style>

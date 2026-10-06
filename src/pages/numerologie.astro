@@ -4,7 +4,10 @@ import { LIFE_PATH_DESCRIPTIONS } from '../utils/astrology.js';
 import AdBanner from '../components/AdBanner.astro';
 ---
 
-<Layout title="Numérologie - Jouons avec les astres">
+<Layout
+	title="Numérologie gratuite - Calculez votre chemin de vie | Astres & Numéros"
+	description="Calculez gratuitement votre chemin de vie en numérologie à partir de votre date de naissance et découvrez sa signification."
+>
 	<div class="page-header">
 		<h1>🔢 Numérologie & Chemin de Vie</h1>
 		<p class="subtitle">Découvrez la fréquence symbolique de votre date de naissance</p>
@@ -52,6 +55,14 @@ import AdBanner from '../components/AdBanner.astro';
 			))}
 		</div>
 	</section>
+	<section class="seo-links">
+    <h2>Découvrez aussi vos affinités</h2>
+    <p>
+        Après avoir découvert votre chemin de vie, explorez également
+        votre <a href="/compatibilite/">compatibilité</a> et découvrez
+        les affinités entre les signes.
+    </p>
+</section>
 </Layout>
 
 <script>
