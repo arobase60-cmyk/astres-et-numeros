@@ -22,6 +22,41 @@ import AdBanner from '../components/AdBanner.astro';
 
     </section>
 
+
+<section class="astro-explanation">
+    <h2>Qu'est-ce qu'un thème astral ?</h2>
+
+    <p>
+        Le thème astral, également appelé carte du ciel de naissance,
+        représente la position des astres au moment de la naissance.
+        En astrologie occidentale, il sert de support à une
+        interprétation symbolique de la personnalité et des
+        grandes tendances individuelles.
+    </p>
+
+    <p>
+        Le signe solaire correspond à la position du Soleil dans
+        le zodiaque. Le signe lunaire représente symboliquement
+        la sensibilité et les émotions, tandis que l'Ascendant
+        est associé à la manière de se présenter au monde.
+    </p>
+
+    <p>
+        L'heure et le lieu de naissance sont particulièrement
+        importants pour déterminer l'Ascendant. Les positions
+        des autres planètes et leurs relations angulaires,
+        appelées aspects astrologiques, complètent cette lecture.
+    </p>
+
+    <p>
+        L'astrologie est une pratique d'interprétation symbolique
+        dont les affirmations sur la personnalité et le destin
+        ne sont pas scientifiquement établies.
+    </p>
+</section>
+
+
+
     <section class="birth-form">
 
     <h2>Vos informations de naissance</h2>
@@ -179,6 +214,43 @@ import AdBanner from '../components/AdBanner.astro';
     
 
 </section>
+
+<section class="aspects-guide">
+    <h2>Comprendre les aspects astrologiques</h2>
+
+    <p>
+        Les aspects astrologiques représentent les angles formés
+        entre deux planètes dans un thème astral. En astrologie,
+        ils sont interprétés comme des relations symboliques
+        entre différentes tendances de la personnalité.
+    </p>
+
+    <ul>
+        <li><strong>Conjonction (0°) :</strong> deux planètes proches,
+        dont les influences sont considérées comme associées.</li>
+
+        <li><strong>Sextile (60°) :</strong> un aspect traditionnellement
+        associé aux possibilités et à la coopération.</li>
+
+        <li><strong>Carré (90°) :</strong> symbolise des tensions,
+        des défis ou des contradictions à dépasser.</li>
+
+        <li><strong>Trigone (120°) :</strong> représente traditionnellement
+        l'harmonie et la facilité d'expression.</li>
+
+        <li><strong>Opposition (180°) :</strong> évoque des polarités
+        et la recherche d'un équilibre.</li>
+    </ul>
+
+    <p>
+        L'orbe correspond à l'écart entre l'angle exact d'un aspect
+        et l'angle réellement mesuré entre les planètes.
+        Plus cet écart est faible, plus l'aspect est considéré
+        comme précis dans la tradition astrologique.
+    </p>
+</section>
+
+
 
 <section class="seo-links">
     <h2>Explorez davantage votre astrologie</h2>
@@ -587,7 +659,7 @@ if (aspectsList) {
 }
 .aspects-section {
     max-width: 850px;
-    margin: 3rem auto 0;
+    margin: 3rem auto 2rem;
     text-align: center;
 }
 
@@ -602,7 +674,7 @@ if (aspectsList) {
     gap: .8rem;
 }
 
-.aspect-item {
+:global(.aspect-item) {
     padding: 1rem 1.2rem;
     background: rgba(30, 41, 59, .65);
     border: 1px solid rgba(129, 140, 248, .25);
@@ -682,6 +754,67 @@ if (aspectsList) {
 
 .full-reading-card small {
     color: #94a3b8;
+}
+.astro-explanation {
+    max-width: 850px;
+    margin: 2rem auto 3rem;
+    padding: 2rem;
+    background: #1e293b;
+    border: 1px solid rgba(251, 191, 36, 0.25);
+    border-radius: 16px;
+}
+
+.astro-explanation h2 {
+    color: #fbbf24;
+    font-size: 1.5rem;
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.astro-explanation p {
+    color: #cbd5e1;
+    line-height: 1.8;
+    margin-bottom: 1rem;
+}
+
+.astro-explanation p:last-child {
+    margin-bottom: 0;
+}
+
+
+.aspects-guide {
+    max-width: 850px;
+    margin: 3rem auto;
+    padding: 2rem;
+    background: #1e293b;
+    border: 1px solid rgba(251, 191, 36, 0.25);
+    border-radius: 16px;
+}
+
+.aspects-guide h2 {
+    color: #fbbf24;
+    font-size: 1.5rem;
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.aspects-guide p,
+.aspects-guide li {
+    color: #cbd5e1;
+    line-height: 1.8;
+}
+
+.aspects-guide ul {
+    padding-left: 1.5rem;
+    margin: 1.5rem 0;
+}
+
+.aspects-guide li {
+    margin-bottom: 0.8rem;
+}
+
+.aspects-guide strong {
+    color: #fbbf24;
 }
 
 

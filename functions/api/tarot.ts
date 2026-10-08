@@ -298,9 +298,8 @@ Longueur souhaitée : environ 350 à 500 mots.
 					],
 
 					generationConfig: {
-						temperature: 0.8,
-						maxOutputTokens: 3000
-					}
+    maxOutputTokens: 3000
+}
 				})
 			}
 		);

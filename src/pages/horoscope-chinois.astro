@@ -39,6 +39,41 @@ import AdBanner from '../components/AdBanner.astro';
 
 		<p class="subtitle">Cliquez sur un signe ci-dessous pour révéler son tirage du jour</p>
 	</div>
+
+
+<section class="chinese-intro">
+    <h2>Comprendre l'astrologie chinoise</h2>
+
+    <p>
+        L'astrologie chinoise repose sur un cycle de douze animaux :
+        Rat, Bœuf, Tigre, Lapin, Dragon, Serpent, Cheval,
+        Chèvre, Singe, Coq, Chien et Cochon.
+        Chaque animal revient tous les douze ans.
+    </p>
+
+    <p>
+        Contrairement à l'astrologie occidentale, qui associe
+        principalement les signes à la période de naissance
+        dans l'année, le signe chinois dépend de l'année
+        du calendrier traditionnel chinois.
+    </p>
+
+    <p>
+        Attention : le Nouvel An chinois ne tombe pas le
+        1er janvier. Les personnes nées en janvier ou en février
+        doivent donc tenir compte de la date exacte du
+        Nouvel An chinois pour connaître leur signe.
+    </p>
+
+    <p>
+        Les horoscopes présentés ici proposent des pistes
+        de réflexion symboliques et des contenus de divertissement.
+        Ils ne constituent pas des prédictions scientifiques.
+    </p>
+</section>
+
+
+
 <AdBanner />
 	<div class="signs-grid">
 		{CHINESE_SIGNS.map((sign) => {
@@ -473,4 +508,42 @@ const signName = chineseSignsOrder[chineseYear % 12];
     line-height: 1.7;
     margin: 0;
 }
+
+.chinese-intro {
+    max-width: 900px;
+    margin: 0 auto 3rem;
+    padding: 2rem;
+    background: #1e293b;
+    border: 1px solid rgba(251, 191, 36, 0.3);
+    border-radius: 16px;
+}
+
+.chinese-intro h2 {
+    color: #fbbf24;
+    text-align: center;
+    font-size: 1.6rem;
+    margin-bottom: 1.5rem;
+}
+
+.chinese-intro p {
+    color: #cbd5e1;
+    font-size: 1rem;
+    line-height: 1.8;
+    margin-bottom: 1rem;
+}
+
+.chinese-intro p:last-child {
+    margin-bottom: 0;
+}
+
+@media (max-width: 600px) {
+    .chinese-intro {
+        padding: 1.3rem;
+    }
+
+    .chinese-intro h2 {
+        font-size: 1.35rem;
+    }
+}
+
 </style>

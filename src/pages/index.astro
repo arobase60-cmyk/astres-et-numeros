@@ -123,7 +123,53 @@ import AdBanner from '../components/AdBanner.astro';
 <!-- Zone publicitaire -->
 <AdBanner />
 
+<section class="how-it-works">
+  <h2>Comment utiliser Astres & Numéros ?</h2>
 
+  <p>
+    Astres & Numéros vous propose plusieurs outils gratuits
+    pour découvrir les traditions symboliques du tarot,
+    de l'astrologie et de la numérologie.
+    Chaque rubrique permet d'explorer un sujet différent.
+  </p>
+
+  <h3>🔮 Le tarot pour réfléchir à une situation</h3>
+  <p>
+    Le tirage d'une carte permet de découvrir un arcane
+    et son interprétation symbolique. Vous pouvez utiliser
+    ce message comme point de départ pour réfléchir
+    à une question personnelle.
+  </p>
+
+  <h3>♊ L'horoscope pour découvrir les douze signes</h3>
+  <p>
+    Consultez les tendances symboliques du jour
+    associées à votre signe astrologique et découvrez
+    les caractéristiques traditionnellement attribuées
+    aux signes du zodiaque.
+  </p>
+
+  <h3>🔢 La numérologie pour comprendre les nombres</h3>
+  <p>
+    À partir de votre date de naissance, calculez votre
+    chemin de vie et découvrez les interprétations
+    traditionnellement associées aux différents nombres.
+  </p>
+
+  <h3>🌌 Le thème astral pour explorer votre carte du ciel</h3>
+  <p>
+    Découvrez la position des principaux astres
+    au moment de votre naissance, votre Ascendant
+    et les aspects astrologiques qui les relient.
+  </p>
+
+  <p>
+    Ces pratiques appartiennent à des traditions
+    culturelles et symboliques. Leurs interprétations
+    ne sont pas scientifiquement établies et ne doivent
+    pas remplacer des conseils professionnels.
+  </p>
+</section>
 
     <!-- Présentation -->
     <section class="intro-text">
@@ -455,5 +501,41 @@ import AdBanner from '../components/AdBanner.astro';
         }
 
     }
+/* COMMENT UTILISER LE SITE */
+
+.how-it-works {
+    background: rgba(30, 41, 59, 0.65);
+    border: 1px solid rgba(251, 191, 36, 0.25);
+    border-radius: 14px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    line-height: 1.75;
+}
+
+.how-it-works h2 {
+    color: #fbbf24;
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+}
+
+.how-it-works h3 {
+    color: #f8fafc;
+    font-size: 1.15rem;
+    margin-top: 1.8rem;
+    margin-bottom: 0.5rem;
+}
+
+.how-it-works p {
+    color: #cbd5e1;
+    font-size: 1.03rem;
+    margin-bottom: 1rem;
+}
+
+@media (max-width: 500px) {
+    .how-it-works {
+        padding: 1.25rem;
+    }
+}
+
 
 </style>

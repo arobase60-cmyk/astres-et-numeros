@@ -51,8 +51,21 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 				<span>Astres & Numéros</span>
 			</a>
 
-			<nav class="main-nav" aria-label="Navigation principale">
 
+			<button
+  class="menu-toggle"
+  type="button"
+  aria-label="Ouvrir le menu"
+  aria-expanded="false"
+  aria-controls="main-navigation"
+>
+  ☰ Menu
+</button>
+			<nav
+  id="main-navigation"
+  class="main-nav"
+  aria-label="Navigation principale"
+>
 				<a href="/">
 					Accueil
 				</a>
@@ -229,7 +242,17 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 		font-size: 1.35rem;
 	}
 
-
+.menu-toggle {
+  display: none;
+  background: transparent;
+  border: 1px solid #fbbf24;
+  color: #fbbf24;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+}
 	.main-nav {
 
 		display: flex;
@@ -387,6 +410,26 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 	------------------------- */
 
 	@media (max-width: 600px) {
+.menu-toggle {
+  display: block;
+}
+.main-nav {
+  display: none;
+}
+
+
+
+.main-nav.is-open {
+  display: grid;
+grid-template-columns: repeat(2, minmax(0, 1fr));
+align-items: center;
+  width: 100%;
+  gap: 0.3rem;
+  padding: 0.5rem 0;
+  max-height: 50vh;
+  overflow-y: auto;
+}
+
 
 		.brand {
 			font-size: 1.05rem;
@@ -415,3 +458,21 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 	}
 
 </style>
+<script>
+  const menuButton = document.querySelector<HTMLButtonElement>('.menu-toggle');
+  const navigation = document.querySelector<HTMLElement>('.main-nav');
+
+  menuButton?.addEventListener('click', () => {
+    if (!navigation) return;
+
+    const isOpen = navigation.classList.toggle('is-open');
+
+    menuButton.setAttribute('aria-expanded', String(isOpen));
+    menuButton.setAttribute(
+      'aria-label',
+      isOpen ? 'Fermer le menu' : 'Ouvrir le menu'
+    );
+
+    menuButton.textContent = isOpen ? '✕ Fermer' : '☰ Menu';
+  });
+</script>

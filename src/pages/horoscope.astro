@@ -13,6 +13,35 @@ import AdBanner from '../components/AdBanner.astro';
 		<p class="date" id="horoscope-date">Chargement de la date...</p>
         <p class="subtitle">Cliquez sur votre signe pour découvrir votre horoscope du jour</p>
 	   </div>
+
+
+<section class="horoscope-intro">
+    <h2>Comprendre votre horoscope du jour</h2>
+
+    <p>
+        L'horoscope occidental repose sur les douze signes
+        du zodiaque, déterminés à partir de la période
+        de naissance. Chaque signe est traditionnellement
+        associé à des caractéristiques et à des symboles
+        astrologiques particuliers.
+    </p>
+
+    <p>
+        Sur Astres & Numéros, votre horoscope quotidien
+        propose trois axes de réflexion : votre situation
+        générale, vos relations sentimentales et vos
+        activités professionnelles ou projets personnels.
+    </p>
+
+    <p>
+        Ces interprétations astrologiques sont proposées
+        à titre de divertissement et de réflexion personnelle.
+        Elles ne constituent pas des prédictions certaines
+        des événements à venir.
+    </p>
+</section>
+
+
 <AdBanner />
 	<div class="signs-grid">
 		{WESTERN_SIGNS.map((sign) => {
@@ -46,6 +75,52 @@ import AdBanner from '../components/AdBanner.astro';
 			);
 		})}
 	</div>
+
+
+	<section class="zodiac-elements">
+    <h2>Les quatre éléments du zodiaque</h2>
+
+    <p>
+        En astrologie occidentale, les douze signes sont répartis
+        en quatre éléments. Chacun représente symboliquement
+        une manière d'aborder les émotions, les relations
+        et les expériences de la vie.
+    </p>
+
+    <h3>🔥 Les signes de Feu</h3>
+    <p>
+        Bélier, Lion et Sagittaire sont traditionnellement
+        associés à l'énergie, à l'enthousiasme, à l'action
+        et à l'esprit d'initiative.
+    </p>
+
+    <h3>🌿 Les signes de Terre</h3>
+    <p>
+        Taureau, Vierge et Capricorne symbolisent
+        la stabilité, le pragmatisme, la patience
+        et le sens des responsabilités.
+    </p>
+
+    <h3>🌬️ Les signes d'Air</h3>
+    <p>
+        Gémeaux, Balance et Verseau sont associés
+        à la communication, à la curiosité intellectuelle,
+        aux échanges et à la réflexion.
+    </p>
+
+    <h3>💧 Les signes d'Eau</h3>
+    <p>
+        Cancer, Scorpion et Poissons évoquent
+        la sensibilité, l'intuition, l'imagination
+        et la profondeur émotionnelle.
+    </p>
+
+    <p>
+        Ces associations appartiennent à la tradition
+        astrologique et ne définissent pas à elles seules
+        la personnalité d'une personne.
+    </p>
+</section>
 <section class="seo-links">
     <h2>Explorez votre profil astrologique</h2>
     <p>
@@ -58,6 +133,93 @@ import AdBanner from '../components/AdBanner.astro';
 </Layout>
 
 <style is:global>
+.zodiac-elements {
+    max-width: 950px;
+    margin: 50px auto;
+    padding: 30px;
+    background: rgba(30, 41, 59, 0.45);
+    border: 1px solid rgba(251, 191, 36, 0.2);
+    border-radius: 12px;
+    text-align: center;
+}
+
+.zodiac-elements h2 {
+    color: #fbbf24;
+    font-size: 1.6rem;
+    margin-bottom: 20px;
+}
+
+.zodiac-elements h3 {
+    color: #fbbf24;
+    font-size: 1.2rem;
+    margin-top: 25px;
+    margin-bottom: 10px;
+}
+
+.zodiac-elements p {
+    color: #cbd5e1;
+    font-size: 1rem;
+    line-height: 1.8;
+    margin-bottom: 15px;
+}
+
+
+
+.seo-links {
+    max-width: 950px;
+    margin: 40px auto;
+    text-align: center;
+}
+
+.seo-links h2 {
+    color: #fbbf24;
+    margin-bottom: 15px;
+}
+
+.seo-links p {
+    color: #cbd5e1;
+    line-height: 1.8;
+}
+
+.seo-links a {
+    color: #fbbf24;
+    text-decoration: underline;
+}
+
+.seo-links a:hover {
+    color: #fde68a;
+}
+
+
+.horoscope-intro {
+    max-width: 950px;
+    margin: 0 auto 40px;
+    padding: 25px 30px;
+    text-align: center;
+    background: rgba(30, 41, 59, 0.45);
+    border: 1px solid rgba(251, 191, 36, 0.2);
+    border-radius: 12px;
+}
+
+.horoscope-intro h2 {
+    color: #fbbf24;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+}
+
+.horoscope-intro p {
+    color: #cbd5e1;
+    font-size: 1rem;
+    line-height: 1.8;
+    margin-bottom: 15px;
+}
+
+.horoscope-intro p:last-child {
+    margin-bottom: 0;
+}
+
+
+
 	.page-header {
 		text-align: center;
 		margin-bottom: 2.5rem;

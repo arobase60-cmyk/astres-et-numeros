@@ -70,23 +70,21 @@ import AdBanner from '../components/AdBanner.astro';
 
 
 <div id="ideal-unlock" class="ideal-unlock hidden">
-    <div class="unlock-icon">🎬</div>
+    <div class="unlock-icon">💖</div>
 
-    <h3>Votre partenaire idéal est prêt !</h3>
+    <h3>Découvrez votre profil de compatibilité</h3>
 
     <p>
-        Regardez une courte vidéo pour découvrir votre profil
-        amoureux idéal.
-    </p>
+        Votre profil est calculé !
+        Cliquez ci-dessous pour découvrir gratuitement votre résultat.
+       </p>
 
     <button type="button" id="watch-ad-btn" class="btn unlock-btn">
-        ▶️ Regarder la vidéo et découvrir mon résultat
+        💖 Découvrir mon résultat
     </button>
 </div>
 
-
-
-    <div class="ideal-preview hidden" id="ideal-preview">
+<div class="ideal-preview hidden" id="ideal-preview">
         <p>
     ⭐ Signe astrologique idéal :
     <strong id="ideal-western-sign">?</strong>
@@ -190,6 +188,32 @@ import AdBanner from '../components/AdBanner.astro';
     </button>
 </div>
 </section>
+
+<section class="compatibility-guide">
+    <h2>Comment fonctionne notre test de compatibilité ?</h2>
+
+    <p>
+        Notre test de compatibilité astrologique compare les affinités
+        symboliques entre les douze signes du zodiaque.
+        Il propose un score indicatif accompagné d'une interprétation
+        de la relation amoureuse, de la communication et de la vie quotidienne.
+    </p>
+
+    <p>
+        Le calcul du partenaire idéal combine plusieurs approches :
+        l'astrologie occidentale, les correspondances entre signes chinois
+        et la numérologie du prénom et de la date de naissance.
+    </p>
+
+    <p>
+        Ces résultats sont proposés à titre de divertissement et
+        de découverte personnelle. Ils ne constituent pas une méthode
+        scientifique pour prédire la réussite d'une relation.
+        La confiance, le dialogue et les valeurs partagées restent
+        essentiels dans une relation.
+    </p>
+</section>
+
 
 <AdBanner />
 <section class="seo-links">
@@ -608,18 +632,16 @@ watchAdBtn?.addEventListener('click', () => {
     watchAdBtn.textContent = '⏳ Vidéo en cours...';
     watchAdBtn.setAttribute('disabled', 'true');
 
-    setTimeout(() => {
-        idealUnlock?.classList.add('hidden');
-        idealPreview?.classList.remove('hidden');
+    idealUnlock?.classList.add('hidden');
+idealPreview?.classList.remove('hidden');
 
-        idealPreview?.scrollIntoView({
-            behavior: 'smooth',
-            block: 'center'
-        });
+idealPreview?.scrollIntoView({
+    behavior: 'smooth',
+    block: 'center'
+});
 
-        watchAdBtn.textContent = '▶️ Regarder la vidéo et découvrir mon résultat';
-        watchAdBtn.removeAttribute('disabled');
-    }, 3000);
+watchAdBtn.textContent = '💖 Découvrir mon résultat';
+watchAdBtn.removeAttribute('disabled');
 });
 function reduceNumber(n: number): number {
     while (n > 9 && n !== 11 && n !== 22 && n !== 33) {
@@ -712,6 +734,32 @@ document.addEventListener('astro:page-load', initIdealPartner);
 </script>
 
 <style>
+.compatibility-guide {
+    max-width: 850px;
+    margin: 2.5rem auto;
+    padding: 2rem;
+    background: #1e293b;
+    border: 1px solid rgba(251, 191, 36, 0.25);
+    border-radius: 16px;
+}
+
+.compatibility-guide h2 {
+    color: #fbbf24;
+    font-size: 1.5rem;
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.compatibility-guide p {
+    color: #cbd5e1;
+    line-height: 1.8;
+    margin-bottom: 1rem;
+}
+
+.compatibility-guide p:last-child {
+    margin-bottom: 0;
+}
+
 	.page-header { text-align: center; margin-bottom: 2rem; }
 	.page-header h1 { color: #fbbf24; font-size: 2.2rem; }
 	.subtitle { color: #94a3b8; }
@@ -782,7 +830,9 @@ document.addEventListener('astro:page-load', initIdealPartner);
 
 	.desc-text { color: #cbd5e1; font-size: 1.05rem; }
 	.hidden { display: none; }
-
+.ideal-unlock.hidden {
+    display: none;
+}
 
 .compat-details {
     display: grid;
@@ -978,16 +1028,16 @@ document.addEventListener('astro:page-load', initIdealPartner);
 <div id="ideal-unlock" class="ideal-unlock hidden">
     <div class="unlock-icon">🎬</div>
 
-    <h3>Votre partenaire idéal est prêt !</h3>
+    <h3>Découvrez votre profil de compatibilité</h3>
 
     <p>
-        Regardez une courte vidéo pour découvrir votre profil
-        amoureux idéal.
-    </p>
+    Votre profil de compatibilité est calculé !
+    Cliquez sur le bouton ci-dessous pour découvrir votre résultat gratuitement.
+</p>
 
-    <button type="button" id="watch-ad-btn" class="btn unlock-btn">
-        ▶️ Regarder la vidéo et découvrir mon résultat
-    </button>
+   <button type="button" id="watch-ad-btn" class="btn unlock-btn">
+    💖 Découvrir mon résultat
+</button>
 </div>
 
 

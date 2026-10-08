@@ -13,6 +13,35 @@ import AdBanner from '../components/AdBanner.astro';
 		<p class="subtitle">Découvrez la fréquence symbolique de votre date de naissance</p>
 	</div>
 
+<section class="numerology-intro">
+    <h2>Qu'est-ce que le chemin de vie en numérologie ?</h2>
+
+    <p>
+        En numérologie, le chemin de vie est un nombre
+        calculé à partir de la date de naissance.
+        Selon cette tradition symbolique, il représente
+        certaines tendances de personnalité, des qualités
+        et des défis que chacun peut explorer.
+    </p>
+
+    <p>
+        Les chemins de vie sont généralement associés
+        aux nombres de 1 à 9. Certaines méthodes
+        conservent également les nombres maîtres
+        11, 22 et 33, auxquels elles attribuent
+        une signification particulière.
+    </p>
+
+    <p>
+        La numérologie ne repose pas sur une méthode
+        scientifique permettant de prédire la personnalité
+        ou l'avenir. Elle peut néanmoins être utilisée
+        comme un outil de réflexion personnelle
+        et de divertissement.
+    </p>
+</section>
+
+
 	<!-- CALCULATEUR DE CHEMIN DE VIE -->
 	<div class="calculator-card">
 		<div class="calc-header">
@@ -40,6 +69,43 @@ import AdBanner from '../components/AdBanner.astro';
 		</div>
 	</div>
 <AdBanner />
+<section class="calculation-guide">
+    <h2>Comment calculer son chemin de vie ?</h2>
+
+    <p>
+        Le chemin de vie se calcule à partir des chiffres
+        de votre date de naissance. Dans la méthode
+        classique, on additionne ces chiffres jusqu'à
+        obtenir un nombre compris entre 1 et 9.
+    </p>
+
+    <h3>Exemple : naissance le 15 mars 1985</h3>
+
+    <p>
+        On additionne les chiffres de la date :
+    </p>
+
+    <p>
+        <strong>1 + 5 + 0 + 3 + 1 + 9 + 8 + 5 = 32</strong>
+    </p>
+
+    <p>
+        Puis on réduit le résultat :
+        <strong>3 + 2 = 5</strong>
+    </p>
+
+    <p>
+        Le chemin de vie obtenu est donc
+        <strong>5</strong>, traditionnellement associé
+        à la liberté, à la curiosité et au changement.
+    </p>
+
+    <p>
+        Selon les méthodes de numérologie, certains
+        résultats comme 11, 22 et 33 sont conservés
+        comme nombres maîtres plutôt que réduits.
+    </p>
+</section>
 	<!-- GUIDE DES CHEMINS DE VIE -->
 	<section class="guide-section">
 		<h2>Les 9 Chemins de Vie et Maîtres Nombres</h2>
@@ -55,6 +121,41 @@ import AdBanner from '../components/AdBanner.astro';
 			))}
 		</div>
 	</section>
+
+	<section class="master-numbers">
+    <h2>Que sont les nombres maîtres en numérologie ?</h2>
+
+    <p>
+        En numérologie, les nombres 11, 22 et 33 sont
+        traditionnellement appelés nombres maîtres.
+        Certaines méthodes les conservent sans les réduire
+        à un seul chiffre.
+    </p>
+
+    <h3>Le nombre maître 11 : l'intuition</h3>
+    <p>
+        Le 11 est associé à l'inspiration, à la sensibilité
+        et à la recherche de compréhension intérieure.
+    </p>
+
+    <h3>Le nombre maître 22 : la réalisation</h3>
+    <p>
+        Le 22 symbolise la capacité à transformer des idées
+        en projets concrets, avec patience et persévérance.
+    </p>
+
+    <h3>Le nombre maître 33 : la transmission</h3>
+    <p>
+        Le 33 est traditionnellement associé à la bienveillance,
+        à l'accompagnement et au partage des connaissances.
+    </p>
+
+    <p>
+        Ces significations sont symboliques et varient selon
+        les traditions numérologiques. Elles ne constituent
+        pas des caractéristiques scientifiquement établies.
+    </p>
+</section>
 	<section class="seo-links">
     <h2>Découvrez aussi vos affinités</h2>
     <p>
@@ -125,6 +226,96 @@ if (personalYearDesc && personalYear !== null) {
 </script>
 
 <style>
+.master-numbers {
+    max-width: 950px;
+    margin: 40px auto;
+    padding: 30px;
+    text-align: center;
+    background: rgba(30, 41, 59, 0.45);
+    border: 1px solid rgba(251, 191, 36, 0.2);
+    border-radius: 12px;
+}
+
+.master-numbers h2 {
+    color: #fbbf24;
+    font-size: 1.6rem;
+    margin-bottom: 20px;
+}
+
+.master-numbers h3 {
+    color: #fbbf24;
+    font-size: 1.2rem;
+    margin-top: 25px;
+    margin-bottom: 10px;
+}
+
+.master-numbers p {
+    color: #cbd5e1;
+    font-size: 1rem;
+    line-height: 1.8;
+    margin-bottom: 15px;
+}
+
+.calculation-guide {
+    max-width: 950px;
+    margin: 40px auto;
+    padding: 30px;
+    text-align: center;
+    background: rgba(30, 41, 59, 0.45);
+    border: 1px solid rgba(251, 191, 36, 0.2);
+    border-radius: 12px;
+}
+
+.calculation-guide h2 {
+    color: #fbbf24;
+    font-size: 1.6rem;
+    margin-bottom: 20px;
+}
+
+.calculation-guide h3 {
+    color: #fbbf24;
+    font-size: 1.2rem;
+    margin: 25px 0 15px;
+}
+
+.calculation-guide p {
+    color: #cbd5e1;
+    font-size: 1rem;
+    line-height: 1.8;
+    margin-bottom: 15px;
+}
+
+.calculation-guide strong {
+    color: #fbbf24;
+}
+
+.numerology-intro {
+    max-width: 950px;
+    margin: 0 auto 40px;
+    padding: 30px;
+    text-align: center;
+    background: rgba(30, 41, 59, 0.45);
+    border: 1px solid rgba(251, 191, 36, 0.2);
+    border-radius: 12px;
+}
+
+.numerology-intro h2 {
+    color: #fbbf24;
+    font-size: 1.6rem;
+    margin-bottom: 20px;
+}
+
+.numerology-intro p {
+    color: #cbd5e1;
+    font-size: 1rem;
+    line-height: 1.8;
+    margin-bottom: 15px;
+}
+
+.numerology-intro p:last-child {
+    margin-bottom: 0;
+}
+
 	.page-header {
 		text-align: center;
 		margin-bottom: 2.5rem;
