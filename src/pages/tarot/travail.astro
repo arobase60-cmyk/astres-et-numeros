@@ -146,26 +146,19 @@ import AdBanner from '../../components/AdBanner.astro';
 
 		<section class="premium">
 
-	<p class="premium-label">
-		✦ INTERPRÉTATION PROFESSIONNELLE PERSONNALISÉE
-	</p>
+  <p class="premium-label">
+    ✦ SYNTHÈSE DE VOTRE TIRAGE PROFESSIONNEL
+  </p>
 
-	<h2>
-		Que signifient ces trois cartes pour votre situation professionnelle ?
-	</h2>
+  <h2>Le message de vos trois cartes</h2>
 
-	<p>
-    Découvrez gratuitement la signification de vos trois cartes.
-    Une interprétation personnalisée de votre situation
-    professionnelle sera bientôt proposée.
-</p>
+  <p>
+    Découvrez comment votre situation actuelle,
+    les opportunités possibles et les conseils des cartes
+    peuvent éclairer votre réflexion professionnelle.
+  </p>
 
-	
-<div class="coming-soon">
-    <h3>✦ Interprétation personnalisée</h3>
-
-    
-</div>
+  <p id="work-synthesis" aria-live="polite"></p>
 
 </section>
 
@@ -406,6 +399,39 @@ import AdBanner from '../../components/AdBanner.astro';
 
 		}
 
+function generateWorkSynthesis() {
+    const [situation, opportunity, advice] = selectedCards;
+
+    const synthesis = document.getElementById("work-synthesis");
+
+    if (!synthesis || !situation || !opportunity || !advice) {
+        return;
+    }
+
+    synthesis.textContent =
+        `✦ VOTRE SITUATION ACTUELLE\n\n` +
+        `${situation.name} représente votre situation professionnelle. ` +
+        `${situation.workMeaning}\n\n` +
+
+        `✦ LES OPPORTUNITÉS POSSIBLES\n\n` +
+        `${opportunity.name} invite à explorer de nouvelles possibilités. ` +
+        `${opportunity.workMeaning}\n\n` +
+
+        `✦ LE CONSEIL DES CARTES\n\n` +
+        `${advice.name} propose une piste de réflexion ` +
+        `pour vos prochaines décisions. ` +
+        `${advice.workMeaning}\n\n` +
+
+        `✦ LE MESSAGE GLOBAL\n\n` +
+        `Ces trois cartes vous invitent à prendre du recul ` +
+        `sur votre situation actuelle, à identifier les ` +
+        `opportunités qui correspondent à vos aspirations ` +
+        `et à avancer avec discernement. ` +
+        `Ce tirage constitue un support de réflexion, ` +
+        `et non une prédiction certaine de votre avenir professionnel.`;
+}
+
+
 
 		function showResult() {
 
@@ -423,6 +449,9 @@ import AdBanner from '../../components/AdBanner.astro';
 				"advice",
 				selectedCards[2]
 			);
+
+generateWorkSynthesis();
+
 
 			choiceZone.classList.add(
 				"fade-out"
@@ -1109,6 +1138,14 @@ button.removeAttribute(
 .coming-soon .coming-soon-note {
     font-size: 0.85rem;
     color: #94a3b8;
+}
+
+#work-synthesis {
+    white-space: pre-line;
+    line-height: 1.9;
+    text-align: left;
+    max-width: 700px;
+    margin: 1.5rem auto;
 }
 
 </style>

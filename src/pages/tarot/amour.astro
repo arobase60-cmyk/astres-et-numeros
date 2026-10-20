@@ -146,23 +146,21 @@ import AdBanner from '../../components/AdBanner.astro';
 
 		<section class="premium">
 
-	     <p class="premium-label">
-		♥ INTERPRÉTATION AMOUREUSE PERSONNALISÉE
-	     </p>
+  <p class="premium-label">
+    ♥ SYNTHÈSE DE VOTRE TIRAGE AMOUREUX
+  </p>
 
-	     <h2>
-		 Que signifient ces trois cartes pour votre situation sentimentale ?
-	     </h2>
+  <h2>Le message de vos trois cartes</h2>
 
-	     
-	      
-<div class="coming-soon">
-    <h3>♥ Interprétation personnalisée</h3>
+  <p>
+    Découvrez comment les cartes représentant vos sentiments,
+    l'autre personne et l'évolution possible de votre situation
+    peuvent se compléter.
+  </p>
 
-    
-</div>
+  <p id="love-synthesis" aria-live="polite"></p>
 
-         </section>
+</section>
 
 
 		 <div class="actions">
@@ -408,7 +406,38 @@ import AdBanner from '../../components/AdBanner.astro';
 
 		}
 
+function generateLoveSynthesis() {
+    const [you, other, evolution] = selectedCards;
 
+    const synthesis = document.getElementById("love-synthesis");
+
+    if (!synthesis || !you || !other || !evolution) {
+        return;
+    }
+
+    synthesis.textContent =
+        `♥ VOTRE POSITION SENTIMENTALE\n\n` +
+        `${you.name} représente votre place dans cette situation. ` +
+        `${you.loveMeaning} \n\n` +
+
+        `♥ L'AUTRE PERSONNE\n\n` +
+        `${other.name} invite à réfléchir à la place de l'autre ` +
+        `dans votre relation. ${other.loveMeaning} ` +
+        `Cette carte ne permet toutefois pas de connaître ` +
+        `avec certitude ses sentiments.\n\n` +
+
+        `♥ L'ÉVOLUTION POSSIBLE\n\n` +
+        `${evolution.name} évoque une direction possible ` +
+        `pour votre situation sentimentale. ` +
+        `${evolution.loveMeaning}\n\n` +
+
+        `♥ LE CONSEIL DE VOTRE TIRAGE\n\n` +
+        `Ces trois cartes vous invitent à considérer vos besoins, ` +
+        `la place de l'autre personne et les possibilités ` +
+        `d'évolution de votre relation. ` +
+        `Prenez le temps de réfléchir à ce qui compte ` +
+        `réellement pour vous.`;
+}
 		function showResult() {
 
 			fillCard(
@@ -425,6 +454,8 @@ import AdBanner from '../../components/AdBanner.astro';
 				"evolution",
 				selectedCards[2]
 			);
+
+generateLoveSynthesis();
 
 			choiceZone.classList.add(
 				"fade-out"
@@ -1114,4 +1145,13 @@ button.removeAttribute(
     font-size: 0.85rem;
     color: #94a3b8;
 }
+#love-synthesis {
+    white-space: pre-line;
+    line-height: 1.9;
+    text-align: left;
+    max-width: 700px;
+    margin: 1.5rem auto;
+}
+
+
 </style>

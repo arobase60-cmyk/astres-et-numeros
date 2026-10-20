@@ -169,29 +169,23 @@ import AdBanner from '../../components/AdBanner.astro';
 
 		<section class="synthesis">
 
-	<p class="premium-label">
-		✨ INTERPRÉTATION PERSONNALISÉE
-	</p>
+  <p class="premium-label">
+    ✨ SYNTHÈSE DE VOTRE TIRAGE
+  </p>
 
-	<h2>
-		Approfondissez votre tirage
-	</h2>
+  <h2>
+    Le message de vos trois cartes
+  </h2>
 
-	<p>
-    Découvrez gratuitement la signification de vos trois cartes
-    et les liens entre votre passé, votre présent et votre avenir.
-    Une interprétation personnalisée tenant compte de votre
-    question sera prochainement disponible.
-</p>
+  <p>
+    Découvrez comment les symboles de votre passé,
+    de votre présent et de votre avenir
+    peuvent se compléter.
+  </p>
 
-	
-
-	<p class="premium-price">Interprétation personnalisée bientôt disponible</p>
-
-	
+  <p id="reading-synthesis" aria-live="polite"></p>
 
 </section>
-
 		<div class="actions">
 
 			<button
@@ -451,6 +445,45 @@ import AdBanner from '../../components/AdBanner.astro';
 
 		}
 
+function generateSynthesis() {
+    const [past, present, future] = selectedCards;
+
+    const synthesis = document.getElementById(
+        "reading-synthesis"
+    );
+
+    if (!synthesis || !past || !present || !future) {
+        return;
+    }
+
+    const pastKeywords = past.keywords.join(", ");
+    const presentKeywords = present.keywords.join(", ");
+    const futureKeywords = future.keywords.join(", ");
+
+    synthesis.textContent =
+        `Votre passé est représenté par ${past.name}, ` +
+        `une carte associée à ${pastKeywords}. ` +
+        `Elle vous invite à réfléchir aux expériences ` +
+        `qui ont influencé votre situation actuelle.\n\n` +
+
+        `Dans votre présent, ${present.name} met en lumière ` +
+        `les thèmes de ${presentKeywords}. ` +
+        `Ces symboles peuvent vous aider à mieux comprendre ` +
+        `vos préoccupations du moment.\n\n` +
+
+        `Pour votre avenir, ${future.name} évoque ` +
+        `${futureKeywords}. ` +
+        `Cette carte suggère une direction possible, ` +
+        `sans prédire avec certitude les événements à venir.\n\n` +
+
+        `Ensemble, ces trois cartes proposent une réflexion ` +
+        `sur votre cheminement : ce qui vous a marqué, ` +
+        `ce qui vous occupe aujourd'hui et les possibilités ` +
+        `que vous souhaitez explorer.`;
+}
+
+
+
 		function showResult() {
 
 			fillCard(
@@ -467,7 +500,7 @@ import AdBanner from '../../components/AdBanner.astro';
 				"future",
 				selectedCards[2]
 			);
-
+generateSynthesis();
 			choiceZone.classList.add(
 				"fade-out"
 			);
@@ -1188,7 +1221,13 @@ updateProgress();
     margin-bottom: 20px;
 }
 
-
+#reading-synthesis {
+    white-space: pre-line;
+    line-height: 1.9;
+    text-align: left;
+    max-width: 700px;
+    margin: 1.5rem auto;
+}
 
 
 

@@ -308,25 +308,44 @@ import Layout from '../layouts/Layout.astro';
 
 
 <section class="personal-reading">
-  <span class="eyebrow">✨ INTERPRÉTATION PERSONNALISÉE</span>
 
-  <h2>Faites interpréter <span class="dream-highlight">votre rêve</span></h2>
+  <span class="eyebrow">✨ ANALYSE SYMBOLIQUE GRATUITE</span>
+
+  <h2>
+    Découvrez la signification de
+    <span class="dream-highlight">votre rêve</span>
+  </h2>
 
   <p>
-    Racontez votre rêve avec le plus de détails possible : personnes,
-    lieux, événements, émotions ressenties et éléments qui vous ont marqué.
+    Racontez votre rêve avec vos propres mots.
+    Notre outil recherchera les symboles présents
+    dans votre récit et vous proposera des pistes
+    d'interprétation.
   </p>
 
-  <div class="dream-input-coming-soon">
-    <p>
-        ✨ Vous pourrez prochainement raconter votre rêve
-        et obtenir une interprétation personnalisée.
-    </p>
-</div>
+  <label for="dream-text">
+    Décrivez votre rêve :
+  </label>
 
-  
+  <textarea
+    id="dream-text"
+    rows="6"
+    minlength="10"
+    maxlength="3000"
+    placeholder="Exemple : J'ai rêvé que je marchais dans une forêt et qu'un serpent apparaissait..."
+  ></textarea>
 
- 
+  <button type="button" id="analyze-dream">
+    🌙 Analyser mon rêve gratuitement
+  </button>
+
+  <div id="dream-result" hidden aria-live="polite"></div>
+
+  <p class="dream-disclaimer">
+    Cette analyse repose sur des associations symboliques.
+    Elle ne constitue ni une prédiction ni un diagnostic psychologique.
+  </p>
+
 </section>
 
 <section class="seo-links">
@@ -341,6 +360,193 @@ import Layout from '../layouts/Layout.astro';
 
   </main>
 
+
+<script>
+  const dreamText = document.getElementById("dream-text") as HTMLTextAreaElement | null;
+  const analyzeButton = document.getElementById("analyze-dream");
+  const dreamResult = document.getElementById("dream-result");
+
+  const dreamSymbols = [
+    {
+      name: "L'eau",
+      words: ["eau", "mer", "ocean", "riviere", "lac", "inondation"],
+      meaning: "L'eau peut évoquer vos émotions, votre besoin de sérénité ou une période de changement. Son état et les sensations ressenties dans le rêve peuvent apporter des nuances."
+    },
+    {
+      name: "Le serpent",
+      words: ["serpent", "vipere", "cobra"],
+      meaning: "Le serpent peut symboliser une inquiétude, une transformation ou un renouveau. Votre réaction face à lui est importante pour comprendre ce qu'il représente pour vous."
+    },
+    {
+      name: "Les araignées",
+      words: ["araignee", "araignees", "toile d'araignee"],
+      meaning: "L'araignée peut évoquer la patience, la créativité, une peur ou le sentiment d'être pris dans une situation complexe."
+    },
+    {
+      name: "Les dents",
+      words: ["dent", "dents", "machoire"],
+      meaning: "Les dents peuvent être associées à l'image de soi, aux changements ou à certaines préoccupations. Des sensations physiques pendant le sommeil peuvent également influencer ce type de rêve."
+    },
+    {
+      name: "La maison",
+      words: ["maison", "appartement", "chambre", "habitation"],
+      meaning: "La maison peut représenter votre univers personnel, votre besoin de sécurité ou différents aspects de votre vie."
+    },
+    {
+      name: "La chute",
+      words: ["tomber", "chute", "tombais", "tombe", "vide"],
+      meaning: "Une chute peut évoquer une perte de contrôle, une période d'incertitude ou une transition importante."
+    },
+    {
+      name: "La poursuite",
+      words: ["poursuivi", "poursuivie", "poursuite", "courir", "fuir", "fuyais"],
+      meaning: "Être poursuivi peut inviter à réfléchir à une pression ressentie ou à une situation que vous préférez éviter."
+    },
+    {
+      name: "Les animaux",
+      words: ["chien", "chat", "oiseau", "cheval", "loup"],
+      meaning: "Les animaux peuvent évoquer des émotions, des instincts ou des relations. Leur comportement et votre rapport personnel à l'animal sont essentiels."
+    },
+    {
+      name: "La forêt",
+      words: ["foret", "bois", "arbres"],
+      meaning: "La forêt peut symboliser l'exploration, l'inconnu, le besoin de tranquillité ou la recherche de nouveaux repères."
+    },
+    {
+      name: "Le vol",
+      words: ["voler", "volais", "envoler", "volais dans le ciel"],
+           meaning: "Voler dans un rêve peut évoquer un désir de liberté, de recul ou de dépassement des limites."
+    }
+  ];
+const dreamEmotions = [
+  {
+    name: "La peur",
+    words: ["peur", "effraye", "effrayee", "terrifie", "terrifiee"],
+    meaning: "La peur ressentie dans votre rêve peut évoquer une inquiétude, une situation incertaine ou un sentiment de vulnérabilité. Elle ne signifie pas qu'un danger réel vous attend."
+  },
+  {
+    name: "La joie",
+    words: ["joie", "heureux", "heureuse", "content", "contente", "bonheur"],
+    meaning: "La joie peut évoquer un sentiment de satisfaction, un désir d'épanouissement ou une expérience positive importante pour vous."
+  },
+  {
+    name: "La tristesse",
+    words: ["triste", "tristesse", "pleurer", "pleurais", "larmes"],
+    meaning: "La tristesse peut inviter à réfléchir à un manque, un souvenir, une séparation ou une émotion qui mérite votre attention."
+  },
+  {
+    name: "La colère",
+    words: ["colere", "furieux", "furieuse", "enerve", "enervee"],
+    meaning: "La colère peut évoquer une frustration, un désaccord ou un besoin de faire respecter vos limites."
+  },
+  {
+    name: "L'angoisse",
+    words: ["angoisse", "angoisse", "anxieux", "anxieuse", "panique", "stresse"],
+    meaning: "L'angoisse peut refléter des préoccupations ou un sentiment d'incertitude. Le contexte du rêve peut aider à comprendre ce qui a provoqué cette émotion."
+  },
+  {
+    name: "Le soulagement",
+    words: ["soulage", "soulagee", "soulagement", "rassure", "rassuree"],
+    meaning: "Le soulagement peut évoquer la fin d'une tension, un besoin de sécurité ou le sentiment de retrouver une certaine tranquillité."
+  }
+];
+
+
+  function normalizeDream(text: string) {
+    return text
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[’]/g, "'")
+      .replace(/[^a-z0-9']/g, " ");
+  }
+
+  analyzeButton?.addEventListener("click", () => {
+    if (!dreamText || !dreamResult) return;
+
+    const description = dreamText.value.trim();
+
+    if (description.length < 10) {
+      dreamResult.hidden = false;
+      dreamResult.textContent =
+        "Décrivez votre rêve en quelques phrases pour commencer l'analyse.";
+      return;
+    }
+
+    const normalized = normalizeDream(description);
+    const words = normalized.split(" ");
+
+    const foundSymbols = dreamSymbols.filter(symbol =>
+      symbol.words.some(word => {
+        const normalizedWord = normalizeDream(word).trim();
+        return normalizedWord.includes(" ")
+          ? normalized.includes(normalizedWord)
+          : words.includes(normalizedWord);
+      })
+    );
+
+const foundEmotions = dreamEmotions.filter(emotion =>
+  emotion.words.some(word =>
+    words.includes(normalizeDream(word).trim())
+  )
+);
+
+
+    dreamResult.hidden = false;
+    dreamResult.replaceChildren();
+
+    const title = document.createElement("h3");
+    title.textContent = "🌙 Votre analyse symbolique";
+    dreamResult.appendChild(title);
+
+    if (foundSymbols.length === 0) {
+      const paragraph = document.createElement("p");
+      paragraph.textContent =
+        "Aucun symbole de notre dictionnaire n'a été reconnu. Essayez de préciser les lieux, les objets, les animaux ou les actions présents dans votre rêve.";
+      dreamResult.appendChild(paragraph);
+      return;
+    }
+
+if (foundEmotions.length > 0) {
+  const emotionTitle = document.createElement("h3");
+  emotionTitle.textContent = "💜 Les émotions de votre rêve";
+  dreamResult.appendChild(emotionTitle);
+
+  foundEmotions.forEach(emotion => {
+    const heading = document.createElement("h4");
+    heading.textContent = emotion.name;
+
+    const paragraph = document.createElement("p");
+    paragraph.textContent = emotion.meaning;
+
+    dreamResult.appendChild(heading);
+    dreamResult.appendChild(paragraph);
+  });
+
+  const symbolTitle = document.createElement("h3");
+  symbolTitle.textContent = "🔑 Les symboles de votre rêve";
+  dreamResult.appendChild(symbolTitle);
+}
+
+
+    foundSymbols.forEach(symbol => {
+      const heading = document.createElement("h4");
+      heading.textContent = symbol.name;
+
+      const paragraph = document.createElement("p");
+      paragraph.textContent = symbol.meaning;
+
+      dreamResult.appendChild(heading);
+dreamResult.appendChild(paragraph);
+    });
+
+    const conclusion = document.createElement("p");
+    conclusion.textContent =
+      "Pour approfondir cette lecture, réfléchissez aux émotions ressenties et aux liens possibles avec votre quotidien.";
+
+    dreamResult.appendChild(conclusion);
+  });
+</script>
 </Layout>
 <style>
   .dream-page {
@@ -516,38 +722,51 @@ import Layout from '../layouts/Layout.astro';
   margin-right: 0.3rem;
 }
 
-<section class="dream-symbol-detail">
-  <h2>🐍 Que signifie rêver d'un serpent ?</h2>
+#dream-result {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: rgba(192, 132, 252, 0.08);
+    border: 1px solid rgba(192, 132, 252, 0.35);
+    border-radius: 14px;
+    text-align: left;
+    line-height: 1.8;
+}
 
-  <p>
-    Le serpent est un symbole qui peut susciter des émotions très
-    différentes. Selon les cultures et les expériences personnelles,
-    il peut évoquer la peur, la transformation, le danger ou le renouveau.
-  </p>
+#dream-result[hidden] {
+    display: none;
+}
 
-  <p>
-    <strong>Rêver d'un serpent qui attaque :</strong>
-    ce scénario peut faire penser à une inquiétude, un conflit
-    ou une situation ressentie comme menaçante.
-  </p>
+#dream-result h3 {
+    color: #fbbf24;
+    margin-bottom: 1.5rem;
+}
 
-  <p>
-    <strong>Rêver d'un serpent calme :</strong>
-    il peut être associé à un changement, à la prudence
-    ou à une période de réflexion personnelle.
-  </p>
+#dream-result h4 {
+    color: #c084fc;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+}
 
-  <p>
-    <strong>Rêver de plusieurs serpents :</strong>
-    ce rêve peut inviter à réfléchir à plusieurs préoccupations
-    ou émotions présentes dans votre quotidien.
-  </p>
+#dream-result p {
+    color: #cbd5e1;
+    margin-bottom: 1rem;
+}
 
-  <p>
-    Ces interprétations sont des pistes symboliques et non des
-    prédictions. Le sens que vous attribuez au rêve dépend
-    surtout de votre vécu et des émotions ressenties.
-  </p>
-</section>
+#analyze-dream {
+    background: #c084fc;
+    color: #111827;
+    cursor: pointer;
+    opacity: 1;
+}
+
+#analyze-dream:hover {
+    background: #d8b4fe;
+}
+
+.dream-disclaimer {
+    margin-top: 1.5rem;
+    font-size: 0.85rem;
+    color: #94a3b8;
+}
 
 </style>
